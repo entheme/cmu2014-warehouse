@@ -6,61 +6,37 @@
 
 package com.lge.warehouse.supervisor;
 
-import java.lang.Runnable;
+import com.lge.warehouse.common.app.WarehouseRunnable;
+import com.lge.warehouse.common.bus.EventMessage;
 import java.lang.InterruptedException;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author kihyung2.lee
  */
-public class Supervisor implements Runnable {
+public final class Supervisor {
     private static Supervisor sInstance = null;
-    private OrderProvider mOrderProvider;
-    private WarehouseManagerContainer mContainer;
+    static Logger logger = Logger.getLogger(Supervisor.class);
+    
+    public static void initialize() {
+        logger.info("Warehouse Supervisor is initializing...");
+        // TODO: Do initialization
+        OrderProvider.start();
+        WarehouseServiceManager.start();
+        logger.info("Warehouse Supervisor has been initialized");
+    }
     
     private Supervisor() {}
     
-    public void initialize() {
-        System.out.println("Warehouse Supervisor is initializing...");
-        
-        // TODO: Do initialization
-        mOrderProvider = OrderProvider.getInstance();
-        new Thread(mOrderProvider).start();
-        
-        mContainer = WarehouseManagerContainer.getInstance();
-        new Thread(mContainer).start();
-        
-        System.out.println("Warehouse Supervisor has been initialized");
-    }
-    
-    @Override
-    public void run() {
-        // TODO: implement main loop here
-        while(true) {
-            synchronized (this) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    
-                }
-            }
-        }
-    }
-    
-    public static Supervisor getInstance() {
+    private static Supervisor getInstance() {
         if (sInstance == null) {
             sInstance = new Supervisor();
         }
         return sInstance;
     }
-
-    public static void main(String args[]) {
-        // Initialize Supervisor
-        Supervisor.getInstance().initialize();
-        
-        // We do not use Thread(Runnable).start() here.
-        // Instead, we user main thread in Supervisor directly.
-        Supervisor.getInstance().run();
+    public static void ping(){
+        OrderProvider.getInstance().ping();
+        WarehouseServiceManager.getInstance().ping();
     }
-
 }

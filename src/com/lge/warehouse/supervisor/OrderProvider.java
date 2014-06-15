@@ -6,26 +6,25 @@
 
 package com.lge.warehouse.supervisor;
 
-import java.lang.Runnable;
+import com.lge.warehouse.common.app.EventMessageType;
+import com.lge.warehouse.common.app.WComponentType;
+import com.lge.warehouse.common.app.WarehouseRunnable;
+import com.lge.warehouse.common.bus.EventMessage;
+import java.util.logging.Level;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author kihyung2.lee
  */
-public class OrderProvider implements Runnable {
+public final class OrderProvider extends WarehouseRunnable {
     private static OrderProvider sInstance = null;
+    static Logger logger = Logger.getLogger(OrderProvider.class);
     
-    private OrderProvider() {}
-    
-    public void initialize() {
-        System.out.println("OrderProvider has been initialized");
+    private OrderProvider() {
+        super(WComponentType.ORDER_PROVIDER);
     }
     
-    @Override
-    public void run() {
-        // TODO: implement main loop here
-    }
-
     public static OrderProvider getInstance() {
         if (sInstance == null) {
             sInstance = new OrderProvider();
@@ -33,4 +32,29 @@ public class OrderProvider implements Runnable {
         return sInstance;
     }
 
+    @Override
+    protected void eventHandle(EventMessage event) {
+
+    }
+
+    public static void start() {
+        logger.info("OrderProvider start");
+        new Thread(getInstance()).start();
+    }
+
+    @Override
+    protected void initBus() {
+        addBus(WComponentType.CUSTOMER_SERVICE_MANAGER);
+        addBus(WComponentType.PENDING_ORDER_MANAGER);
+        addBus(WComponentType.WAREHOUSE_SERVICE_MANAGER);
+        addBus(WComponentType.SUPERVISOR_UI);
+    }
+
+    @Override
+    public void ping() {
+        sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.COMPONENT_HELLO, null);
+        sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.COMPONENT_HELLO, null);
+        sendMsg(WComponentType.WAREHOUSE_SERVICE_MANAGER, EventMessageType.COMPONENT_HELLO, null);
+        sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.COMPONENT_HELLO, null);
+    }
 }

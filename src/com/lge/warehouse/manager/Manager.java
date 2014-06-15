@@ -6,34 +6,43 @@
 
 package com.lge.warehouse.manager;
 
-import java.lang.Runnable;
+import org.apache.log4j.Logger;
 
 /**
  *
- * @author kihyung2.lee
+ * @author seuki77
  */
-public class Manager implements Runnable  {
+public class Manager {
     private static Manager sInstance = null;
+    static Logger logger = Logger.getLogger(Manager.class);
     
-    private Manager() {}
-    
-    public void initialize() {
-        System.out.println("Warehouse Manager is initializing...");
-        
+    public static void initialize() {
+        logger.info("Manager is initializing...");
         // TODO: Do initialization
-        
-        System.out.println("Warehouse Manager has been initialized");
-      }
+        WmMsgHandler.start();
+        WarehouseManagerController.start();
+        WarehouseInputMgr.start();
+        WarehouseOutputMgr.start();
+        RobotInputMgr.start();
+        RobotOutputMgr.start();
 
-    @Override
-    public void run() {
-        // TODO: implement main loop here
+        logger.info("Manager has been initialized");
     }
-
+    
+    private Manager(){}
+    
     public static Manager getInstance() {
         if (sInstance == null) {
             sInstance = new Manager();
         }
         return sInstance;
+    }
+    public static void ping(){
+        WmMsgHandler.getInstance().ping();
+        WarehouseManagerController.getInstance().ping();
+        WarehouseInputMgr.getInstance().ping();
+        WarehouseOutputMgr.getInstance().ping();
+        RobotInputMgr.getInstance().ping();
+        RobotOutputMgr.getInstance().ping();
     }
 }
