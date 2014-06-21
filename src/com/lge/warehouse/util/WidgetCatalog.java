@@ -33,15 +33,19 @@ public class WidgetCatalog {
         sMapClass2Int.put(w.getClass(), w.getProuctId());
     }
        
-    static int getProductIdOf(Class cls) {
+    public static int getProductIdOf(Class cls) {
         return sMapClass2Int.get(cls);
     }
     
-    static Widget getWidgetById(int productId) {
+    public static Widget getWidgetById(int productId) {
         return sMapInt2Widget.get(productId);
     }
     
-    static Widget getWidgetByClass(Class cls) {
+    public static Widget getWidgetByClass(Class cls) {
         return getWidgetById(getProductIdOf(cls));
+    }
+    
+    public static int getSize(){
+        return sMapInt2Widget.size();
     }
 }
