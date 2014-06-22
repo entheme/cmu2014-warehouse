@@ -2,4 +2,6 @@
 /build.xml
 /nbproject/
 /manifest.mf
-
+/bin
+.project
+.classpath
