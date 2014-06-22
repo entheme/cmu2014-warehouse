@@ -20,6 +20,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
      */
     public OrderSysUi() {
         initComponents();
+        requestCatalog();
     }
 
     /**
@@ -157,6 +158,12 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
                 new OrderSysUi().setVisible(true);
             }
         });
+    }
+    
+    private void requestCatalog() {
+        OrderSysWidgetCart.setUiUpdateListener(this);
+        mOrderSysUiController = new OrderSysUiController();
+        mOrderSysUiController.requestWidgetCatalog();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
