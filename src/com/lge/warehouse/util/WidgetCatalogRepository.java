@@ -7,7 +7,8 @@
 package com.lge.warehouse.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -16,24 +17,25 @@ import org.apache.log4j.Logger;
  */
 public class WidgetCatalogRepository {
     private static WidgetCatalogRepository sInstance = new WidgetCatalogRepository();
-    private static int mWidgetCnt = 0;
-    private HashMap<String, WidgetInfo> mWidgetInfoList = new HashMap<String, WidgetInfo>();
+    private List<WidgetInfo> mWidgetInfoList = new ArrayList<WidgetInfo>();
     static Logger logger = Logger.getLogger(WidgetCatalogRepository.class);
     private WidgetCatalogRepository(){
-        
+    	//for test [start]
+    	mWidgetInfoList.add(new WidgetInfo(0,"Item1",100));
+    	mWidgetInfoList.add(new WidgetInfo(1,"Item2",200));
+    	mWidgetInfoList.add(new WidgetInfo(2,"Item3",300));
+    	mWidgetInfoList.add(new WidgetInfo(3,"Item4",400));
+    	mWidgetInfoList.add(new WidgetInfo(4,"Item5",500));
+    	//for test [end];
     }
-    public WidgetCatalogRepository getInstance(){
+    
+    public static WidgetCatalogRepository getInstance(){
         return sInstance;
     }
-    public boolean addNewWidget(String name, int price){
-        if(mWidgetInfoList.containsKey(name)){
-            logger.info(name+" is already in WidgetCatalogRepository");
-            return false;
-        }
-        mWidgetInfoList.put(name,new WidgetInfo(++mWidgetCnt, name, price));
-        return true;
+    public void setNewWidgetList(WidgetCatalog widgetCatalog){
+    	mWidgetInfoList = widgetCatalog.getWidgetList();
     }
     public WidgetCatalog getWidgetCatalog(){
-        return new WidgetCatalog(new ArrayList(mWidgetInfoList.values()));
+        return new WidgetCatalog(mWidgetInfoList);
     }
 }

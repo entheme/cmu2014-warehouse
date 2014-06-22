@@ -6,13 +6,14 @@
 
 package com.lge.warehouse.ordersys;
 
+import org.apache.log4j.Logger;
+
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.common.bus.p2p.P2PSender;
 import com.lge.warehouse.util.Order;
-import org.apache.log4j.Logger;
+import com.lge.warehouse.util.WidgetCatalog;
 
 /**
  *
@@ -45,7 +46,14 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 				logger.info("PLACE_ORDER Wrongtype"+event);
 			}
 			break;
-
+		case REQUEST_CATAGORY_FROM_CUSTOMER_IF:
+			sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER, null);
+			break;
+		case RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER:
+			if (event.getBody() instanceof WidgetCatalog){
+				sendMsg(WComponentType.CUSTOMER_INF, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_IF, event.getBody());
+			}
+			break;
 		default:
 			logger.info("unhandled event :"+event);
 			break;

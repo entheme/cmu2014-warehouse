@@ -26,7 +26,7 @@ public abstract class WarehouseComponent implements MessageListener, MsgInterfac
 
 	public WarehouseComponent(WComponentType id) {
 		mId = id;
-		if (!(id == WComponentType.SUPERVISOR_UI)){
+		if (!((id == WComponentType.SUPERVISOR_UI)||(id == WComponentType.CUSTOMER_INF))){
 			addBus(WComponentType.SYSTEM);
 		}
 		initBus();

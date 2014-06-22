@@ -16,8 +16,6 @@ import com.lge.warehouse.common.test.WarehouseTestSystem;
 import com.lge.warehouse.manager.Manager;
 import com.lge.warehouse.ordersys.OrderingSystem;
 import com.lge.warehouse.supervisor.Supervisor;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +33,7 @@ public class WarehouseMain extends WarehouseRunnable{
 	@Override
 	protected void initBus() {
 		// TODO Auto-generated method stub
-		readyForMonitor(WComponentType.CUSTOMER_INF);
+		//readyForMonitor(WComponentType.CUSTOMER_INF);
 		readyForMonitor(WComponentType.CUSTOMER_SERVICE_MANAGER);
 		readyForMonitor(WComponentType.PENDING_ORDER_MANAGER);
 		readyForMonitor(WComponentType.WAREHOUSE_SUPERVISOR);
@@ -96,7 +94,7 @@ public class WarehouseMain extends WarehouseRunnable{
 	public static final void main(String[] args){
 		WarehouseMain system = new WarehouseMain();
 		
-		WarehouseTestSystem.initialize();
+		//WarehouseTestSystem.initialize();
 		OrderingSystem.initialize();
 		Supervisor.initialize();
 		Manager.initialize();

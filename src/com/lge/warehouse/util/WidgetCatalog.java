@@ -24,4 +24,7 @@ public class WidgetCatalog implements Serializable{
         public WidgetInfo getWidgetInfoAt(int index){
             return mWidgetList.get(index);
         }
+        public List<WidgetInfo> getWidgetList(){
+        	return mWidgetList;
+        }
 }

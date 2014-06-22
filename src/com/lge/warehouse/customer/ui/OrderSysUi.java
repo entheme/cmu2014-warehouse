@@ -1,5 +1,7 @@
 package com.lge.warehouse.customer.ui;
 
+import org.apache.log4j.Logger;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,8 +12,9 @@ package com.lge.warehouse.customer.ui;
  *
  * @author kihyung2.lee
  */
-public class OrderSysUi extends javax.swing.JFrame {
-
+public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
+	private static Logger logger = Logger.getLogger(OrderSysUi.class);
+	OrderSysUiController mOrderSysUiController ;
     /**
      * Creates new form OrderSysUi
      */
@@ -93,6 +96,9 @@ public class OrderSysUi extends javax.swing.JFrame {
         );
 
         pack();
+        OrderSysWidgetCart.setUiUpdateListener(this);
+        mOrderSysUiController = new OrderSysUiController();
+        mOrderSysUiController.requestWidgetCatalog();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jListWidgetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListWidgetMouseClicked
@@ -112,7 +118,12 @@ public class OrderSysUi extends javax.swing.JFrame {
         OrderSysWidgetCart.initWidgetCart();
         //To Do
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    @Override
+	public void updateUi() {
+		// TODO Auto-generated method stub
+    	logger.info("updateUi");
+    	jListWidget.updateUI();
+	}
     /**
      * @param args the command line arguments
      */

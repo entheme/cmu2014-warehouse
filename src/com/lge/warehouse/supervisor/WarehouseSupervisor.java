@@ -12,10 +12,10 @@ import org.apache.log4j.Logger;
 
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
-import com.lge.warehouse.common.app.WarehouseContext;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.WidgetCatalogRepository;
 import com.lge.warehouse.util.WidgetInfo;
 
 /**
@@ -80,6 +80,9 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			}else {
 				handleBodyError(event);
 			}
+			break;
+		case REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER:
+			sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, WidgetCatalogRepository.getInstance().getWidgetCatalog());
 			break;
 		default:
 			logger.info("unhandled event :"+event);

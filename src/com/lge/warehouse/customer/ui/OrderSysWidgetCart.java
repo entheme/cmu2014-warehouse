@@ -13,15 +13,18 @@ import com.lge.warehouse.util.WidgetInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author Jihun
  */
 public class OrderSysWidgetCart {
+	private static Logger logger = Logger.getLogger(OrderSysWidgetCart.class);
     private static final ArrayList<QuantifiedWidget> widgetCart = new ArrayList<QuantifiedWidget>();
     //private static final Order order = new Order();
-    private static WidgetCatalog widgetCatalog = null;
-    
+    private static WidgetCatalog widgetCatalog = new WidgetCatalog(new ArrayList<WidgetInfo>());
+    private static OrderSysUiUpdate sUiUpdate = null;
   
     static {
         initWidgetCart();
@@ -47,13 +50,6 @@ public class OrderSysWidgetCart {
     }
     
     public static void initWidgetCart(){
-        List <WidgetInfo> widgetInfoList = new ArrayList<WidgetInfo>();
-        for(int i= 0 ;i<5; i++){
-            widgetInfoList.add(new WidgetInfo(i, "item"+i, 500));
-            
-        }
-        widgetCatalog = new WidgetCatalog(widgetInfoList);
-        
         int widgetCount = getWidgetCatlogSize();
         boolean bWidgetCartCreated = false;
         
@@ -69,11 +65,16 @@ public class OrderSysWidgetCart {
                 widgetCart.add(quantifiedWidget);
             }
         }
-        
-        //
         Order order1 = new Order();
-      
-           
+    }
+    public static void setWidgetCatalog(WidgetCatalog widgetCatalog){
+    	logger.info("setWidgetCatalog catalog size = "+widgetCatalog.getWidgetInfoCnt());
+    	widgetCatalog = widgetCatalog;
+    	initWidgetCart();
+    	sUiUpdate.updateUi();
+    }
+    public static void setUiUpdateListener(OrderSysUiUpdate uiUpdate){
+    	sUiUpdate = uiUpdate;
     }
     
 }
