@@ -18,8 +18,8 @@ import org.apache.log4j.Logger;
  *
  * @author Jihun
  */
-public class OrderSysWidgetCart {
-	private static Logger logger = Logger.getLogger(OrderSysWidgetCart.class);
+public class OrderSysWidgetCart {	
+    private static Logger logger = Logger.getLogger(OrderSysWidgetCart.class);
     private static final ArrayList<QuantifiedWidget> widgetCart = new ArrayList<QuantifiedWidget>();
     private static WidgetCatalog widgetCatalog = new WidgetCatalog(new ArrayList<WidgetInfo>());
     private static OrderSysUiUpdate sUiUpdate = null;
@@ -28,9 +28,9 @@ public class OrderSysWidgetCart {
         initWidgetCart();
     }
     
-    public static String getWidgetNameByIndex(int index){
+    public static String getWidgetInfoByIndex(int index){
         WidgetInfo widget = widgetCatalog.getWidgetInfoAt(index);
-        return widget.getName();
+        return widget.getName() + " [" + widget.getPrice() + "$]";
     }
     
     public static int getWidgetCatlogSize(){
@@ -51,7 +51,7 @@ public class OrderSysWidgetCart {
         int widgetCount = getWidgetCatlogSize();
         boolean bWidgetCartCreated = false;
         
-        if(widgetCart.size() > 0)
+        if(widgetCart.size() > 0) 
             bWidgetCartCreated = true;
          
         for(int i=0; i<widgetCount; i++){
@@ -77,7 +77,7 @@ public class OrderSysWidgetCart {
         Order order = new Order();
         int catalogSize = getWidgetCatlogSize();
         
-        if(catalogSize == 0)
+        if(catalogSize == 0 || getTotalQuantity() == 0)
             return null;
         
         for(int i=0; i<getWidgetCatlogSize(); i++) {
@@ -85,6 +85,34 @@ public class OrderSysWidgetCart {
         }
         
         return order;
+    }
+    
+    public static String getCartInfo() {
+        int totalPrice = 0;
+        String info = new String();
+        String newLine = "\n";
+        
+        if(getTotalQuantity() == 0 || getWidgetCatlogSize() == 0) {
+            info += "Cart is empty";
+            return info;
+        }
+        
+        for(int i=0; i<getWidgetCatlogSize(); i++) {
+            info += widgetCart.get(i).getWidget().getName() + " :" + widgetCart.get(i).getQuantity() + "EA" + newLine;
+            totalPrice += widgetCart.get(i).getQuantity() * widgetCart.get(i).getWidget().getPrice();
+        }
+        info += newLine + "Total Price = " + totalPrice + "$" + newLine;
+        
+        return info;
+    }
+    
+    public static int getTotalQuantity() {
+        int quantity = 0;
+        
+        for(int i=0; i<getWidgetCatlogSize(); i++) {
+            quantity += widgetCart.get(i).getQuantity();
+        }
+        return quantity;
     }
     
 }
