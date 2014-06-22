@@ -13,6 +13,7 @@ import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseComponent;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.ordersys.CustomerServiceManager;
+import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.WidgetCatalog;
 
 public class OrderSysUiController extends WarehouseComponent {
@@ -57,5 +58,8 @@ public class OrderSysUiController extends WarehouseComponent {
 
 	public void requestWidgetCatalog(){
 		sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.REQUEST_CATAGORY_FROM_CUSTOMER_IF, null);
+	}
+	public void requestPlaceOrder(Order order){
+		sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.PLACE_ORDER, order);
 	}
 }
