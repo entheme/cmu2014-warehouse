@@ -28,9 +28,36 @@ public class SupervisorUi extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupStatus = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jTextFieldStatus = new javax.swing.JTextField();
+        jRadioButtonOrder = new javax.swing.JRadioButton();
+        jRadioButtonInventory = new javax.swing.JRadioButton();
+        jRadioButtonRobot = new javax.swing.JRadioButton();
+        jComboBoxInventory = new javax.swing.JComboBox();
+        jComboBoxWidget = new javax.swing.JComboBox();
+        jSpinnerWidgetQuantity = new javax.swing.JSpinner();
+        jButtonInventoryAdd = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTabbedPane1.addTab("Status", jTextFieldStatus);
+
+        buttonGroupStatus.add(jRadioButtonOrder);
+        jRadioButtonOrder.setSelected(true);
+        jRadioButtonOrder.setText("Order");
+
+        buttonGroupStatus.add(jRadioButtonInventory);
+        jRadioButtonInventory.setText("Inventory");
+
+        buttonGroupStatus.add(jRadioButtonRobot);
+        jRadioButtonRobot.setText("Robot");
+
+        jComboBoxInventory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Inventory1", "Inventory2", "Inventory3", "Inventory4" }));
+
+        jComboBoxWidget.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Soccer", "WhiteBaseball", "YellowBaseball", "Basket", " " }));
+
+        jButtonInventoryAdd.setText("Add");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -38,15 +65,46 @@ public class SupervisorUi extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 160, Short.MAX_VALUE))
+                    .addComponent(jTabbedPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButtonOrder)
+                    .addComponent(jRadioButtonInventory)
+                    .addComponent(jRadioButtonRobot)
+                    .addComponent(jButtonInventoryAdd))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(jRadioButtonOrder)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRadioButtonInventory)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jRadioButtonRobot)
+                        .addGap(140, 140, 140))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonInventoryAdd))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
@@ -88,6 +146,15 @@ public class SupervisorUi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupStatus;
+    private javax.swing.JButton jButtonInventoryAdd;
+    private javax.swing.JComboBox jComboBoxInventory;
+    private javax.swing.JComboBox jComboBoxWidget;
+    private javax.swing.JRadioButton jRadioButtonInventory;
+    private javax.swing.JRadioButton jRadioButtonOrder;
+    private javax.swing.JRadioButton jRadioButtonRobot;
+    private javax.swing.JSpinner jSpinnerWidgetQuantity;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField jTextFieldStatus;
     // End of variables declaration//GEN-END:variables
 }
