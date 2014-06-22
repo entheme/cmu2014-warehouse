@@ -11,7 +11,6 @@ import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WidgetCatalog;
 import com.lge.warehouse.util.WidgetInfo;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -22,7 +21,6 @@ import org.apache.log4j.Logger;
 public class OrderSysWidgetCart {
 	private static Logger logger = Logger.getLogger(OrderSysWidgetCart.class);
     private static final ArrayList<QuantifiedWidget> widgetCart = new ArrayList<QuantifiedWidget>();
-    //private static final Order order = new Order();
     private static WidgetCatalog widgetCatalog = new WidgetCatalog(new ArrayList<WidgetInfo>());
     private static OrderSysUiUpdate sUiUpdate = null;
   
@@ -65,7 +63,6 @@ public class OrderSysWidgetCart {
                 widgetCart.add(quantifiedWidget);
             }
         }
-        Order order1 = new Order();
     }
     public static void setWidgetCatalog(WidgetCatalog widgetCatalog){
     	logger.info("setWidgetCatalog catalog size = "+widgetCatalog.getWidgetInfoCnt());
@@ -75,6 +72,19 @@ public class OrderSysWidgetCart {
     }
     public static void setUiUpdateListener(OrderSysUiUpdate uiUpdate){
     	sUiUpdate = uiUpdate;
+    }
+    public static Order getOrderFromCart() {
+        Order order = new Order();
+        int catalogSize = getWidgetCatlogSize();
+        
+        if(catalogSize == 0)
+            return null;
+        
+        for(int i=0; i<getWidgetCatlogSize(); i++) {
+            order.addItem(widgetCart.get(i).getWidget(), widgetCart.get(i).getQuantity());
+        }
+        
+        return order;
     }
     
 }

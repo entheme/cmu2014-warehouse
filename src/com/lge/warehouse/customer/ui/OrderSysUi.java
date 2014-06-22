@@ -33,7 +33,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jListWidget = new javax.swing.JList();
-        jButton1 = new javax.swing.JButton();
+        jButtonOrder = new javax.swing.JButton();
         jSpinnerWidgetQuantity = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -52,10 +52,10 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
         jScrollPane1.setViewportView(jListWidget);
         jListWidget.getAccessibleContext().setAccessibleName("");
 
-        jButton1.setText("Place Order");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonOrder.setText("Place Order");
+        jButtonOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonOrderActionPerformed(evt);
             }
         });
 
@@ -79,7 +79,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
                         .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(jButtonOrder)
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -88,7 +88,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
                 .addContainerGap()
                 .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(jButtonOrder)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -96,9 +96,6 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
         );
 
         pack();
-        OrderSysWidgetCart.setUiUpdateListener(this);
-        mOrderSysUiController = new OrderSysUiController();
-        mOrderSysUiController.requestWidgetCatalog();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jListWidgetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListWidgetMouseClicked
@@ -113,11 +110,14 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
         OrderSysWidgetCart.setWidgetQuantity(jListWidget.getSelectedIndex(), quantity.intValue());
     }//GEN-LAST:event_jSpinnerWidgetQuantityStateChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOrderActionPerformed
+        //Init spinner
         jSpinnerWidgetQuantity.setValue(new Integer(0));
+        //Place Order
+        mOrderSysUiController.requestPlaceOrder(OrderSysWidgetCart.getOrderFromCart());
+        //Init Cart
         OrderSysWidgetCart.initWidgetCart();
-        //To Do
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonOrderActionPerformed
     @Override
 	public void updateUi() {
 		// TODO Auto-generated method stub
@@ -160,7 +160,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonOrder;
     private javax.swing.JList jListWidget;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSpinner jSpinnerWidgetQuantity;
