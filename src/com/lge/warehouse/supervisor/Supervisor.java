@@ -22,8 +22,7 @@ public final class Supervisor {
     public static void initialize() {
         logger.info("Warehouse Supervisor is initializing...");
         // TODO: Do initialization
-        OrderProvider.start();
-        WarehouseServiceManager.start();
+        WarehouseSupervisor.start();
         logger.info("Warehouse Supervisor has been initialized");
     }
     
@@ -36,7 +35,6 @@ public final class Supervisor {
         return sInstance;
     }
     public static void ping(){
-        OrderProvider.getInstance().ping();
-        WarehouseServiceManager.getInstance().ping();
+        WarehouseSupervisor.getInstance().ping();
     }
 }

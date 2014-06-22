@@ -11,22 +11,25 @@ package com.lge.warehouse.common.bus.p2p;
  * @author seuki77
  */
 
-import com.lge.warehouse.common.app.WBus;
-import java.util.logging.Level;
+import java.util.Properties;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
+import javax.jms.QueueBrowser;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.QueueSession;
 import javax.jms.Session;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import org.apache.activemq.ActiveMQConnectionFactory;
+
 import org.apache.log4j.Logger;
+
+import com.lge.warehouse.common.app.WBus;
 
 public final class P2PConnection{
     private static Context mContext = null;
@@ -41,10 +44,13 @@ public final class P2PConnection{
     
     static void initContext(){
         try {
-            mContext = new InitialContext();
+        	Properties props = new Properties();
+        	props.setProperty(Context.INITIAL_CONTEXT_FACTORY,"org.apache.activemq.jndi.ActiveMQInitialContextFactory");
+        	props.setProperty(Context.PROVIDER_URL,"tcp://localhost:61616");
+            mContext = new InitialContext(props);
             mFactory = (QueueConnectionFactory) mContext
                     .lookup("ConnectionFactory");
-//                        mFactory = new ActiveMQConnectionFactory("vm://localhost");
+//            mFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
             mConnection = mFactory.createConnection();
             mConnection.start();
         } catch (NamingException e) {
@@ -65,6 +71,7 @@ public final class P2PConnection{
             Destination dest = null;
             try{
                 dest = (Destination)mContext.lookup(destination);
+                
             }catch (NamingException ex) {
                 dest = session.createQueue(destination);
             }
@@ -93,6 +100,7 @@ public final class P2PConnection{
             }
             
             MessageConsumer receiver = session.createConsumer(dest);
+            
             return new P2PReceiver(session, receiver);
         } catch (JMSException e) {
             // TODO Auto-generated catch block

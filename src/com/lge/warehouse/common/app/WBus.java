@@ -15,23 +15,20 @@ public enum WBus {
     P2P_CustomerIF_CustomerServiceManager(WComponentType.CUSTOMER_INF, WComponentType.CUSTOMER_SERVICE_MANAGER),
     P2P_CustomerServiceManager_CustomerIF(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.CUSTOMER_INF),
     
-    P2P_CustomerServiceManager_OrderProvider(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.ORDER_PROVIDER),
-    P2P_OrderProvider_CustomerServiceManager(WComponentType.ORDER_PROVIDER, WComponentType.CUSTOMER_SERVICE_MANAGER),
+    P2P_CustomerServiceManager_PendingOrderManager(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.PENDING_ORDER_MANAGER),
+    P2P_PendingOrderManager_CustomerServiceManager(WComponentType.PENDING_ORDER_MANAGER, WComponentType.CUSTOMER_SERVICE_MANAGER),
+    
+    P2P_CustomerServiceManager_WarehouseSupervisor(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.WAREHOUSE_SUPERVISOR),
+    P2P_WarehouseSupervisor_CustomerServiceManager(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.CUSTOMER_SERVICE_MANAGER),
   
-    P2P_PendingOrderManager_OrderProvider(WComponentType.PENDING_ORDER_MANAGER, WComponentType.ORDER_PROVIDER),
-    P2P_OrderProvider_PendingOrderManager(WComponentType.ORDER_PROVIDER, WComponentType.PENDING_ORDER_MANAGER),
+    P2P_PendingOrderManager_WarehouseSupervisor(WComponentType.PENDING_ORDER_MANAGER, WComponentType.WAREHOUSE_SUPERVISOR),
+    P2P_WarehouseSupervisor_PendingOrderManager(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.PENDING_ORDER_MANAGER),
     
-    P2P_OrderProvider_SupervisorUI(WComponentType.ORDER_PROVIDER, WComponentType.SUPERVISOR_UI),
-    P2P_SupervisorUI_OrderProvider(WComponentType.SUPERVISOR_UI, WComponentType.ORDER_PROVIDER),
+    P2P_WarehouseSupervisor_SupervisorUI(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.SUPERVISOR_UI),
+    P2P_SupervisorUI_WarehouseServiceManager(WComponentType.SUPERVISOR_UI, WComponentType.WAREHOUSE_SUPERVISOR),
     
-    P2P_OrderProvider_WarehouseServiceManager(WComponentType.ORDER_PROVIDER, WComponentType.WAREHOUSE_SERVICE_MANAGER),
-    P2P_WarehouseServiceManager_OrderProvider(WComponentType.WAREHOUSE_SERVICE_MANAGER, WComponentType.ORDER_PROVIDER),
-    
-    P2P_WarehouseServiceManager_SupervisorUI(WComponentType.WAREHOUSE_SERVICE_MANAGER, WComponentType.SUPERVISOR_UI),
-    P2P_SupervisorUI_WarehouseServiceManager(WComponentType.SUPERVISOR_UI, WComponentType.WAREHOUSE_SERVICE_MANAGER),
-    
-    P2P_WarehouseServiceManager_WmMsgHandler(WComponentType.WAREHOUSE_SERVICE_MANAGER, WComponentType.WM_MSG_HANDLER),
-    P2P_WmMsgHandler_WarehouseServiceManager(WComponentType.WM_MSG_HANDLER, WComponentType.WAREHOUSE_SERVICE_MANAGER),
+    P2P_WarehouseSupervisor_WmMsgHandler(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.WM_MSG_HANDLER),
+    P2P_WmMsgHandler_WarehouseSupervisor(WComponentType.WM_MSG_HANDLER, WComponentType.WAREHOUSE_SUPERVISOR),
     
     P2P_WmMsgHandler_WarehouseManagerController(WComponentType.WM_MSG_HANDLER, WComponentType.WAREHOUSE_MANAGER_CONTROLLER),
     P2P_WarehouseManagerController_WmMsgHandler(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, WComponentType.WM_MSG_HANDLER),
@@ -46,7 +43,40 @@ public enum WBus {
     P2P_WarehouseOutputMgr_WarehouseManagerController(WComponentType.WAREHOUSE_OUTPUT_MGR, WComponentType.WAREHOUSE_MANAGER_CONTROLLER),
     
     P2P_WarehouseManagerController_WarehouseInputMgr(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, WComponentType.WAREHOUSE_INPUT_MGR),
-    P2P_WarehouseInputMgr_WarehouseManagerController(WComponentType.WAREHOUSE_INPUT_MGR, WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
+    P2P_WarehouseInputMgr_WarehouseManagerController(WComponentType.WAREHOUSE_INPUT_MGR, WComponentType.WAREHOUSE_MANAGER_CONTROLLER),
+    
+    P2P_CustomerIF_SYSTEM(WComponentType.CUSTOMER_INF, WComponentType.SYSTEM),
+    P2P_SYSTEM_CustomerIF(WComponentType.SYSTEM, WComponentType.CUSTOMER_INF),
+    
+    P2P_CustomerServiceManager_SYSTEM(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.SYSTEM),
+    P2P_SYSTEM_CustomerServiceManager(WComponentType.SYSTEM, WComponentType.CUSTOMER_SERVICE_MANAGER),
+    
+    P2P_PendingOrderManager_SYSTEM(WComponentType.PENDING_ORDER_MANAGER, WComponentType.SYSTEM),
+    P2P_SYSTEM_PendingOrderManager(WComponentType.SYSTEM, WComponentType.PENDING_ORDER_MANAGER),
+    
+    P2P_WarehouseSupervisor_SYSTEM(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.SYSTEM ),
+    P2P_SYSTEM_WarehouseSupervisor(WComponentType.SYSTEM, WComponentType.WAREHOUSE_SUPERVISOR),
+    
+    P2P_WmMsgHandler_SYSTEM(WComponentType.WM_MSG_HANDLER, WComponentType.SYSTEM),
+    P2P_SYSTEM_WmMsgHandler(WComponentType.SYSTEM, WComponentType.WM_MSG_HANDLER),
+    
+    P2P_WarehouseManagerController_SYSTEM(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, WComponentType.SYSTEM),
+    P2P_SYSTEM_WarehouseManagerControlelr(WComponentType.SYSTEM, WComponentType.WAREHOUSE_MANAGER_CONTROLLER),
+    
+    P2P_RobotOutputMgr_SYSTEM(WComponentType.ROBOT_OUTPUT_MGR, WComponentType.SYSTEM),
+    P2P_SYSTEM_RobotOutputMgr(WComponentType.SYSTEM, WComponentType.ROBOT_OUTPUT_MGR),
+    
+    P2P_RobotInputMgr_SYSTEM(WComponentType.ROBOT_INPUT_MGR, WComponentType.SYSTEM),
+    P2P_SYSTEM_RobotInputMgr(WComponentType.SYSTEM, WComponentType.ROBOT_INPUT_MGR),
+    
+    P2P_WarehouseOutputMgr_SYSTEM(WComponentType.WAREHOUSE_OUTPUT_MGR, WComponentType.SYSTEM),
+    P2P_SYSTEM_WarehouseOutputMgr(WComponentType.SYSTEM, WComponentType.WAREHOUSE_OUTPUT_MGR),
+    
+    P2P_WarehouseInputMgr_SYSTEM(WComponentType.WAREHOUSE_INPUT_MGR, WComponentType.SYSTEM),
+    P2P_SYSTEM_WarehouseInputMgr(WComponentType.SYSTEM, WComponentType.WAREHOUSE_INPUT_MGR)
+    
+    ;
+    
     
     WComponentType mSrc;
     WComponentType mDest;

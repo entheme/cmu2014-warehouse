@@ -6,19 +6,21 @@
 
 package com.lge.warehouse.util;
 
+import java.io.Serializable;
+
 /**
  *
  * @author kihyung2.lee
  */
-public class QuantifiedWidget {
-    private Widget mWidget;
+public class QuantifiedWidget implements Serializable{
+    private WidgetInfo mWidget;
     private int mQuantity;
     
-    public QuantifiedWidget(Widget w, int quantity) {
+    public QuantifiedWidget(WidgetInfo w, int quantity) {
         mWidget = w;
         mQuantity = quantity; 
     }
     
-    public Widget getWidget() { return mWidget; }
+    public WidgetInfo getWidget() { return mWidget; }
     public int getQuantity() { return mQuantity; }
 }

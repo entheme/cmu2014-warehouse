@@ -10,7 +10,6 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.supervisor.OrderProvider;
 import org.apache.log4j.Logger;
 
 /**

@@ -11,5 +11,5 @@ package com.lge.warehouse.common.app;
  * @author seuki77
  */
 public class WarehouseContext {
-    
+    public static final boolean DEBUG_WITH_RUNTIME_EXCEPTION = true;
 }
