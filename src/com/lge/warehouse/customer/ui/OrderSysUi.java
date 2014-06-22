@@ -29,45 +29,89 @@ public class OrderSysUi extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
+        jListWidget = new javax.swing.JList();
         jButton1 = new javax.swing.JButton();
+        jSpinnerWidgetQuantity = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
+        jListWidget.setBorder(javax.swing.BorderFactory.createTitledBorder("Ordering System"));
+        jListWidget.setModel(new javax.swing.AbstractListModel() {
+            public int getSize() { return com.lge.warehouse.customer.ui.OrderSysWidgetCart.getWidgetCatlogSize(); }
+            public Object getElementAt(int i) { return com.lge.warehouse.customer.ui.OrderSysWidgetCart.getWidgetNameByIndex(i); }
         });
-        jScrollPane1.setViewportView(jList1);
+        jListWidget.setToolTipText("");
+        jListWidget.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jListWidgetMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jListWidget);
+        jListWidget.getAccessibleContext().setAccessibleName("");
 
         jButton1.setText("Place Order");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jSpinnerWidgetQuantity.setModel(new javax.swing.SpinnerNumberModel(0, 0, 1000, 1));
+        jSpinnerWidgetQuantity.setToolTipText("");
+        jSpinnerWidgetQuantity.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinnerWidgetQuantityStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 277, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
-                .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+                .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(6, 6, 6))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 30, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jListWidgetMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListWidgetMouseClicked
+        int quantity = OrderSysWidgetCart.getWidgetQuantity(jListWidget.getSelectedIndex());
+
+        jSpinnerWidgetQuantity.setValue(new Integer(quantity));
+    }//GEN-LAST:event_jListWidgetMouseClicked
+
+    private void jSpinnerWidgetQuantityStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinnerWidgetQuantityStateChanged
+        Integer quantity = (Integer) jSpinnerWidgetQuantity.getValue();
+        
+        OrderSysWidgetCart.setWidgetQuantity(jListWidget.getSelectedIndex(), quantity.intValue());
+    }//GEN-LAST:event_jSpinnerWidgetQuantityStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jSpinnerWidgetQuantity.setValue(new Integer(0));
+        OrderSysWidgetCart.initWidgetCart();
+        //To Do
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -103,10 +147,11 @@ public class OrderSysUi extends javax.swing.JFrame {
             }
         });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JList jList1;
+    private javax.swing.JList jListWidget;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner jSpinnerWidgetQuantity;
     // End of variables declaration//GEN-END:variables
 }
