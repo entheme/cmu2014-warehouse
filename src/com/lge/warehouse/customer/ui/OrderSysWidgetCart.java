@@ -69,7 +69,7 @@ public class OrderSysWidgetCart {
     }
     public static void setWidgetCatalog(WidgetCatalog widgetCatalog){
     	logger.info("setWidgetCatalog catalog size = "+widgetCatalog.getWidgetInfoCnt());
-    	widgetCatalog = widgetCatalog;
+    	OrderSysWidgetCart.widgetCatalog = widgetCatalog;
     	initWidgetCart();
     	sUiUpdate.updateUi();
     }
