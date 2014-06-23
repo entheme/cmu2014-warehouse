@@ -24,4 +24,8 @@ public class QuantifiedWidget implements Serializable{
     public WidgetInfo getWidget() { return mWidget; }
     public int getQuantity() { return mQuantity; }
     public void setQuantity(int quantity) { mQuantity = quantity; }
+    
+    public String toString(){
+    	return mWidget+": quantity("+mQuantity+")";
+    }
 }

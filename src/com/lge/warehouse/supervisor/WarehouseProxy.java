@@ -64,6 +64,8 @@ public class WarehouseProxy {
     	mSender.sendObject(new EventMessage(mSrc, mDest, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo));
     }
     public boolean hasInventory(Order order){
+    	logger.info("hasInventory");
+    	mInventoryRepository.dump();
     	if(mProgressOrder != null) 
     		return false;
     	for(QuantifiedWidget qw : order.getItemList()){

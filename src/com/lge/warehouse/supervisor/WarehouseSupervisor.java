@@ -51,6 +51,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			break;
 		case WAREHOUSE_ADD_REQUEST: 	//from WmMsgHandler
 		mWarehouseProxyHandler.handleWarehouseAddRequest();
+			doNextFillOrder();
 		break;
 		case RESPONSE_PENDING_ORDER:	//from PendingOrderManager
 			if (event.getBody() instanceof Order){

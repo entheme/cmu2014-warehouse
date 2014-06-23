@@ -17,6 +17,9 @@ public class WarehouseInventoryInfo implements Serializable{
 			mInventoryInfoList.put(inventoryName, new ArrayList<QuantifiedWidget>());
 		mInventoryInfoList.get(inventoryName).add(new QuantifiedWidget(widgetInfo, count));
 	}
+	public boolean hasInventoryStation(InventoryName inventoryName){
+		return mInventoryInfoList.containsKey(inventoryName);
+	}
 	public List<QuantifiedWidget> getInventoryInfo(InventoryName inventoryName){
 		if(mInventoryInfoList.containsKey(inventoryName))
 			return mInventoryInfoList.get(inventoryName);

@@ -21,11 +21,11 @@ public class WidgetCatalogRepository {
     static Logger logger = Logger.getLogger(WidgetCatalogRepository.class);
     private WidgetCatalogRepository(){
     	//for test [start]
-    	mWidgetInfoList.add(new WidgetInfo(0,"Item1",100));
-    	mWidgetInfoList.add(new WidgetInfo(1,"Item2",200));
-    	mWidgetInfoList.add(new WidgetInfo(2,"Item3",300));
-    	mWidgetInfoList.add(new WidgetInfo(3,"Item4",400));
-    	mWidgetInfoList.add(new WidgetInfo(4,"Item5",500));
+    	mWidgetInfoList.add(new WidgetInfo(0,"Item1",1000));
+    	mWidgetInfoList.add(new WidgetInfo(1,"Item2",1000));
+    	mWidgetInfoList.add(new WidgetInfo(2,"Item3",1000));
+    	mWidgetInfoList.add(new WidgetInfo(3,"Item4",1000));
+    	mWidgetInfoList.add(new WidgetInfo(4,"Item5",1000));
     	//for test [end];
     }
     
