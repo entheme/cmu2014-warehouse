@@ -94,6 +94,7 @@ public class WarehouseProxy {
 			order.setOrderStatus(Order.Status.ORDER_COMPLETE);
 			mInventoryRepository.dump();
 		}else{
+			logger.info("received order = "+order+", stored order"+mProgressOrder);
 			String errorLog = "Completed order is not matching progress order";
 			if(WarehouseContext.DEBUG_WITH_RUNTIME_EXCEPTION)
 				throw new RuntimeException(errorLog);

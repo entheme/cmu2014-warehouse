@@ -65,16 +65,18 @@ public class WarehouseInventoryInfoRepository {
 	public void updateInventoryInfo(WidgetInfo widget, int count) {
 		// TODO Auto-generated method stub
 		for(InventoryName inventoryName : InventoryName.values()){
-			for(QuantifiedWidget qw : mInventoryInfo.getInventoryInfo(inventoryName)){
-				if(qw.getWidget().equals(widget)){
-					if(qw.getQuantity()>count){
-						qw.setQuantity(count);
-					}else{
-						String errLog = "update count is bigger than stored count";
-						if(WarehouseContext.DEBUG_WITH_RUNTIME_EXCEPTION)
-							throw new RuntimeException(errLog);
-						else
-							logger.info(errLog);
+			if(mInventoryInfo.hasInventoryStation(inventoryName)){
+				for(QuantifiedWidget qw : mInventoryInfo.getInventoryInfo(inventoryName)){
+					if(qw.getWidget().equals(widget)){
+						if(qw.getQuantity()>count){
+							qw.setQuantity(count);
+						}else{
+							String errLog = "update count is bigger than stored count";
+							if(WarehouseContext.DEBUG_WITH_RUNTIME_EXCEPTION)
+								throw new RuntimeException(errLog);
+							else
+								logger.info(errLog);
+						}
 					}
 				}
 			}

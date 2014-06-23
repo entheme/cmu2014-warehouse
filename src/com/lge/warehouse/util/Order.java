@@ -60,8 +60,7 @@ public class Order implements Serializable{
 		if (mItemList == null) {
 			if (other.mItemList != null)
 				return false;
-		} else if (!mItemList.equals(other.mItemList))
-			return false;
+		}
 		if (mOrderId != other.mOrderId)
 			return false;
 		return true;
