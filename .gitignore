@@ -1,9 +1,12 @@
 /build/
 /build.xml
 /nbproject/
+/dist
 /manifest.mf
 /bin
 .project
 .classpath
 
 *.log
+
+*.properties

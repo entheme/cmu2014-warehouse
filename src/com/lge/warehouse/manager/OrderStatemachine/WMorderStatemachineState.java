@@ -3,13 +3,6 @@ package com.lge.warehouse.manager.OrderStatemachine;
 import java.io.Serializable;
 
 
-/*
- * 오더를 처리하는 동안 나타나는 스테이트들을 정의 하기 위한 클래스.
- * 모든 스테이트가 모든 Evt에 반응할 필요는 없음으로 필요한 부분만 구현하려고 인터페이스 클레스로 구현 하지 않음.
- * 분석한 결과 모든 스테이트에서 Robot, Warehouse 이벤트에 반응해야 함으로 abstract 처리 하였음. 
- * -> 전체가 동일하게 반응한다면 그냥 abstract 하지 않고 그냥 써도 될듯 final로 묶어서..
- * 
- */
 public abstract class WMorderStatemachineState implements Serializable{
 	
 	WahouseStateMachine warehousestatemachine;

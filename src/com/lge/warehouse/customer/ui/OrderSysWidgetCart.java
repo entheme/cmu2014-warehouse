@@ -77,7 +77,7 @@ public class OrderSysWidgetCart {
         Order order = new Order();
         int catalogSize = getWidgetCatlogSize();
         
-        if(catalogSize == 0 || getTotalQuantity() == 0)
+        if(catalogSize == 0)
             return null;
         
         for(int i=0; i<getWidgetCatlogSize(); i++) {

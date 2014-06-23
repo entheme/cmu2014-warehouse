@@ -4,18 +4,18 @@ import java.io.Serializable;
 
 public class RobotMoveToX extends WMorderStatemachineState implements Serializable{
 
-	int ThisStateID; //어느 스테이션으로 가고있는가?
+	int ThisStateID;
 	
 	public RobotMoveToX(WahouseStateMachine warehousestatemachine,
 			int thisStateID) {
 		super(warehousestatemachine);
-		ThisStateID = thisStateID; //값 유효성 체크를 할 필요가 있을까?
+		ThisStateID = thisStateID;
 	}
 
 	@Override
 	public void Evt_WareHouseSensorIsOn(int iSensorNum) {
 		System.out.println("RobotMoveTo" + ThisStateID +": get Evt_WareHouseSensorIsOn" + iSensorNum);
-		// 자신의 State와 맞는 센서인지를 확인 해야한다.
+		
 		if(ThisStateID == iSensorNum)
 		{
 			System.out.println("Robot is near to station ");
@@ -23,7 +23,7 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 		}
 		else
 		{
-			//관심없는 센서값이 들어왔음... 이때 에러를 만들어줘야 하는지는 이야기해보고 결정.
+			
 		}
 		
 	}

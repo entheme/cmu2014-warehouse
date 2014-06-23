@@ -12,7 +12,6 @@ public class WaitNewOrderState extends WMorderStatemachineState implements Seria
 	@Override
 	public void Evt_NewOrder() {
 		System.out.println("WaitNewOrderState : Evt_NewOrder");
-		System.out.println("Warehouse에 명령 전달 후, Robot에게 1번으로 가라고 명령한다.");
 		warehousestatemachine.setState(warehousestatemachine.getRobotMoveToXst(0));
 	}
 
