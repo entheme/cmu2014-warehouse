@@ -2,6 +2,10 @@ package com.lge.warehouse.manager.OrderStatemachine;
 
 import java.io.Serializable;
 
+/*
+ * waiting state for until initial environment is ready to go..
+ * If needs not than remove this
+ */
 public class InitState extends WMorderStatemachineState implements Serializable {
 	
 	public InitState(WahouseStateMachine warehousestatemachine) {
@@ -14,6 +18,7 @@ public class InitState extends WMorderStatemachineState implements Serializable 
 		warehousestatemachine.setState(warehousestatemachine.getWaitNewOrderState());
 	}
 
+	// initial state don't handle Error state
 	@Override
 	public void Evt_RobotErrorStateChange(int iRobotErrorState) {
 		System.out.println("InitState  Evt_RobotErrorStateChange : #" + iRobotErrorState + "is change, not implement event");

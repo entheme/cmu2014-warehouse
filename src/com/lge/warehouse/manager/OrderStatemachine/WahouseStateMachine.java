@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.List;
 
 public class WahouseStateMachine implements Serializable{
 	
@@ -39,11 +40,11 @@ public class WahouseStateMachine implements Serializable{
 		aduinoHasError = new AdoinoErrorState(this);
 		
 		//SaveState = initState;
+		// If This Save state is not initstate mean Error recovery logic is run
 		CurrentState = initState;
 		load();
 		if(SaveState != null)
 		{
-			
 			setState(SaveState);
 		}
 		else
@@ -54,7 +55,7 @@ public class WahouseStateMachine implements Serializable{
 	}
 	
 	public void Evt_initComplete() {CurrentState.Evt_initComplete();}
-	public void Evt_NewOrder() {CurrentState.Evt_NewOrder();}
+	public void Evt_NewOrder(List<WMorderStatemachineState> path) {CurrentState.Evt_NewOrder(path);}
 	public void Evt_WareHouseSensorIsOn(int sensorNum) {CurrentState.Evt_WareHouseSensorIsOn(sensorNum);}
 	public void Evt_WareHouseButtonIsOn(int buttonNum) {CurrentState.Evt_WareHouseButtonIsOn(buttonNum);}
 	public void Evt_RobotErrorStateChange(int ErrorNum) {CurrentState.Evt_RobotErrorStateChange(ErrorNum);}
@@ -72,12 +73,13 @@ public class WahouseStateMachine implements Serializable{
 
 
 	void setState(WMorderStatemachineState state) {
-		System.out.println("StateChange " + CurrentState + "->" + state);
+		System.out.println("[StateMachine] StateChange " + CurrentState + "->" + state);
     	this.CurrentState = state;
-    	this.SaveState = this.CurrentState;
+    	this.SaveState = this.CurrentState; 
     	save();
+    	//TODO This function need to say other process
     }
-
+	
 	public void save(){
 		BufferedOutputStream bufferOut = null;
     	
@@ -114,7 +116,7 @@ public class WahouseStateMachine implements Serializable{
 		
 		if(!mobFile.exists())
 		{
-			System.out.println("������ ������");
+			System.out.println("No file - Saved order is none");
 			return;
 		}
 
@@ -127,10 +129,10 @@ public class WahouseStateMachine implements Serializable{
 			
 			SaveState = (WMorderStatemachineState)inDev;
 			SaveState.SetWarehouseStatemachine(this);
-			System.out.println("[load()]Read State " + SaveState.getClass());
+			System.out.println("[StateMachine] Read State is " + SaveState.getClass());
 			
 		} catch (EOFException e){
-			e.printStackTrace();
+			System.out.println("End of file");
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}finally {
