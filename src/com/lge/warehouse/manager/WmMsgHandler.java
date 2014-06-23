@@ -20,7 +20,7 @@ import com.lge.warehouse.common.bus.p2p.P2PReceiver;
 import com.lge.warehouse.common.bus.p2p.P2PSender;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
-import com.lge.warehouse.util.WidgetInfo;
+import com.lge.warehouse.util.WarehouseInventoryInfo;
 
 /**
  *
@@ -52,7 +52,13 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 			int id= (Integer)event.getBody();
 			setAlias(getId().name()+id);
 			handleAddAccept(id);
-			sendingInventoryInfo();
+			break;
+		case WAREHOUSE_INVENTORY_INFO:
+			if(event.getBody() instanceof WarehouseInventoryInfo){
+				WarehouseInventoryInfo inventoryInfo = (WarehouseInventoryInfo)event.getBody();
+			}else{
+				handleBodyError(event);
+			}
 			break;
 		case FILL_ORDER:
 			if(event.getBody() instanceof Order){
@@ -85,17 +91,7 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 			break;
 		}
 	}
-	public void sendingInventoryInfo(){
-		//For test [START]
-		HashMap<WidgetInfo, Integer> inventoryMap = new HashMap<WidgetInfo, Integer>();
-		inventoryMap.put(new WidgetInfo(0,"Item1",100), 50);
-		inventoryMap.put(new WidgetInfo(1,"Item2",200), 50);
-		inventoryMap.put(new WidgetInfo(2,"Item3",300), 50);
-		inventoryMap.put(new WidgetInfo(3,"Item4",400), 50);
-		inventoryMap.put(new WidgetInfo(4,"Item5",500), 50);
-		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.WAREHOUSE_INVENTORY_INFO, inventoryMap);
-		//For test [END]
-	}
+	
 	public void handleAddAccept(int id){
 		String src = WComponentType.WM_MSG_HANDLER.name()+id;
 		String dest = WComponentType.WAREHOUSE_SUPERVISOR.name();

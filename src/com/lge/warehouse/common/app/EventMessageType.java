@@ -24,7 +24,7 @@ public enum EventMessageType {
     REQUEST_PENDING_ORDER, //PendingOrderManager->WarehouseSupervisor for requesting pending order.
     RESPONSE_PENDING_ORDER,
     
-    WAREHOUSE_INVENTORY_INFO, //WmMsgHandler->WarehouseSupervisor for sending each warehouse inventory info
+    WAREHOUSE_INVENTORY_INFO, //SupervisorUI->WarehouseSupervisor->WmMsgHandler for sending each warehouse inventory info
     
     FILL_ORDER, //WarehouseSupervisor ->WmMsgHandler for filling order
     FINISH_FILL_ORDER, //WmMsgHandler->WarehouseSupervisor for notifying filling order is done.

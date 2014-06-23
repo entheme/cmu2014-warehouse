@@ -18,6 +18,7 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.MsgInterface;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetInfo;
 
 /**
@@ -47,11 +48,10 @@ public class WarehouseProxyHandler {
     	}
         return false;
     }
-	public void updateInventory(String warehouseName,
-			HashMap<WidgetInfo, Integer> inventoryMap) {
+	public void updateInventory(WarehouseInventoryInfo warehouseInventoryInfo) {
 		// TODO Auto-generated method stub
-		WarehouseProxy wp = mWarehouses.get(warehouseName);
-		wp.updateInventoryInfo(inventoryMap);
+		WarehouseProxy wp = mWarehouses.get(WComponentType.WM_MSG_HANDLER.name()+warehouseInventoryInfo.getWarehouseId());
+		wp.updateInventoryInfo(warehouseInventoryInfo);
 	}
 	public boolean requestFillOrder(Order order) {
 		// TODO Auto-generated method stub

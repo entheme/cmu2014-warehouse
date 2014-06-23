@@ -16,6 +16,7 @@ import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.OrderStatusInfo;
+import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 import com.lge.warehouse.util.WidgetCatalogRepository;
 import com.lge.warehouse.util.WidgetInfo;
@@ -65,12 +66,11 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				handleBodyError(event);
 			}
 			break;
-		case WAREHOUSE_INVENTORY_INFO:	//from WmMsgHandler
-			if (event.getBody() instanceof HashMap<?,?>){
-				HashMap<WidgetInfo, Integer> inventoryMap = (HashMap<WidgetInfo,Integer>)event.getBody();
-				mWarehouseProxyHandler.updateInventory(event.getSrc(), inventoryMap);
+		case WAREHOUSE_INVENTORY_INFO:	//from SupervisorUI
+			if (event.getBody() instanceof WarehouseInventoryInfo){
+				WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo)event.getBody();
+				mWarehouseProxyHandler.updateInventory(warehouseInventoryInfo);
 				doNextFillOrder();
-
 			}else{
 				handleBodyError(event);
 			}

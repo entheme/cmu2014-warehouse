@@ -24,6 +24,7 @@ import com.lge.warehouse.common.bus.p2p.P2PReceiver;
 import com.lge.warehouse.common.bus.p2p.P2PSender;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
+import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetInfo;
 
 /**
@@ -58,10 +59,9 @@ public class WarehouseProxy {
     public String getWarehouseIdentity(){
     	return mDest;
     }
-    public void updateInventoryInfo(HashMap<WidgetInfo, Integer> inventoryMap){
-    	for(WidgetInfo wi : inventoryMap.keySet()){
-    		mInventoryRepository.updateInventoryInfo(wi, inventoryMap.get(wi));
-    	}
+    public void updateInventoryInfo(WarehouseInventoryInfo warehouseInventoryInfo){
+    	mInventoryRepository.updateInventoryInfo(warehouseInventoryInfo);
+    	mSender.sendObject(new EventMessage(mSrc, mDest, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo));
     }
     public boolean hasInventory(Order order){
     	if(mProgressOrder != null) 
