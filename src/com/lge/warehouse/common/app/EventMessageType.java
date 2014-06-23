@@ -32,11 +32,19 @@ public enum EventMessageType {
     READY_TO_OPERATE,	//All thread -> System
     SYSTEM_READY, //System -> All thread
     
-    REQUEST_CATAGORY_FROM_CUSTOMER_IF,
-    RESPONSE_CATAGORY_TO_CUSTOMER_IF,
+    REQUEST_CATAGORY_FROM_CUSTOMER_IF, 	//CustomerIF -> CustomerServiceManager to request Widget Catalog list
+    RESPONSE_CATAGORY_TO_CUSTOMER_IF,	//CustomerServiceManager -> CustomerIF to send WidgetCatalog list
     
-    REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER,
-    RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER,
+    REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER,	//CustomerServiceManager -> WarehouseSupervisor to request Widget Catalog list
+    RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER,	//WarehouseSupervisor -> CustomerServiceManager to send Widget Catalog list
+    
+    SEND_WIDGET_CATALOG_UPDATE,	//SupervisorUI -> WarehouseSupervisor to send Widget Catalog 
+    
+    REQUEST_ORDER_STATUS,	//SupervisorUI -> WarehouseSupervisor to request order status
+    RESPONSE_ORDER_STATUS,		//WarehouseSupervisor -> WarehouseSupervisor to send order status
+    
+    REQUEST_PENDING_ORDER_STATUS, //WarehouseSupervisor -> PendingOrderManager to request pending order status
+    RESPONSE_PENDING_ORDER_STATUS, //PendingOrderManager -> WarehouseSupervisor to send pending order status
     ;
     
 

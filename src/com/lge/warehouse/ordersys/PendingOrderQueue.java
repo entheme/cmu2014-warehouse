@@ -44,4 +44,7 @@ public class PendingOrderQueue {
         }
         return null;
     }
+    public List<Order> getPendingOrderList(){
+    	return mOrderList;
+    }
 }

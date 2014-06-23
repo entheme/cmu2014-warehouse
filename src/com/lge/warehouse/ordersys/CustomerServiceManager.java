@@ -43,7 +43,7 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 			if (event.getBody() instanceof Order){
 				mPlaceOrderHandler.handleOrder((Order)event.getBody());
 			}else {
-				logger.info("PLACE_ORDER Wrongtype"+event);
+				handleBodyError(event);
 			}
 			break;
 		case REQUEST_CATAGORY_FROM_CUSTOMER_IF:
@@ -52,6 +52,8 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 		case RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER:
 			if (event.getBody() instanceof WidgetCatalog){
 				sendMsg(WComponentType.CUSTOMER_INF, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_IF, event.getBody());
+			}else {
+				handleBodyError(event);
 			}
 			break;
 		default:

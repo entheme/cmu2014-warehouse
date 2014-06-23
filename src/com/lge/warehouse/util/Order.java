@@ -7,7 +7,6 @@
 package com.lge.warehouse.util;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -15,13 +14,12 @@ import java.util.List;
  * @author kihyung2.lee
  */
 public class Order implements Serializable{
-    enum Status {
+    public enum Status {
         ORDER_PENDING,
         ORDER_IN_PROGRESS,
         ORDER_BACK_ORDERED,
         ORDER_COMPLETE
     }
-
     private long mOrderId = -1;
     private Status mStatus;
     private List<QuantifiedWidget> mItemList = new ArrayList<QuantifiedWidget>();
@@ -42,15 +40,41 @@ public class Order implements Serializable{
         return mItemList.size();
     }
 	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		if (!(obj instanceof Order))
-			return false;
-		Order others = (Order)obj;
-		if(others.mOrderId==this.mOrderId){
-			return true;
-		}
-		return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((mItemList == null) ? 0 : mItemList.hashCode());
+		result = prime * result + (int) (mOrderId ^ (mOrderId >>> 32));
+		return result;
 	}
-    
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (mItemList == null) {
+			if (other.mItemList != null)
+				return false;
+		} else if (!mItemList.equals(other.mItemList))
+			return false;
+		if (mOrderId != other.mOrderId)
+			return false;
+		return true;
+	}
+	
+	public void setOrderStatus(Status status) {
+		// TODO Auto-generated method stub
+		mStatus = status; 
+	}
+	public Status getOrderStatus(){
+		return mStatus;
+	}
+    public String toString(){
+    	return "Order id = "+mOrderId+", status="+mStatus;
+    }
 }

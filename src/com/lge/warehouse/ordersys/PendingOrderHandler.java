@@ -6,12 +6,15 @@
 
 package com.lge.warehouse.ordersys;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.MsgInterface;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseContext;
 import com.lge.warehouse.util.Order;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -24,7 +27,7 @@ public class PendingOrderHandler {
     public PendingOrderHandler(MsgInterface msgInf){
         mMsgInf = msgInf;
     }
-    public void requestPendingOrder(){
+    public void handlePendingOrderRequest(){
         Order order = PendingOrderQueue.getInstance().getOrder();
         if(order==null)
             mPendingOrderRequested = true;
@@ -46,4 +49,8 @@ public class PendingOrderHandler {
             mPendingOrderRequested = false;
         }
     }
+	public List<Order> getPendingOrderInfo() {
+		// TODO Auto-generated method stub
+		return PendingOrderQueue.getInstance().getPendingOrderList();
+	}
 }

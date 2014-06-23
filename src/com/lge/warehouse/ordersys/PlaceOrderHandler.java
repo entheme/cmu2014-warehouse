@@ -6,13 +6,15 @@
 
 package com.lge.warehouse.ordersys;
 
+import java.util.List;
+
+import org.apache.log4j.Logger;
+
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.MsgInterface;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
-import java.util.List;
-import org.apache.log4j.Logger;
 
 /**
  *
@@ -32,6 +34,7 @@ public class PlaceOrderHandler {
             logger.info(qw.getWidget()+" : cnt("+qw.getQuantity()+")");
         }
         order.setOrderId(++sOrderCnt);
+        order.setOrderStatus(Order.Status.ORDER_PENDING);
         PendingOrderQueue.getInstance().putOrder(order);
         mMsgInf.sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.PENDING_ORDER_READY, null);
     }

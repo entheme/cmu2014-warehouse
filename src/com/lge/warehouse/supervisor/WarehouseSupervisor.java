@@ -15,6 +15,8 @@ import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.OrderStatusInfo;
+import com.lge.warehouse.util.WidgetCatalog;
 import com.lge.warehouse.util.WidgetCatalogRepository;
 import com.lge.warehouse.util.WidgetInfo;
 
@@ -58,6 +60,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 					logger.info("No inventory, push BackOrder");
 					mOrderProvider.pushBackOrder(order);
 				}
+				updateOrderStatus();
 			} else{
 				handleBodyError(event);
 			}
@@ -77,6 +80,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				Order order = (Order)event.getBody();
 				mWarehouseProxyHandler.finishFillOrder(event.getSrc(), order);
 				doNextFillOrder();
+				updateOrderStatus();
 			}else {
 				handleBodyError(event);
 			}
@@ -84,14 +88,43 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		case REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER:
 			sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, WidgetCatalogRepository.getInstance().getWidgetCatalog());
 			break;
+		case SEND_WIDGET_CATALOG_UPDATE:
+			if (event.getBody() instanceof WidgetCatalog){
+				WidgetCatalog widgetCatalog = (WidgetCatalog) event.getBody();
+				WidgetCatalogRepository.getInstance().setNewWidgetList(widgetCatalog);
+				sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, WidgetCatalogRepository.getInstance().getWidgetCatalog());
+			}else {
+				handleBodyError(event);
+			}
+			break;
+		case REQUEST_ORDER_STATUS:
+			updateOrderStatus();
+			break;
+		case RESPONSE_PENDING_ORDER_STATUS:
+			if(event.getBody() instanceof OrderStatusInfo){
+				OrderStatusInfo orderStatusInfo = (OrderStatusInfo) event.getBody();
+				for(Order order : mOrderProvider.getBackOrderList()){
+					orderStatusInfo.addBackOrder(order);
+				}
+				for(Order order : mWarehouseProxyHandler.getCompletedOrderList()){
+					orderStatusInfo.addCompleteOrder(order);
+				}
+				for(Order order : mWarehouseProxyHandler.getInProgressOrderList()){
+					orderStatusInfo.addInProgressOrder(order);
+				}
+				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_ORDER_STATUS, orderStatusInfo);
+			}else {
+				handleBodyError(event);
+			}
+			break;
 		default:
 			logger.info("unhandled event :"+event);
 			break;
-
-
 		}
 	}
-	
+	private void updateOrderStatus(){
+		sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.REQUEST_PENDING_ORDER_STATUS, null);
+	}
 	private void doNextFillOrder(){
 		Order order = mOrderProvider.getOrder();
 		if(order == null){

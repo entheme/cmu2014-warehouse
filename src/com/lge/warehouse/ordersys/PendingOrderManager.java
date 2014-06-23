@@ -6,12 +6,15 @@
 
 package com.lge.warehouse.ordersys;
 
+import org.apache.log4j.Logger;
+
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.common.bus.p2p.P2PSender;
-import org.apache.log4j.Logger;
+import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.OrderStatusInfo;
 
 /**
  *
@@ -40,10 +43,18 @@ public final class PendingOrderManager extends WarehouseRunnable{
 		case SYSTEM_READY:
 			break;
 		case REQUEST_PENDING_ORDER:
-			mPendingOrderHandler.requestPendingOrder();
+			mPendingOrderHandler.handlePendingOrderRequest();
 			break;
 		case PENDING_ORDER_READY:
 			mPendingOrderHandler.pendingOrderReady();
+			break;
+		case REQUEST_PENDING_ORDER_STATUS:
+			OrderStatusInfo statusInfo = new OrderStatusInfo();
+			for(Order order : mPendingOrderHandler.getPendingOrderInfo()){
+				statusInfo.addPendingOrder(order);
+			}
+			sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.RESPONSE_PENDING_ORDER_STATUS
+					,statusInfo);
 			break;
 		default:
 			logger.info("unhandled event :"+event);

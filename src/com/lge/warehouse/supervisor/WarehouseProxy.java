@@ -89,6 +89,7 @@ public class WarehouseProxy {
 				prevCount -= qw.getQuantity();
 				mInventoryRepository.updateInventoryInfo(qw.getWidget(),prevCount);
 			}
+			order.setOrderStatus(Order.Status.ORDER_COMPLETE);
 			mInventoryRepository.dump();
 		}else{
 			String errorLog = "Completed order is not matching progress order";
@@ -97,5 +98,13 @@ public class WarehouseProxy {
 			else
 				logger.info(errorLog);
 		}
+	}
+	public List<Order> getCompletedOrderList() {
+		// TODO Auto-generated method stub
+		return mCompletedOrderList;
+	}
+	public Order getInProgressOrderList() {
+		// TODO Auto-generated method stub
+		return mProgressOrder;
 	}
 }

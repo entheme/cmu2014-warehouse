@@ -27,6 +27,7 @@ public class BackOrderQueue {
         return sInstance;
     }
     public void put(Order order){
+    	order.setOrderStatus(Order.Status.ORDER_BACK_ORDERED);
         mBackOrderList.add(order);
     }
     public void remove(Order order){

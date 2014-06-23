@@ -1,5 +1,7 @@
 package com.lge.warehouse.supervisor;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.lge.warehouse.common.app.MsgInterface;
@@ -25,5 +27,9 @@ public class OrderProvider {
 			}
 		}
 		return null;
+	}
+	public List<Order> getBackOrderList() {
+		// TODO Auto-generated method stub
+		return BackOrderQueue.getInstance().getBackOrderList();
 	}
 }

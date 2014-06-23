@@ -42,20 +42,34 @@ public class WidgetInfo implements Serializable{
     }
     
     @Override
-    public boolean equals(Object ob){
-        if(!(ob instanceof WidgetInfo))
-            return false;
-        WidgetInfo wi = (WidgetInfo)ob;
-        if((wi.mName.equals(this.mName))&&
-                (wi.mProductId==this.mProductId)&&
-                (wi.mPrice== this.mPrice))
-            return true;
-        return false;
-    }
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		WidgetInfo other = (WidgetInfo) obj;
+		if (mName == null) {
+			if (other.mName != null)
+				return false;
+		} else if (!mName.equals(other.mName))
+			return false;
+		if (mPrice != other.mPrice)
+			return false;
+		if (mProductId != other.mProductId)
+			return false;
+		return true;
+	}
 
     @Override
-    public int hashCode() {
-        return mPrice+mName.hashCode()+mProductId; //To change body of generated methods, choose Tools | Templates.
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mName == null) ? 0 : mName.hashCode());
+		result = prime * result + mPrice;
+		result = prime * result + mProductId;
+		return result;
+	}
     
 }
