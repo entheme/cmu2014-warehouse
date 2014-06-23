@@ -39,15 +39,8 @@ public class ClientInterfaceStub extends WarehouseRunnable{
 	protected void eventHandle(EventMessage event) {
 		switch(event.getType()){
 		case SYSTEM_READY:
-			Thread.currentThread().setName(getId().name());
+			//Thread.currentThread().setName(getId().name());
 
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			placeOrder();
 			break;
 		}
 	}

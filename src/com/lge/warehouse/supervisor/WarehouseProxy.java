@@ -61,6 +61,7 @@ public class WarehouseProxy {
     }
     public void updateInventoryInfo(WarehouseInventoryInfo warehouseInventoryInfo){
     	mInventoryRepository.updateInventoryInfo(warehouseInventoryInfo);
+    	warehouseInventoryInfo = mInventoryRepository.getWarehouseInventoryInfo();
     	mSender.sendObject(new EventMessage(mSrc, mDest, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo));
     }
     public boolean hasInventory(Order order){
@@ -89,7 +90,7 @@ public class WarehouseProxy {
 			for(QuantifiedWidget qw : order.getItemList()){
 				int prevCount = mInventoryRepository.getInventoryCount(qw.getWidget());
 				prevCount -= qw.getQuantity();
-				mInventoryRepository.updateInventoryInfo(qw.getWidget(),prevCount);
+				mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
 			}
 			order.setOrderStatus(Order.Status.ORDER_COMPLETE);
 			mInventoryRepository.dump();

@@ -69,7 +69,7 @@ public class WarehouseInventoryInfoRepository {
 			}
 		}
 	}
-	public void updateInventoryInfo(WidgetInfo widget, int count) {
+	public void reduceInventoryInfo(WidgetInfo widget, int count) {
 		// TODO Auto-generated method stub
 		for(InventoryName inventoryName : InventoryName.values()){
 			if(mInventoryInfo.hasInventoryStation(inventoryName)){
@@ -88,5 +88,9 @@ public class WarehouseInventoryInfoRepository {
 				}
 			}
 		}
+	}
+	public WarehouseInventoryInfo getWarehouseInventoryInfo() {
+		// TODO Auto-generated method stub
+		return mInventoryInfo;
 	}
 }
