@@ -17,6 +17,7 @@ public class SupervisorUi extends javax.swing.JFrame {
      */
     public SupervisorUi() {
         initComponents();
+        initUiController();
     }
 
     /**
@@ -28,12 +29,13 @@ public class SupervisorUi extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroupStatus = new javax.swing.ButtonGroup();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jTextFieldStatus = new javax.swing.JTextField();
-        jRadioButtonOrder = new javax.swing.JRadioButton();
-        jRadioButtonInventory = new javax.swing.JRadioButton();
-        jRadioButtonRobot = new javax.swing.JRadioButton();
+        jTabbedPaneInfo = new javax.swing.JTabbedPane();
+        jScrollPaneIOrder = new javax.swing.JScrollPane();
+        jTextAreaOrder = new javax.swing.JTextArea();
+        jScrollPaneInventory = new javax.swing.JScrollPane();
+        jTextAreaInventory = new javax.swing.JTextArea();
+        jScrollPaneRobot = new javax.swing.JScrollPane();
+        jTextAreaRobot = new javax.swing.JTextArea();
         jComboBoxInventory = new javax.swing.JComboBox();
         jComboBoxWidget = new javax.swing.JComboBox();
         jSpinnerWidgetQuantity = new javax.swing.JSpinner();
@@ -41,64 +43,65 @@ public class SupervisorUi extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTabbedPane1.addTab("Status", jTextFieldStatus);
+        jTabbedPaneInfo.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPaneInfoStateChanged(evt);
+            }
+        });
 
-        buttonGroupStatus.add(jRadioButtonOrder);
-        jRadioButtonOrder.setSelected(true);
-        jRadioButtonOrder.setText("Order");
+        jTextAreaOrder.setColumns(20);
+        jTextAreaOrder.setRows(5);
+        jScrollPaneIOrder.setViewportView(jTextAreaOrder);
 
-        buttonGroupStatus.add(jRadioButtonInventory);
-        jRadioButtonInventory.setText("Inventory");
+        jTabbedPaneInfo.addTab("Order", jScrollPaneIOrder);
 
-        buttonGroupStatus.add(jRadioButtonRobot);
-        jRadioButtonRobot.setText("Robot");
+        jTextAreaInventory.setColumns(20);
+        jTextAreaInventory.setRows(5);
+        jScrollPaneInventory.setViewportView(jTextAreaInventory);
+
+        jTabbedPaneInfo.addTab("Inventory", jScrollPaneInventory);
+
+        jTextAreaRobot.setColumns(20);
+        jTextAreaRobot.setRows(5);
+        jScrollPaneRobot.setViewportView(jTextAreaRobot);
+
+        jTabbedPaneInfo.addTab("Robot", jScrollPaneRobot);
 
         jComboBoxInventory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Inventory1", "Inventory2", "Inventory3", "Inventory4" }));
 
-        jComboBoxWidget.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Soccer", "WhiteBaseball", "YellowBaseball", "Basket", " " }));
+        jComboBoxWidget.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item1", "Item2", "Item3", "Item4", "Item5" }));
 
         jButtonInventoryAdd.setText("Add");
+        jButtonInventoryAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInventoryAddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addGap(12, 12, 12)
                         .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 160, Short.MAX_VALUE))
-                    .addComponent(jTabbedPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButtonOrder)
-                    .addComponent(jRadioButtonInventory)
-                    .addComponent(jRadioButtonRobot)
-                    .addComponent(jButtonInventoryAdd))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                        .addComponent(jButtonInventoryAdd))
+                    .addComponent(jTabbedPaneInfo))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jRadioButtonOrder)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButtonInventory)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jRadioButtonRobot)
-                        .addGap(140, 140, 140))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGap(12, 12, 12)
+                .addComponent(jTabbedPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -110,6 +113,50 @@ public class SupervisorUi extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonInventoryAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInventoryAddActionPerformed
+        // TODO add your handling code here:
+        // Add Inventory
+    }//GEN-LAST:event_jButtonInventoryAddActionPerformed
+
+    private void jTabbedPaneInfoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneInfoStateChanged
+        //System.out.println("focused tab is " + jTabbedPaneInfo.getSelectedIndex());
+        switch(jTabbedPaneInfo.getSelectedIndex()) {
+            case 0: // Order
+                requestOrderStatus();
+                break;
+            case 1: // Inventory
+                requestInventoryStatus();
+                break;
+            case 2: // Robot
+                requestRobotStatus();
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_jTabbedPaneInfoStateChanged
+
+    private boolean requestOrderStatus() {
+        if(mSupervisorUiController == null)
+            return false;
+        
+        System.out.println("request order status");
+        mSupervisorUiController.requestOrderStatus();
+        return true;
+    }
+    
+    private boolean requestRobotStatus() {
+        // To-Do
+        return false;
+    }
+    
+    private boolean requestInventoryStatus() {
+        // To-Do
+        return false;
+    }
+    
+    private void initUiController() {
+        mSupervisorUiController = new SupervisorUiController();
+    }
     /**
      * @param args the command line arguments
      */
@@ -146,15 +193,17 @@ public class SupervisorUi extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroupStatus;
     private javax.swing.JButton jButtonInventoryAdd;
     private javax.swing.JComboBox jComboBoxInventory;
     private javax.swing.JComboBox jComboBoxWidget;
-    private javax.swing.JRadioButton jRadioButtonInventory;
-    private javax.swing.JRadioButton jRadioButtonOrder;
-    private javax.swing.JRadioButton jRadioButtonRobot;
+    private javax.swing.JScrollPane jScrollPaneIOrder;
+    private javax.swing.JScrollPane jScrollPaneInventory;
+    private javax.swing.JScrollPane jScrollPaneRobot;
     private javax.swing.JSpinner jSpinnerWidgetQuantity;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextFieldStatus;
+    private javax.swing.JTabbedPane jTabbedPaneInfo;
+    private javax.swing.JTextArea jTextAreaInventory;
+    private javax.swing.JTextArea jTextAreaOrder;
+    private javax.swing.JTextArea jTextAreaRobot;
     // End of variables declaration//GEN-END:variables
+    private SupervisorUiController mSupervisorUiController;
 }

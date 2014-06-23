@@ -47,6 +47,7 @@ public class SupervisorUiController extends WarehouseComponent {
 		case RESPONSE_ORDER_STATUS:
 			if(event.getBody() instanceof OrderStatusInfo){
 				OrderStatusInfo statusInfo = (OrderStatusInfo)event.getBody();
+                                //System.out.println("got order status");
 				
 			}
 			break;
