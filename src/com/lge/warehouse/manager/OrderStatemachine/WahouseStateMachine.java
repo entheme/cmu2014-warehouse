@@ -43,7 +43,7 @@ public class WahouseStateMachine implements Serializable{
 		load();
 		if(SaveState != null)
 		{
-			System.out.println("Save �� state�� ���� " + SaveState);
+			
 			setState(SaveState);
 		}
 		else
@@ -130,7 +130,7 @@ public class WahouseStateMachine implements Serializable{
 			System.out.println("[load()]Read State " + SaveState.getClass());
 			
 		} catch (EOFException e){
-			System.out.println("�����ǳ�");
+			e.printStackTrace();
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}finally {

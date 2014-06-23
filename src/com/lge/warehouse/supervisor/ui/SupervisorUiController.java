@@ -12,6 +12,7 @@ import com.lge.warehouse.common.app.WarehouseComponent;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.ordersys.CustomerServiceManager;
 import com.lge.warehouse.util.OrderStatusInfo;
+import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
 
