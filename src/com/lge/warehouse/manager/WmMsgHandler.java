@@ -18,6 +18,7 @@ import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.common.bus.p2p.P2PConnection;
 import com.lge.warehouse.common.bus.p2p.P2PReceiver;
 import com.lge.warehouse.common.bus.p2p.P2PSender;
+import static com.lge.warehouse.manager.WarehouseManagerController.logger;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
@@ -59,8 +60,10 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + inventoryInfo.getWarehouseId());
 			 	for(InventoryName inventoryName : InventoryName.values()){
                                     logger.info("WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
-                                    for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
-                                        logger.info("WAREHOUSE_INVENTORY_INFO: QuantifiedWidget =" + qw.getWidget().getName() + qw.getQuantity());
+                                    if(inventoryInfo.hasInventoryStation(inventoryName)){
+                                        for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
+                                            logger.info(qw.getWidget()+" : "+qw.getQuantity());
+                                        }
                                     }
                                 }
 				sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_INVENTORY_INFO, inventoryInfo);

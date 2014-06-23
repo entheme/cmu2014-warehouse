@@ -12,6 +12,7 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
+import static com.lge.warehouse.manager.WmMsgHandler.logger;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
@@ -47,8 +48,10 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + inventoryInfo.getWarehouseId());
 			 	for(InventoryName inventoryName : InventoryName.values()){
                                     logger.info("WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
-                                    for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
-                                        logger.info(qw.getWidget()+" : "+qw.getQuantity());
+                                   if(inventoryInfo.hasInventoryStation(inventoryName)){
+                                        for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
+                                            logger.info(qw.getWidget()+" : "+qw.getQuantity());
+                                        }
                                     }
                                 }
 				//To Do : deliver the inventory information to InveontoryInfoRepository object
