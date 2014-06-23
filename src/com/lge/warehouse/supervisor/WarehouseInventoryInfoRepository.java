@@ -60,7 +60,14 @@ public class WarehouseInventoryInfoRepository {
 	public void updateInventoryInfo(
 			WarehouseInventoryInfo warehouseInventoryInfo) {
 		// TODO Auto-generated method stub
-		mInventoryInfo = warehouseInventoryInfo;
+		for(InventoryName inventoryName : InventoryName.values()){
+			if(warehouseInventoryInfo.hasInventoryStation(inventoryName)){
+				List<QuantifiedWidget> qwList = warehouseInventoryInfo.getInventoryInfo(inventoryName);
+				for(QuantifiedWidget qw : qwList){
+					mInventoryInfo.addInventory(inventoryName, qw.getWidget(), qw.getQuantity());
+				}
+			}
+		}
 	}
 	public void updateInventoryInfo(WidgetInfo widget, int count) {
 		// TODO Auto-generated method stub
