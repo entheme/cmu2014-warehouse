@@ -21,7 +21,7 @@ import com.lge.warehouse.common.bus.p2p.P2PSender;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
-
+import com.lge.warehouse.util.InventoryName;
 /**
  *
  * @author kihyung2.lee
@@ -56,6 +56,14 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 		case WAREHOUSE_INVENTORY_INFO:
 			if(event.getBody() instanceof WarehouseInventoryInfo){
 				WarehouseInventoryInfo inventoryInfo = (WarehouseInventoryInfo)event.getBody();
+				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + inventoryInfo.getWarehouseId());
+			 	for(InventoryName inventoryName : InventoryName.values()){
+                                    logger.info("WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
+                                    for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
+                                        logger.info("WAREHOUSE_INVENTORY_INFO: QuantifiedWidget =" + qw.getWidget().getName() + qw.getQuantity());
+                                    }
+                                }
+				sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_INVENTORY_INFO, inventoryInfo);
 			}else{
 				handleBodyError(event);
 			}
@@ -68,22 +76,25 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 				for(QuantifiedWidget qw : order.getItemList()){
 					logger.info(qw.getWidget()+" : "+qw.getQuantity());
 			 	}
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.FILL_ORDER, order);
+				//For Test [END]
+			}else {
+				handleBodyError(event);
+			}
+			break;
+		case FINISH_FILL_ORDER:
+			if(event.getBody() instanceof Order){
+				//For Test [START]
+				Order order = (Order)event.getBody();
+				logger.info("FINISH_FILL_ORDER order id = "+order.getOrderId());
+				for(QuantifiedWidget qw : order.getItemList()){
+					logger.info(qw.getWidget()+" : "+qw.getQuantity());
 				}
+                                //Send processed order's information to WM_MSG_HANDLER
 				sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.FINISH_FILL_ORDER, order);
 				//For Test [END]
-				
 			}else {
-				String errLog = "FILL_ORDER has wrong body";
-				if(WarehouseContext.DEBUG_WITH_RUNTIME_EXCEPTION){
-					throw new RuntimeException(errLog);
-				}else{
-					logger.info(errLog);
-				}
+				handleBodyError(event);
 			}
 			break;
 		default:
@@ -91,7 +102,7 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 			break;
 		}
 	}
-	
+
 	public void handleAddAccept(int id){
 		String src = WComponentType.WM_MSG_HANDLER.name()+id;
 		String dest = WComponentType.WAREHOUSE_SUPERVISOR.name();
