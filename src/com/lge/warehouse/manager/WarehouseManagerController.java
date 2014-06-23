@@ -47,11 +47,12 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				WarehouseInventoryInfo inventoryInfo = (WarehouseInventoryInfo)event.getBody();
 				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + inventoryInfo.getWarehouseId());
 			 	for(InventoryName inventoryName : InventoryName.values()){
+                                     //Note: Now, The InventoryName means the name of inventory stataion.  
                                     logger.info("WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
                                    if(inventoryInfo.hasInventoryStation(inventoryName)){
                                         for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
                                             logger.info(qw.getWidget()+" : "+qw.getQuantity());
-                                        }
+                                        }   
                                     }
                                 }
 				//To Do : deliver the inventory information to InveontoryInfoRepository object
