@@ -31,8 +31,8 @@
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jComboBoxWidget" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jSpinnerWidgetQuantity" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="176" max="32767" attributes="0"/>
+                      <Component id="jSpinnerWidgetQuantity" min="-2" pref="67" max="-2" attributes="0"/>
+                      <EmptySpace pref="146" max="32767" attributes="0"/>
                       <Component id="jButtonInventoryAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jTabbedPaneInfo" alignment="0" max="32767" attributes="0"/>

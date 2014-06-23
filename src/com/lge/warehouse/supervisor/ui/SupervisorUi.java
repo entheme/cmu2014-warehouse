@@ -6,6 +6,10 @@
 
 package com.lge.warehouse.supervisor.ui;
 
+import com.lge.warehouse.util.InventoryName;
+import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.util.WidgetInfo;
+
 /**
  *
  * @author kihyung2.lee
@@ -90,8 +94,8 @@ public class SupervisorUi extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
                         .addComponent(jButtonInventoryAdd))
                     .addComponent(jTabbedPaneInfo))
                 .addContainerGap())
@@ -116,6 +120,14 @@ public class SupervisorUi extends javax.swing.JFrame {
     private void jButtonInventoryAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInventoryAddActionPerformed
         // TODO add your handling code here:
         // Add Inventory
+        //jScrollPaneInventory.get
+        int inventoryID = jComboBoxInventory.getSelectedIndex();
+        int quantity = ((Integer)jSpinnerWidgetQuantity.getValue()).intValue();
+        WarehouseInventoryInfo warehouseInventoryInfo = new WarehouseInventoryInfo(1);
+        System.out.println("quantity = " + quantity);
+        
+        warehouseInventoryInfo.addInventory(InventoryName.INVENTORY_1, new WidgetInfo(0, "Item1", 1000), quantity);
+        mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
     }//GEN-LAST:event_jButtonInventoryAddActionPerformed
 
     private void jTabbedPaneInfoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneInfoStateChanged
