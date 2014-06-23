@@ -48,6 +48,9 @@ public enum WBus {
     P2P_CustomerIF_SYSTEM(WComponentType.CUSTOMER_INF, WComponentType.SYSTEM),
     P2P_SYSTEM_CustomerIF(WComponentType.SYSTEM, WComponentType.CUSTOMER_INF),
     
+    P2P_SupervisorUI_SYSTEM(WComponentType.SUPERVISOR_UI, WComponentType.SYSTEM),
+    P2P_SYSTEM_SupervisorUI(WComponentType.SYSTEM, WComponentType.SUPERVISOR_UI),
+    
     P2P_CustomerServiceManager_SYSTEM(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.SYSTEM),
     P2P_SYSTEM_CustomerServiceManager(WComponentType.SYSTEM, WComponentType.CUSTOMER_SERVICE_MANAGER),
     

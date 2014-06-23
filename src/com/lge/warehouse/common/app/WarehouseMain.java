@@ -33,7 +33,10 @@ public class WarehouseMain extends WarehouseRunnable{
 	@Override
 	protected void initBus() {
 		// TODO Auto-generated method stub
-		//readyForMonitor(WComponentType.CUSTOMER_INF);
+		if(WarehouseContext.TEST_MODE){
+			readyForMonitor(WComponentType.CUSTOMER_INF);
+			readyForMonitor(WComponentType.SUPERVISOR_UI);
+		}
 		readyForMonitor(WComponentType.CUSTOMER_SERVICE_MANAGER);
 		readyForMonitor(WComponentType.PENDING_ORDER_MANAGER);
 		readyForMonitor(WComponentType.WAREHOUSE_SUPERVISOR);
@@ -84,17 +87,18 @@ public class WarehouseMain extends WarehouseRunnable{
 	@Override
 	public void ping() {
 		// TODO Auto-generated method stub
-		WarehouseTestSystem.ping();
+		if(WarehouseContext.TEST_MODE)
+			WarehouseTestSystem.ping();
 		OrderingSystem.ping();
 		Supervisor.ping();
 		Manager.ping();
 	}
-
-
-	public static final void main(String[] args){
+	
+	public static WarehouseMain initWarehouseSystem(){
 		WarehouseMain system = new WarehouseMain();
-		
-		//WarehouseTestSystem.initialize();
+
+		if(WarehouseContext.TEST_MODE)
+			WarehouseTestSystem.initialize();
 		OrderingSystem.initialize();
 		Supervisor.initialize();
 		Manager.initialize();
@@ -104,7 +108,10 @@ public class WarehouseMain extends WarehouseRunnable{
 		} catch (InterruptedException ex) {
 			Logger.getLogger(WarehouseMain.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		
+		return system;
+	}
+	public static final void main(String[] args){
+		WarehouseMain system = initWarehouseSystem();
 		system.run();
 	}
 }

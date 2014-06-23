@@ -70,18 +70,20 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 	}
 	protected void threadStart(){
 		Thread.currentThread().setName(getId().name());
-		sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
+		if(WarehouseContext.TEST_MODE)
+			sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
+		else{
+			if(!((getId()==WComponentType.CUSTOMER_INF)||(getId()==WComponentType.SUPERVISOR_UI))){
+				sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
+			}
+		}
 		logger.info(getId()+" thread start");
 	}
 	protected void threadStop(){
 		logger.info(getId()+" thread end");
 	}
 	
-	@Override
-	protected void initBus() {
-		// TODO Auto-generated method stub
-		
-	}
+	protected abstract void initBus();
 
 	protected abstract void eventHandle(EventMessage event);
 	

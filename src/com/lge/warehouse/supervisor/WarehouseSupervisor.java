@@ -86,7 +86,10 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			}
 			break;
 		case REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER:
-			sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, WidgetCatalogRepository.getInstance().getWidgetCatalog());
+			WidgetCatalog widgetCatalog1 = WidgetCatalogRepository.getInstance().getWidgetCatalog();
+			widgetCatalog1.dump();
+			
+			sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, widgetCatalog1);
 			break;
 		case SEND_WIDGET_CATALOG_UPDATE:
 			if (event.getBody() instanceof WidgetCatalog){

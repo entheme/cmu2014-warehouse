@@ -82,7 +82,8 @@ public class WarehouseProxyHandler {
 		List<Order> inProgressOrderList = new ArrayList<Order>();
 		for(WarehouseProxy wp : mWarehouses.values()){
 			Order order = wp.getInProgressOrderList();
-			inProgressOrderList.add(order);
+			if(order != null)
+				inProgressOrderList.add(order);
 		}
 		return inProgressOrderList;
 	}

@@ -45,6 +45,9 @@ public enum EventMessageType {
     
     REQUEST_PENDING_ORDER_STATUS, //WarehouseSupervisor -> PendingOrderManager to request pending order status
     RESPONSE_PENDING_ORDER_STATUS, //PendingOrderManager -> WarehouseSupervisor to send pending order status
+    
+    
+    TEST_SUPERVISOR_UI_SEND_WIDGET_CATALOG, TEST_SUPERVISOR_UI_REQUEST_ORDER_STATUS, TEST_SUPERVISOR_UI_SEND_WAREHOUSE_INVENTORY_INFO,
     ;
     
 

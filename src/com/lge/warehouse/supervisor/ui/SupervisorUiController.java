@@ -59,5 +59,8 @@ public class SupervisorUiController extends WarehouseComponent {
 	public void requestOrderStatus(){
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_ORDER_STATUS, null);
 	}
+	public void sendWarehouseInventoryInfo(WarehouseInventoryInfo info){
+		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.WAREHOUSE_INVENTORY_INFO,info );
+	}
 
 }
