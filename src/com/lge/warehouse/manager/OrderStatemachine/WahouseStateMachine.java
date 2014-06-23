@@ -39,13 +39,11 @@ public class WahouseStateMachine implements Serializable{
 		aduinoHasError = new AdoinoErrorState(this);
 		
 		//SaveState = initState;
-		// ÀÌ ¼¼ÀÌºê ½ºÅ×ÀÌÆ®°¡ initState°¡ ¾Æ´Ò°æ¿ì º¹±¸ ·ÎÁ÷ÀÌ µ¿ÀÛ ÇÑ´Ù´Â ÀÇ¹ÌÀÌ´Ù.
-		// º°µµ ÆÄÀÏ¿¡¼­ ºÒ·¯¿Í¼­ SaveState¸¦ º¹±¸ÇØÁà¾ß ÇÑ´Ù.
 		CurrentState = initState;
 		load();
 		if(SaveState != null)
 		{
-			System.out.println("Save µÈ state°¡ ÀÖÀ½ " + SaveState);
+			System.out.println("Save ï¿½ï¿½ stateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ " + SaveState);
 			setState(SaveState);
 		}
 		else
@@ -76,12 +74,10 @@ public class WahouseStateMachine implements Serializable{
 	void setState(WMorderStatemachineState state) {
 		System.out.println("StateChange " + CurrentState + "->" + state);
     	this.CurrentState = state;
-    	this.SaveState = this.CurrentState; //½ºÅ×ÀÌÆ® ÁøÀÔ°ú µ¿½Ã¿¡ ÆÄÀÏ¿¡ ÀúÀåÇÑ´Ù.
+    	this.SaveState = this.CurrentState;
     	save();
-    	//ÀÌ ½ºÅ×ÀÌÆ®°¡ º¯°æµÈ ³»¿ëÀ» ¿ÜºÎ·Î ÀüÆÄÇØ¾ßÇÑ´Ù.... supervisor µî...
     }
-	
-	// °¢ ½ºÅ×ÀÌÆ® º¯°æ½Ã ¸¶´Ù ÀúÀå
+
 	public void save(){
 		BufferedOutputStream bufferOut = null;
     	
@@ -118,7 +114,7 @@ public class WahouseStateMachine implements Serializable{
 		
 		if(!mobFile.exists())
 		{
-			System.out.println("ÆÄÀÏÀÌ À½¾²¿ä");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 			return;
 		}
 
@@ -134,7 +130,7 @@ public class WahouseStateMachine implements Serializable{
 			System.out.println("[load()]Read State " + SaveState.getClass());
 			
 		} catch (EOFException e){
-			System.out.println("ÆÄÀÏÀÇ³¡");
+			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½Ç³ï¿½");
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}finally {

@@ -4,18 +4,17 @@ import java.io.Serializable;
 
 public class RobotAtX extends WMorderStatemachineState implements Serializable{
 
-	int ThisStateID; // 어느 스테이션인가
+	int ThisStateID;
 	
 	
 	public RobotAtX(WahouseStateMachine warehousestatemachine, int thisStateID) {
 		super(warehousestatemachine);
-		ThisStateID = thisStateID;//값 유효성 체크를 할 필요가 있을까?
+		ThisStateID = thisStateID;
 	}
 
 	@Override
 	public void Evt_WareHouseButtonIsOn(int iButtonNum) {
 		System.out.println("RobotAtX" + ThisStateID +": get Evt_WareHouseButtonIsOn" + iButtonNum);
-		// 자신의 State와 맞는 버튼인지를 확인 해야한다.
 
 		if(ThisStateID == iButtonNum)
 		{
@@ -32,7 +31,7 @@ public class RobotAtX extends WMorderStatemachineState implements Serializable{
 		}
 		else
 		{
-			//관심없는 센서값이 들어왔음... 이때 에러를 만들어줘야 하는지는 이야기해보고 결정.
+			
 		}
 	}
 
