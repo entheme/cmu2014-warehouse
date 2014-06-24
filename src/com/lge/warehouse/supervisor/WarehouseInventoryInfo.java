@@ -59,5 +59,16 @@ public class WarehouseInventoryInfo implements Serializable{
     public String toString() {
         return "WarehouseInventoryInfo{" + "mInventoryInfoList=" + mInventoryInfoList + ", mWarehouseId=" + mWarehouseId + '}';
     }
+	public boolean hasInventory(InventoryName inventoryName, WidgetInfo widget) {
+		// TODO Auto-generated method stub
+		if(mInventoryInfoList.containsKey(inventoryName)){
+			HashMap<WidgetInfo, Integer> widgetInfoMap = mInventoryInfoList.get(inventoryName);
+			for(WidgetInfo wi : widgetInfoMap.keySet()){
+				if(wi.equals(widget))
+					return true;
+			}
+		}
+		return false;
+	}
         
 }

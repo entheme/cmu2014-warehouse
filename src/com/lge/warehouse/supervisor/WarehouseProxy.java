@@ -114,12 +114,14 @@ public class WarehouseProxy {
 	}
 	public void updateWarehouseStatus(WarehouseStatus warehouseStatus) {
 		// TODO Auto-generated method stub
-		List<QuantifiedWidget> list = warehouseStatus.getInventoryListOfBot();
-		for(QuantifiedWidget qw : list){
-			int prevCount = mInventoryRepository.getInventoryCount(qw.getWidget());
-			prevCount -= qw.getQuantity();
-			mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
-		}
+//		List<QuantifiedWidget> list = warehouseStatus.getInventoryListOfBot();
+//		for(QuantifiedWidget qw : list){
+//			int prevCount = mInventoryRepository.getInventoryCount(qw.getWidget());
+//			prevCount -= qw.getQuantity();
+//			mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
+//		}
+		mInventoryRepository.setInventoryInfo(warehouseStatus.getWarehouseInventoryInfo());
+		mInventoryRepository.dump();
 	}
 	public void sendWidgetCatalog() {
 		// TODO Auto-generated method stub
