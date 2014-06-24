@@ -30,36 +30,29 @@
 #include <WiFi.h>
 #include <Servo.h> 
 
-//#define CMU
-#define HOTEL
+#define CMU
+//#define HOTEL
 
 // Servo Motor Control
 #define LTSERVOPIN  5          // Left servo pin
 #define RTSERVOPIN  6          // Right servo pin
-#define FULLSTOP  90           // PWM value for servo full stop
-#define FULLCW   0             // PWM value for servo
-#define FULLCCW  180           // PWM value for servo
 
 // PWM values for Servo
-#define L_FWD_F  180     // Forward Full speed
-#define L_FWD_H  160    // Forward High speed
-#define L_FWD_M  135    // Forward Middle speed
-#define L_FWD_L  110    // Forward Low speed
-#define L_STOP   90
-#define L_BWD_L  70
-#define L_BWD_M  45
-#define L_BWD_H  20
-#define L_BWD_F  0
+//#define L_FWD_H  136   // +45
+//#define L_FWD_M  100   // +9
+#define L_FWD_L  96    // +5
+#define L_STOP   91
+#define L_BWD_L  86    // -5
+//#define L_BWD_M  82    // -9
+//#define L_BWD_H  46    // -45
 
-#define R_BWD_F  180
-#define R_BWD_H  160
-#define R_BWD_M  135
-#define R_BWD_L  110
+//#define R_BWD_F  135   // +45
+//#define R_BWD_M  99    // +9
+#define R_BWD_L  95    // +5
 #define R_STOP   90
-#define R_FWD_L  70
-#define R_FWD_M  45
-#define R_FWD_H  20
-#define R_FWD_F  0
+#define R_FWD_L  85    // -5
+//#define R_FWD_M  81    // -9
+//#define R_FWD_H  45    // -45
 
 #define ADJ_NONE  0
 #define ADJ_RIGHT 1
@@ -272,7 +265,6 @@ void moveNextInventory()
    while (isArrival == false)
    {
      sVal = getSensorStatus();
-     
      curZone = getZone(sVal, curZone);
      
      if (curZone == ZONE_INV_IN)
@@ -299,6 +291,9 @@ void moveNextInventory()
        case SENSOR_CR:   // 0x6 ---> This is arrival case!
          moveToEnd();
          turnRightDegree(90);
+         moveBackward();
+         delay(500);
+         stopRobot();
          adjustCenter();
          isArrival = true;
          break;
@@ -371,9 +366,15 @@ boolean adjustCenter()
     tS = millis();
     
     if (i%2)
+    {
+      Serial.print("search Right: ");
       turnRight();
+    }
     else
+    {
+      Serial.print("search Left: ");
       turnLeft();
+    }
       
     do
     {
@@ -386,6 +387,14 @@ boolean adjustCenter()
       tE = millis();
       tD = tE - tS;
     } while (tD < adjDelay);
+    
+    Serial.print(adjDegree[i], DEC);
+    Serial.print(" degree, ");
+    Serial.print(adjDelay, DEC);
+    Serial.print(" msec, tD=");
+    Serial.print(tD, DEC);
+    Serial.print(", isFound=");
+    Serial.println(isFound, DEC);
     
     stopRobot();
   }
@@ -405,7 +414,7 @@ void adjustCenterUsingRightTurn()
   Serial.println("adjustCenterUsingRightTurn");
   char sVal = 0;
   turnRight();
-  while (getSensorStatus() != SENSOR_C)
+  while (getOnLineStatus() != SENSOR_C)
     delay(10);
   stopRobot();
 }
@@ -415,7 +424,7 @@ void adjustCenterUsingLeftTurn()
   Serial.println("adjustCenterUsingLeftTurn");
   char sVal = 0;
   turnLeft();
-  while (getSensorStatus() != SENSOR_C)
+  while (getOnLineStatus() != SENSOR_C)
     delay(10);
   stopRobot();
 }
@@ -435,11 +444,11 @@ void turnRightDegree(int degree)
   tDelay = (Delay_For_90_Degree * degree) / 90;
   Serial.println(tDelay);
   
-  RtServo.write(FULLSTOP);
+  RtServo.write(R_STOP);
   LtServo.write(L_FWD_L);
   delay(tDelay);
-  RtServo.write(FULLSTOP);
-  LtServo.write(FULLSTOP);
+  RtServo.write(R_STOP);
+  LtServo.write(L_STOP);
 }
 
 // Turn x degrees to the left
@@ -456,13 +465,13 @@ void turnLeftDegree(int degree)
   
   tDelay = (Delay_For_90_Degree * degree) / 90;
   
-  RtServo.write(FULLSTOP);
+  RtServo.write(R_STOP);
   LtServo.write(L_BWD_L);
   //RtServo.write(R_FWD_L);
-  //LtServo.write(FULLSTOP);
+  //LtServo.write(R_STOP);
   delay(tDelay);
-  RtServo.write(FULLSTOP);
-  LtServo.write(FULLSTOP);
+  RtServo.write(R_STOP);
+  LtServo.write(L_STOP);
 }
 
 // move to the end on inventory (until sensor = SENSOR_LCR)
@@ -549,28 +558,28 @@ void moveForward()
 void moveBackward()
 {
    Serial.println("moveBackward");
-   RtServo.write(R_BWD_H);
-   LtServo.write(L_BWD_H);
+   RtServo.write(R_BWD_L);
+   LtServo.write(L_BWD_L);
 }
 void turnRight()
 {
    Serial.println("turnRight");
-   RtServo.write(FULLSTOP);
+   RtServo.write(R_STOP);
    LtServo.write(L_FWD_L);
 }
 void turnLeft()
 {
    Serial.println("turnLeft");
-   RtServo.write(FULLSTOP);
+   RtServo.write(R_STOP);
    LtServo.write(L_BWD_L);
    //RtServo.write(R_FWD_L);
-   //LtServo.write(FULLSTOP);
+   //LtServo.write(L_STOP);
 }
 void stopRobot()
 {
    Serial.println("stopRobot");
-   LtServo.write(FULLSTOP);
-   RtServo.write(FULLSTOP);
+   LtServo.write(L_STOP);
+   RtServo.write(R_STOP);
 }
 
 /************************************************************************************************
