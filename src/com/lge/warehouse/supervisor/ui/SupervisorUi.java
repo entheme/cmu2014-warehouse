@@ -6,6 +6,7 @@
 
 package com.lge.warehouse.supervisor.ui;
 
+import com.lge.warehouse.supervisor.WidgetInfo;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
@@ -126,10 +127,11 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         //jScrollPaneInventory.get
         int inventoryID = jComboBoxInventory.getSelectedIndex();
         int quantity = ((Integer)jSpinnerWidgetQuantity.getValue()).intValue();
+        WidgetInfo widgetInfo = (WidgetInfo) jComboBoxWidget.getItemAt(jComboBoxWidget.getSelectedIndex());
         WarehouseInventoryInfo warehouseInventoryInfo = new WarehouseInventoryInfo(1);
         System.out.println("quantity = " + quantity);
         
-        //warehouseInventoryInfo.addInventory(InventoryName.INVENTORY_1, new WidgetInfo(0, "Item1", 1000), quantity);
+        //warehouseInventoryInfo.addInventory(InventoryName.INVENTORY_1, widgetInfo, quantity);
         mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
     }//GEN-LAST:event_jButtonInventoryAddActionPerformed
 
@@ -195,6 +197,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private void initUiController() {
         mSupervisorUiController = new SupervisorUiController();
         mSupervisorUiController.setWidgetCatalogUpdateListener(this);
+        new Thread(mSupervisorUiController).start();
     }
     /**
      * @param args the command line arguments
