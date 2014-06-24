@@ -14,7 +14,7 @@ import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.ordersys.CustomerServiceManager;
 import com.lge.warehouse.util.OrderStatusInfo;
-import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
 public class SupervisorUiController extends WarehouseRunnable {

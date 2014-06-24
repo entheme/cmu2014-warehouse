@@ -14,7 +14,7 @@ import com.lge.warehouse.manager.OrderStatemachine.WMorderStatemachineState;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
-import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 //import warehousemanager_orderStateMachine.WaitNewOrderState;
 
 

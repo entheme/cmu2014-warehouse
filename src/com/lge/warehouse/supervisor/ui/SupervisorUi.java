@@ -7,7 +7,7 @@
 package com.lge.warehouse.supervisor.ui;
 
 import com.lge.warehouse.supervisor.WidgetInfo;
-import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
 /**

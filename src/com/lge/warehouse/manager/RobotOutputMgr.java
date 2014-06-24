@@ -10,14 +10,7 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import static com.lge.warehouse.manager.WarehouseManagerController.logger;
-import com.lge.warehouse.util.InventoryName;
-import com.lge.warehouse.util.Order;
-import com.lge.warehouse.util.QuantifiedWidget;
-import com.lge.warehouse.util.WarehouseInventoryInfo;
-import com.lge.warehouse.util.WarehouseStatus;
 import org.apache.log4j.Logger;
-import com.lge.warehouse.manager.ArduinoWriter;
 
 /**
  *
