@@ -81,7 +81,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
         jComboBoxWidget.setModel(new javax.swing.DefaultComboBoxModel(){
             public int getSize() { return getCatalogSize(); }
-            public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i);}
+            public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i).getName();}
         });
 
         jButtonInventoryAdd.setText("Add");
@@ -139,7 +139,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private void jButtonInventoryAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInventoryAddActionPerformed
         int inventoryID = jComboBoxInventory.getSelectedIndex();
         int quantity = ((Integer)jSpinnerWidgetQuantity.getValue()).intValue();
-        WidgetInfo widgetInfo = (WidgetInfo) jComboBoxWidget.getItemAt(jComboBoxWidget.getSelectedIndex());
+        WidgetInfo widgetInfo = mWidgetCatalog.getWidgetInfoAt(jComboBoxWidget.getSelectedIndex());
+
         WarehouseInventoryInfo warehouseInventoryInfo = new WarehouseInventoryInfo(1);
         
         if(widgetInfo == null) {
@@ -150,8 +151,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         //System.out.println(InventoryName.fromInteger(inventoryID));
         
         warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.fromInteger(inventoryID), widgetInfo, quantity);
- 
         mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
+        
         makeUiValueDefault();
     }//GEN-LAST:event_jButtonInventoryAddActionPerformed
 

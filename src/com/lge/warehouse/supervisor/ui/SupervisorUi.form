@@ -154,7 +154,7 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxWidget">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel(){&#xa;    public int getSize() { return getCatalogSize(); }&#xa;    public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i);}&#xa;}" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel(){&#xa;    public int getSize() { return getCatalogSize(); }&#xa;    public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i).getName();}&#xa;}" type="code"/>
         </Property>
       </Properties>
     </Component>
