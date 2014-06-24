@@ -71,7 +71,17 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			 	}
 				try {
 					//To Do: deliver the order to Navigator instead of thread sleep
-					Thread.sleep(5000);
+                                        
+                                        //Follwing code is just for test.
+                                        //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.INIT_WAREHOUSE, null);
+                                        //sendMsg(WComponentType.ROBOT_OUTPUT_MGR, EventMessageType.MOVE_NEXT_INV, null);
+                      
+                                        Thread.sleep(5000);
+                                        
+                                        //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS, null);
+                                        //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS, null);
+                                        //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_WAREHOUSE_RECOVERY, null);
+                      
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -85,21 +95,27 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			break;
                 case SEND_ROBOT_ERROR:
 			if(event.getBody() instanceof String) {
-                          
+                            String value = (String)event.getBody();
+                            logger.info("SEND_ROBOT_ERROR :" + value);
 			}else {
                             handleBodyError(event);
                         } 
                         break;
                 case SEND_LOAD_STATUS:
 			if(event.getBody() instanceof String) {
-                          
+                             String strVal = (String)event.getBody();
+                             int value = Integer.parseInt(strVal);
+                             logger.info("SEND_LOAD_STATUS :" + value);
+                             
 			}else {
                             handleBodyError(event);
                         } 
                         break;
                 case SEND_POS_STATUS:
 			if(event.getBody() instanceof String) {
-                          
+                             String strVal = (String)event.getBody();
+                             int value = Integer.parseInt(strVal);
+                             logger.info("SEND_LOAD_STATUS :" + value);
 			}else {
                             handleBodyError(event);
                         } 
