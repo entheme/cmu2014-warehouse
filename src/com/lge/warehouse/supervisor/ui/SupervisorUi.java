@@ -8,13 +8,14 @@ package com.lge.warehouse.supervisor.ui;
 
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.util.WidgetCatalog;
 import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
 
 /**
  *
  * @author kihyung2.lee
  */
-public class SupervisorUi extends javax.swing.JFrame {
+public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpdate{
 
     /**
      * Creates new form SupervisorUi
@@ -22,6 +23,7 @@ public class SupervisorUi extends javax.swing.JFrame {
     public SupervisorUi() {
         initComponents();
         initUiController();
+        requestCatalog();
     }
 
     /**
@@ -73,7 +75,10 @@ public class SupervisorUi extends javax.swing.JFrame {
 
         jComboBoxInventory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Inventory1", "Inventory2", "Inventory3", "Inventory4" }));
 
-        jComboBoxWidget.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item1", "Item2", "Item3", "Item4", "Item5" }));
+        jComboBoxWidget.setModel(new javax.swing.DefaultComboBoxModel(){
+            public int getSize() { return getCatalogSize(); }
+            public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i);}
+        });
 
         jButtonInventoryAdd.setText("Add");
         jButtonInventoryAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -92,10 +97,10 @@ public class SupervisorUi extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                         .addComponent(jButtonInventoryAdd))
                     .addComponent(jTabbedPaneInfo))
                 .addContainerGap())
@@ -176,8 +181,22 @@ public class SupervisorUi extends javax.swing.JFrame {
         jButtonInventoryAdd.setEnabled(bEnable);
     }
     
+    private int getCatalogSize() {
+        if(mWidgetCatalog == null)
+            return 0;
+        else
+            return mWidgetCatalog.getWidgetInfoCnt();
+    }
+    
+    private void requestCatalog() {
+        if(mSupervisorUiController != null)
+            mSupervisorUiController.requestWidgetCatalog();
+             
+    }
+    
     private void initUiController() {
         mSupervisorUiController = new SupervisorUiController();
+        mSupervisorUiController.setWidgetCatalogUpdateListener(this);
     }
     /**
      * @param args the command line arguments
@@ -228,4 +247,13 @@ public class SupervisorUi extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextAreaRobot;
     // End of variables declaration//GEN-END:variables
     private SupervisorUiController mSupervisorUiController;
+    private WidgetCatalog mWidgetCatalog;
+
+    @Override
+    public void updateCatalog(WidgetCatalog widgetCatalog) {
+        System.out.println("catalog success");
+        mWidgetCatalog = widgetCatalog;
+        jComboBoxWidget.updateUI();
+
+    }
 }

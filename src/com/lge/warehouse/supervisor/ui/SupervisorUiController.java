@@ -16,7 +16,7 @@ import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
 public class SupervisorUiController extends WarehouseComponent {
-
+    private SupervisorUi mSupervisorUi;
 	public SupervisorUiController() {
 		super(WComponentType.SUPERVISOR_UI);
 		// TODO Auto-generated constructor stub
@@ -52,9 +52,18 @@ public class SupervisorUiController extends WarehouseComponent {
 				
 			}
 			break;
+                case RESPONSE_CATAGORY_TO_SUPERVISOR_UI:
+                    //System.out.println("controller:RESPONSE_CATAGORY_TO_SUPERVISOR_UI come");
+                    if(event.getBody() instanceof WidgetCatalog){
+                        //System.out.println("controller:go");
+                        WidgetCatalog widgetCatalog = (WidgetCatalog) event.getBody();
+                        mSupervisorUi.updateCatalog(widgetCatalog);
+                    }
+                    break;
 		}
 	}
 	public void requestWidgetCatalog(){
+            //System.out.println("controller:request widget catalog");
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null);
 	}
 	public void sendWidgetCatalog(WidgetCatalog widgetCatalog){
@@ -66,5 +75,9 @@ public class SupervisorUiController extends WarehouseComponent {
 	public void sendWarehouseInventoryInfo(WarehouseInventoryInfo info){
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.FILL_INVENTORY_WIDGET,info );
 	}
+
+    void setWidgetCatalogUpdateListener(SupervisorUi aThis) {
+        mSupervisorUi = aThis;
+    }
 
 }

@@ -29,10 +29,10 @@
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="jComboBoxInventory" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jComboBoxWidget" min="-2" max="-2" attributes="0"/>
+                      <Component id="jComboBoxWidget" min="-2" pref="96" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jSpinnerWidgetQuantity" min="-2" pref="67" max="-2" attributes="0"/>
-                      <EmptySpace pref="146" max="32767" attributes="0"/>
+                      <EmptySpace pref="142" max="32767" attributes="0"/>
                       <Component id="jButtonInventoryAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jTabbedPaneInfo" alignment="0" max="32767" attributes="0"/>
@@ -148,14 +148,8 @@
     </Component>
     <Component class="javax.swing.JComboBox" name="jComboBoxWidget">
       <Properties>
-        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
-            <StringItem index="0" value="Item1"/>
-            <StringItem index="1" value="Item2"/>
-            <StringItem index="2" value="Item3"/>
-            <StringItem index="3" value="Item4"/>
-            <StringItem index="4" value="Item5"/>
-          </StringArray>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.DefaultComboBoxModel(){&#xa;    public int getSize() { return getCatalogSize(); }&#xa;    public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i);}&#xa;}" type="code"/>
         </Property>
       </Properties>
     </Component>
