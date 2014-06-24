@@ -46,6 +46,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jComboBoxWidget = new javax.swing.JComboBox();
         jSpinnerWidgetQuantity = new javax.swing.JSpinner();
         jButtonInventoryAdd = new javax.swing.JButton();
+        jButtonAddTest = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,7 +77,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
         jTabbedPaneInfo.addTab("Robot", jScrollPaneRobot);
 
-        jComboBoxInventory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Inventory1", "Inventory2", "Inventory3", "Inventory4" }));
+        jComboBoxInventory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Inventory1", "Inventory2", "Inventory3" }));
 
         jComboBoxWidget.setModel(new javax.swing.DefaultComboBoxModel(){
             public int getSize() { return getCatalogSize(); }
@@ -87,6 +88,13 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jButtonInventoryAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonInventoryAddActionPerformed(evt);
+            }
+        });
+
+        jButtonAddTest.setText("Test");
+        jButtonAddTest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAddTestActionPerformed(evt);
             }
         });
 
@@ -103,7 +111,9 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                         .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 296, Short.MAX_VALUE)
+                        .addComponent(jButtonAddTest)
+                        .addGap(50, 50, 50)
                         .addComponent(jButtonInventoryAdd))
                     .addComponent(jTabbedPaneInfo))
                 .addContainerGap())
@@ -112,13 +122,14 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jTabbedPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonInventoryAdd))
+                    .addComponent(jButtonInventoryAdd)
+                    .addComponent(jButtonAddTest))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -163,6 +174,21 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 break;
         }
     }//GEN-LAST:event_jTabbedPaneInfoStateChanged
+
+    private void jButtonAddTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddTestActionPerformed
+      
+        WarehouseInventoryInfo warehouseInventoryInfo = new WarehouseInventoryInfo(1);
+       
+        warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_1, mWidgetCatalog.getWidgetInfoAt(0), 10);
+        warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, mWidgetCatalog.getWidgetInfoAt(1), 10);
+        warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, mWidgetCatalog.getWidgetInfoAt(2), 10);
+        warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, mWidgetCatalog.getWidgetInfoAt(3), 10);
+        warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, mWidgetCatalog.getWidgetInfoAt(4), 10);
+        
+ 
+        mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
+        makeUiValueDefault();
+    }//GEN-LAST:event_jButtonAddTestActionPerformed
 
     private boolean requestOrderStatus() {
         if(mSupervisorUiController == null)
@@ -248,6 +274,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAddTest;
     private javax.swing.JButton jButtonInventoryAdd;
     private javax.swing.JComboBox jComboBoxInventory;
     private javax.swing.JComboBox jComboBoxWidget;
@@ -262,6 +289,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     // End of variables declaration//GEN-END:variables
     private SupervisorUiController mSupervisorUiController;
     private WidgetCatalog mWidgetCatalog;
+    private String mWarehouseStatus = new String("");
 
     @Override
     public void updateCatalog(WidgetCatalog widgetCatalog) {
@@ -280,7 +308,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
     @Override
     public void updateRobotStatus(String robotStatus) {
-        jTextAreaRobot.setText(robotStatus);
+        mWarehouseStatus += "\n" + robotStatus;
+        jTextAreaRobot.setText(mWarehouseStatus);
     }
 
     @Override

@@ -32,7 +32,9 @@
                       <Component id="jComboBoxWidget" min="-2" pref="111" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSpinnerWidgetQuantity" min="-2" pref="91" max="-2" attributes="0"/>
-                      <EmptySpace pref="176" max="32767" attributes="0"/>
+                      <EmptySpace pref="296" max="32767" attributes="0"/>
+                      <Component id="jButtonAddTest" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                       <Component id="jButtonInventoryAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jTabbedPaneInfo" alignment="0" max="32767" attributes="0"/>
@@ -45,13 +47,14 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-              <Component id="jTabbedPaneInfo" min="-2" pref="338" max="-2" attributes="0"/>
+              <Component id="jTabbedPaneInfo" min="-2" pref="413" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jComboBoxInventory" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jComboBoxWidget" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jSpinnerWidgetQuantity" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonInventoryAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAddTest" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -140,11 +143,10 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxInventory">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
+          <StringArray count="3">
             <StringItem index="0" value="Inventory1"/>
             <StringItem index="1" value="Inventory2"/>
             <StringItem index="2" value="Inventory3"/>
-            <StringItem index="3" value="Inventory4"/>
           </StringArray>
         </Property>
       </Properties>
@@ -164,6 +166,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonInventoryAddActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonAddTest">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Test"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddTestActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
