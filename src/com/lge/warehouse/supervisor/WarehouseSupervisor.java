@@ -18,7 +18,6 @@ import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
-import com.lge.warehouse.util.WidgetCatalogRepository;
 
 /**
  *

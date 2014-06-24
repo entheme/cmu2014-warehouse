@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
+import com.lge.warehouse.supervisor.WidgetInfo;
 
 /**
  *

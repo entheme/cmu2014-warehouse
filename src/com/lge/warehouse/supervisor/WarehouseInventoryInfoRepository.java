@@ -14,8 +14,6 @@ import com.lge.warehouse.common.app.WarehouseContext;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
-import com.lge.warehouse.util.WidgetCatalogRepository;
-import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
 
 /**
  *

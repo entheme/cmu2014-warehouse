@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
+import com.lge.warehouse.supervisor.WidgetInfo;
 
 /**
  *

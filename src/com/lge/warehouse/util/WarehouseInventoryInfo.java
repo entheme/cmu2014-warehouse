@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
+import com.lge.warehouse.supervisor.WidgetInfo;
 
 public class WarehouseInventoryInfo implements Serializable{
 	private static Logger logger = Logger.getLogger(WarehouseInventoryInfo.class);
@@ -15,7 +15,7 @@ public class WarehouseInventoryInfo implements Serializable{
 	private int mWarehouseId = -1;
 	public WarehouseInventoryInfo(){}
 	public WarehouseInventoryInfo(int warehouseId){
-		mWarehouseId = warehouseId; 
+		mWarehouseId = warehouseId;
 	}
 	public void addNewWidgetToInventory(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
 		if(!mInventoryInfoList.containsKey(inventoryName)){
