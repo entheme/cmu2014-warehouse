@@ -54,4 +54,10 @@ public class WarehouseInventoryInfo implements Serializable{
 	public int getWarehouseId(){
 		return mWarehouseId;
 	}
+
+    @Override
+    public String toString() {
+        return "WarehouseInventoryInfo{" + "mInventoryInfoList=" + mInventoryInfoList + ", mWarehouseId=" + mWarehouseId + '}';
+    }
+        
 }

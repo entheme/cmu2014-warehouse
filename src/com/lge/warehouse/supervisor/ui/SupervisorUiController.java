@@ -1,21 +1,19 @@
 package com.lge.warehouse.supervisor.ui;
 
-import java.util.logging.Level;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
-
-import org.apache.log4j.Logger;
-
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.ordersys.CustomerServiceManager;
-import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
+import com.lge.warehouse.util.OrderStatusInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
+import java.util.logging.Level;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
+import org.apache.log4j.Logger;
 
 public class SupervisorUiController extends WarehouseRunnable {
 	private static Logger logger = Logger.getLogger(SupervisorUiController.class);
@@ -67,6 +65,22 @@ public class SupervisorUiController extends WarehouseRunnable {
                         //System.out.println("controller:go");
                         WidgetCatalog widgetCatalog = (WidgetCatalog) event.getBody();
                         mSupervisorUi.updateCatalog(widgetCatalog);
+                    }
+                    break;
+                    
+                case WAREHOUSE_INVENTORY_INFO:
+                    if(event.getBody() instanceof WarehouseInventoryInfo){
+                        System.out.println("got inventory status");
+                        WarehouseInventoryInfo inventoryInfo = (WarehouseInventoryInfo) event.getBody();
+                        mSupervisorUi.updateInvenetoryStatus(inventoryInfo.toString());
+                    }
+                    break;
+                    
+                case UPDATE_WAREHOUSE_STATUS:
+                    if(event.getBody() instanceof WarehouseStatus){
+                        System.out.println("got warehouse status");
+                        WarehouseStatus warehouseStatus = (WarehouseStatus) event.getBody();
+                        mSupervisorUi.updateRobotStatus(warehouseStatus.toString());
                     }
                     break;
 		}
