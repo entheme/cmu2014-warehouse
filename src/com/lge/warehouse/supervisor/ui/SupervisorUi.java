@@ -55,18 +55,21 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
             }
         });
 
+        jTextAreaOrder.setEditable(false);
         jTextAreaOrder.setColumns(20);
         jTextAreaOrder.setRows(5);
         jScrollPaneIOrder.setViewportView(jTextAreaOrder);
 
         jTabbedPaneInfo.addTab("Order", jScrollPaneIOrder);
 
+        jTextAreaInventory.setEditable(false);
         jTextAreaInventory.setColumns(20);
         jTextAreaInventory.setRows(5);
         jScrollPaneInventory.setViewportView(jTextAreaInventory);
 
         jTabbedPaneInfo.addTab("Inventory", jScrollPaneInventory);
 
+        jTextAreaRobot.setEditable(false);
         jTextAreaRobot.setColumns(20);
         jTextAreaRobot.setRows(5);
         jScrollPaneRobot.setViewportView(jTextAreaRobot);
@@ -100,7 +103,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                         .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                         .addComponent(jButtonInventoryAdd))
                     .addComponent(jTabbedPaneInfo))
                 .addContainerGap())
@@ -109,14 +112,14 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(12, 12, 12)
-                .addComponent(jTabbedPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTabbedPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonInventoryAdd))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -267,4 +270,13 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jComboBoxWidget.updateUI();
 
     }
+
+    @Override
+    public void updateOrderStatus(String orderStatus) {
+        //mOrderStatus = orderStatus;
+        jTextAreaOrder.setText(orderStatus);
+        
+    }
+    
+    
 }

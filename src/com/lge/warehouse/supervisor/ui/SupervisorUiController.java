@@ -58,11 +58,11 @@ public class SupervisorUiController extends WarehouseRunnable {
 			if(event.getBody() instanceof OrderStatusInfo){
 				OrderStatusInfo statusInfo = (OrderStatusInfo)event.getBody();
                                 //System.out.println("got order status");
+                                mSupervisorUi.updateOrderStatus(statusInfo.toString());
 				
 			}
 			break;
                 case RESPONSE_CATAGORY_TO_SUPERVISOR_UI:
-                    //System.out.println("controller:RESPONSE_CATAGORY_TO_SUPERVISOR_UI come");
                     if(event.getBody() instanceof WidgetCatalog){
                         //System.out.println("controller:go");
                         WidgetCatalog widgetCatalog = (WidgetCatalog) event.getBody();

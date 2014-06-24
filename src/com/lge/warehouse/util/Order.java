@@ -76,6 +76,15 @@ public class Order implements Serializable{
 		return mStatus;
 	}
     public String toString(){
-    	return "Order id = "+mOrderId+", status="+mStatus;
+        String result = new String("");
+        
+        result += "Order ID = "+mOrderId+", status="+mStatus + "\n";
+        for(int i=0; i<this.getItemCnt(); i++) {
+            result += this.getItemList().get(i).getWidget().getName() + ":" 
+                    + this.getItemList().get(i).getQuantity() + " EA, ";
+        }
+        result += "\n";
+        
+        return result;
     }
 }

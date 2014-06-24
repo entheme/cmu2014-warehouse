@@ -32,7 +32,7 @@
                       <Component id="jComboBoxWidget" min="-2" pref="111" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSpinnerWidgetQuantity" min="-2" pref="91" max="-2" attributes="0"/>
-                      <EmptySpace pref="109" max="32767" attributes="0"/>
+                      <EmptySpace pref="176" max="32767" attributes="0"/>
                       <Component id="jButtonInventoryAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jTabbedPaneInfo" alignment="0" max="32767" attributes="0"/>
@@ -45,7 +45,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-              <Component id="jTabbedPaneInfo" min="-2" pref="246" max="-2" attributes="0"/>
+              <Component id="jTabbedPaneInfo" min="-2" pref="338" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jComboBoxInventory" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -53,7 +53,7 @@
                   <Component id="jSpinnerWidgetQuantity" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonInventoryAdd" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="17" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -82,6 +82,7 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextAreaOrder">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
@@ -104,6 +105,7 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextAreaInventory">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
@@ -126,6 +128,7 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextAreaRobot">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
