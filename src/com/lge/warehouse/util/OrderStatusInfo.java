@@ -67,4 +67,24 @@ public class OrderStatusInfo implements Serializable {
 	public List<Order> getCompleteOrderList(){
 		return new ArrayList(mCompleteOrderSet);
 	}
+
+    @Override
+    public String toString() {
+        String result = new String();
+        String newLine = "\n";
+        List<Order> orderList = new ArrayList<Order>();
+        
+        orderList.addAll(getPendingOrderList());
+        orderList.addAll(getBackOrderList());
+        orderList.addAll(getInProgressOrderList());
+        orderList.addAll(getCompleteOrderList());
+        
+        for(Order order : orderList) {
+            result += "Order ID:" + order.getOrderId() + " " + order.getItemCnt() + "EA " 
+                    + "Status:" + order.getOrderStatus() + newLine;
+        }
+        
+        return result;
+    }
+ 
 }
