@@ -18,6 +18,7 @@ public class WarehouseStatus implements Serializable{
     private List<QuantifiedWidget> mInventoryListOnBot = new ArrayList<QuantifiedWidget>();
     private List<String> mVisitedStationList = new ArrayList<String>();
     private String mNextStop;
+    WarehouseInventoryInfo mInventoryInfo;
 
     public WarehouseStatus(){}
 	
@@ -69,5 +70,13 @@ public class WarehouseStatus implements Serializable{
     
     public String getNextStop(){
         return new String(mNextStop);
+    }
+    
+    public void setWarehouseInventoryInfo(WarehouseInventoryInfo inventoryInfo){
+        mInventoryInfo = inventoryInfo;
+    }
+    
+    public WarehouseInventoryInfo getWarehouseInventoryInfo(){
+        return mInventoryInfo;
     }
 }

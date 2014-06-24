@@ -56,7 +56,7 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 				WarehouseInventoryInfo inventoryInfo = (WarehouseInventoryInfo)event.getBody();
 				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + inventoryInfo.getWarehouseId());
 			 	for(InventoryName inventoryName : InventoryName.values()){
-                                    //Note: Now, The InventoryName means the name of inventory stataion. 
+                                    //Note: Now, The InventoryName means the name of inventory stataion.
                                     logger.info("WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
                                     if(inventoryInfo.hasInventoryStation(inventoryName)){
                                         for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
@@ -98,6 +98,14 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 				handleBodyError(event);
 			}
 			break;
+		case UPDATE_WAREHOUSE_STATUS:
+			if(event.getBody() instanceof WarehouseStatus) {
+                            WarehouseStatus warehouseStatus = (WarehouseStatus)event.getBody();
+                            sendWarehouseStatus(warehouseStatus);
+			}else {
+                            handleBodyError(event);
+                        } 
+                        break;
 		default:
 			logger.info("unhandled event :"+event);
 			break;

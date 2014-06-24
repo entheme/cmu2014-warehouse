@@ -16,6 +16,7 @@ import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 
 /**
  *
@@ -24,6 +25,7 @@ import com.lge.warehouse.util.WarehouseInventoryInfo;
 public class WarehouseManagerController extends WarehouseRunnable {
     private static WarehouseManagerController sInstance = null;
     static Logger logger = Logger.getLogger(WarehouseManagerController.class);
+    WarehouseInventoryInfo minventoryInfo;
 
     private WarehouseManagerController() {
         super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
@@ -43,13 +45,13 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			break;
                 case WAREHOUSE_INVENTORY_INFO:
 			if(event.getBody() instanceof WarehouseInventoryInfo){
-				WarehouseInventoryInfo inventoryInfo = (WarehouseInventoryInfo)event.getBody();
-				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + inventoryInfo.getWarehouseId());
+				minventoryInfo = (WarehouseInventoryInfo)event.getBody();
+				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + minventoryInfo.getWarehouseId());
 			 	for(InventoryName inventoryName : InventoryName.values()){
                                      //Note: Now, The InventoryName means the name of inventory stataion.  
                                     logger.info("WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
-                                   if(inventoryInfo.hasInventoryStation(inventoryName)){
-                                        for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
+                                   if(minventoryInfo.hasInventoryStation(inventoryName)){
+                                        for(QuantifiedWidget qw : minventoryInfo.getInventoryInfo(inventoryName)){
                                             logger.info(qw.getWidget()+" : "+qw.getQuantity());
                                         }   
                                     }
@@ -81,6 +83,14 @@ public class WarehouseManagerController extends WarehouseRunnable {
                                 handleBodyError(event);
 			}
 			break;
+                case UPDATE_WAREHOUSE_STATUS:
+			if(event.getBody() instanceof WarehouseStatus) {
+                            WarehouseStatus warehouseStatus = (WarehouseStatus)event.getBody();
+                            sendWarehouseStatus(warehouseStatus);
+			}else {
+                            handleBodyError(event);
+                        } 
+                        break;
 		default:
 			logger.info("unhandled event :"+event);
 			break;
@@ -100,7 +110,15 @@ public class WarehouseManagerController extends WarehouseRunnable {
         addBus(WComponentType.WAREHOUSE_INPUT_MGR);
         addBus(WComponentType.WAREHOUSE_OUTPUT_MGR);
     }
-
+    
+    private void sendWarehouseStatus(WarehouseStatus warehouseStatus){
+        sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.UPDATE_WAREHOUSE_STATUS, warehouseStatus);
+    }
+    
+    private void sendWarehouseInventoryInfo(WComponentType dest, WarehouseInventoryInfo warehouseInventoryInfo){
+        sendMsg(dest, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo);
+    }
+    
     @Override
     public void ping() {
         sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.COMPONENT_HELLO,null);
