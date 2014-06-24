@@ -6,6 +6,8 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.ObjectMessage;
 
+import org.apache.log4j.Logger;
+
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
@@ -16,6 +18,7 @@ import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
 public class SupervisorUiController extends WarehouseRunnable {
+	private static Logger logger = Logger.getLogger(SupervisorUiController.class);
     private SupervisorUi mSupervisorUi;
 	public SupervisorUiController() {
 		super(WComponentType.SUPERVISOR_UI);
@@ -44,8 +47,11 @@ public class SupervisorUiController extends WarehouseRunnable {
 	@Override
 	protected void eventHandle(EventMessage event) {
 		// TODO Auto-generated method stub
+		logger.info("eventHandle "+event);
 		if(event.getSrc().equals(getId().name())){
+			logger.info("self message send : "+event);
 			sendObject(event);
+			return;
 		}
 		switch(event.getType()){
 		case RESPONSE_ORDER_STATUS:
