@@ -128,10 +128,10 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
     }//GEN-LAST:event_jSpinnerWidgetQuantityStateChanged
 
     private void jButtonOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOrderActionPerformed
-        //Init spinner
-        jSpinnerWidgetQuantity.setValue(new Integer(0));
         //Place Order
         mOrderSysUiController.requestPlaceOrder(OrderSysWidgetCart.getOrderFromCart());
+        //Init spinner
+        jSpinnerWidgetQuantity.setValue(new Integer(0));
         //Init Cart
         OrderSysWidgetCart.initWidgetCart();
         //Show Cart
