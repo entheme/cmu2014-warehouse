@@ -92,6 +92,7 @@ public class NavigationPathSelector {
     	addPath(robotAtX[3]);
     	
     	*/
+    	flushPath();
     	
     	//For information
     	System.out.println("[NavigationPathSelector]FILL_ORDER order id = "+neworder.getOrderId());
@@ -139,6 +140,7 @@ public class NavigationPathSelector {
 			System.out.println("[NavigationPathSelector]WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
 			if(minventoryInfo.hasInventoryStation(inventoryName)) // If my warehouse has that inventory type..
 			{
+				boolean bAddpath = false;
 				for(QuantifiedWidget qwInven : minventoryInfo.getInventoryInfo(inventoryName)) //for each widget in Inventory.
 				{
 					tempRemainOrderWidget.clear();
@@ -146,7 +148,7 @@ public class NavigationPathSelector {
 					{
 						tempRemainOrderWidget.add(qw);
 				 	}
-					boolean bAddpath = false;
+					
 					
 					for(int i = 0; i < orderItemListfornavation.size(); i++) // for each widget..
 					{
@@ -174,20 +176,22 @@ public class NavigationPathSelector {
 						orderItemListfornavation.add(qw);
 				 	}
 					
-					if(bAddpath == true)
-					{
-						System.out.println("This inventory is added route");
-						addPath(robotMoveToX[InvenIdx]);
-						addPath(robotAtX[InvenIdx]);
-					}
-					else
-					{
-						System.out.println("This inventory is not included route");
-						addPath(robotMoveToX[InvenIdx]);
-					}
-					bAddpath = false;
 					
 				}
+				
+				if(bAddpath == true)
+				{
+					System.out.println("This inventory is added route");
+					addPath(robotMoveToX[InvenIdx]);
+					addPath(robotAtX[InvenIdx]);
+				}
+				else
+				{
+					System.out.println("This inventory is not included route");
+					addPath(robotMoveToX[InvenIdx]);
+				}
+				bAddpath = false;
+				
 			}
 			else
 			{ 
