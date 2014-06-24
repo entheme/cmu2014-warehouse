@@ -135,12 +135,15 @@ public class SupervisorUi extends javax.swing.JFrame {
         switch(jTabbedPaneInfo.getSelectedIndex()) {
             case 0: // Order
                 requestOrderStatus();
+                enableInvenetoryManagement(false);
                 break;
             case 1: // Inventory
                 requestInventoryStatus();
+                enableInvenetoryManagement(true);
                 break;
             case 2: // Robot
                 requestRobotStatus();
+                enableInvenetoryManagement(false);
                 break;
             default:
                 break;
@@ -164,6 +167,13 @@ public class SupervisorUi extends javax.swing.JFrame {
     private boolean requestInventoryStatus() {
         // To-Do
         return false;
+    }
+    
+    private void enableInvenetoryManagement(boolean bEnable) {
+        jComboBoxInventory.setEnabled(bEnable);
+        jComboBoxWidget.setEnabled(bEnable);
+        jSpinnerWidgetQuantity.setEnabled(bEnable);
+        jButtonInventoryAdd.setEnabled(bEnable);
     }
     
     private void initUiController() {
