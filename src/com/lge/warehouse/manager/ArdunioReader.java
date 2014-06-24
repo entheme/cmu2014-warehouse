@@ -18,6 +18,11 @@ public class ArdunioReader {
 		
 	}
 	
+        public void setPortNum(int portNum)
+        {
+            this.portNum = portNum;
+        }
+        
 	public boolean startServer() {
 		try
 		{

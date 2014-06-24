@@ -83,10 +83,23 @@ public class WarehouseManagerController extends WarehouseRunnable {
                                 handleBodyError(event);
 			}
 			break;
-                case UPDATE_WAREHOUSE_STATUS:
-			if(event.getBody() instanceof WarehouseStatus) {
-                            WarehouseStatus warehouseStatus = (WarehouseStatus)event.getBody();
-                            sendWarehouseStatus(warehouseStatus);
+                case SEND_ROBOT_ERROR:
+			if(event.getBody() instanceof String) {
+                          
+			}else {
+                            handleBodyError(event);
+                        } 
+                        break;
+                case SEND_LOAD_STATUS:
+			if(event.getBody() instanceof String) {
+                          
+			}else {
+                            handleBodyError(event);
+                        } 
+                        break;
+                case SEND_POS_STATUS:
+			if(event.getBody() instanceof String) {
+                          
 			}else {
                             handleBodyError(event);
                         } 
