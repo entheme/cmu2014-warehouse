@@ -30,6 +30,9 @@ class WarehouseInventoryInfoRepository {
 //		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 100);
 //		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 100);
 	}
+	public void setInventoryInfo(WarehouseInventoryInfo inventoryInfo){
+		mInventoryInfo = inventoryInfo;
+	}
 	public int getInventoryCount(WidgetInfo wi){
 		int inventoryCnt = 0;
 		for(InventoryName inventoryName : InventoryName.values()){
