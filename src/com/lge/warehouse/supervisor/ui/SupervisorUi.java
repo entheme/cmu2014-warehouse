@@ -96,10 +96,10 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                         .addGap(12, 12, 12)
                         .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                        .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 109, Short.MAX_VALUE)
                         .addComponent(jButtonInventoryAdd))
                     .addComponent(jTabbedPaneInfo))
                 .addContainerGap())
@@ -122,17 +122,22 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonInventoryAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInventoryAddActionPerformed
-        // TODO add your handling code here:
-        // Add Inventory
-        //jScrollPaneInventory.get
         int inventoryID = jComboBoxInventory.getSelectedIndex();
         int quantity = ((Integer)jSpinnerWidgetQuantity.getValue()).intValue();
         WidgetInfo widgetInfo = (WidgetInfo) jComboBoxWidget.getItemAt(jComboBoxWidget.getSelectedIndex());
         WarehouseInventoryInfo warehouseInventoryInfo = new WarehouseInventoryInfo(1);
-        System.out.println("quantity = " + quantity);
         
-        //warehouseInventoryInfo.addInventory(InventoryName.INVENTORY_1, widgetInfo, quantity);
+        if(widgetInfo == null) {
+            return;
+        }
+        
+        //System.out.println("quantity = " + quantity);
+        //System.out.println(InventoryName.fromInteger(inventoryID));
+        
+        warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.fromInteger(inventoryID), widgetInfo, quantity);
+ 
         mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
+        makeUiValueDefault();
     }//GEN-LAST:event_jButtonInventoryAddActionPerformed
 
     private void jTabbedPaneInfoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneInfoStateChanged
@@ -198,6 +203,10 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         mSupervisorUiController = new SupervisorUiController();
         mSupervisorUiController.setWidgetCatalogUpdateListener(this);
         new Thread(mSupervisorUiController).start();
+    }
+    
+    private void makeUiValueDefault() {
+        jSpinnerWidgetQuantity.setValue(new Integer(0));
     }
     /**
      * @param args the command line arguments

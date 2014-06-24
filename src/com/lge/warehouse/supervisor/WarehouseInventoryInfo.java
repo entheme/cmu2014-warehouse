@@ -18,7 +18,7 @@ public class WarehouseInventoryInfo implements Serializable{
 	public WarehouseInventoryInfo(int warehouseId){
 		mWarehouseId = warehouseId;
 	}
-	void addNewWidgetToInventory(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
+	public void addNewWidgetToInventory(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
 		if(!mInventoryInfoList.containsKey(inventoryName)){
 			mInventoryInfoList.put(inventoryName, new HashMap<WidgetInfo,Integer>());
 		}

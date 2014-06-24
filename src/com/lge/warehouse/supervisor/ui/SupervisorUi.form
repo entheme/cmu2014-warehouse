@@ -29,10 +29,10 @@
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="jComboBoxInventory" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jComboBoxWidget" min="-2" pref="96" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jSpinnerWidgetQuantity" min="-2" pref="67" max="-2" attributes="0"/>
-                      <EmptySpace pref="142" max="32767" attributes="0"/>
+                      <Component id="jComboBoxWidget" min="-2" pref="111" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jSpinnerWidgetQuantity" min="-2" pref="91" max="-2" attributes="0"/>
+                      <EmptySpace pref="109" max="32767" attributes="0"/>
                       <Component id="jButtonInventoryAdd" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jTabbedPaneInfo" alignment="0" max="32767" attributes="0"/>
