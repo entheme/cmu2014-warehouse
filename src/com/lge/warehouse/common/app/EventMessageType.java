@@ -52,6 +52,16 @@ public enum EventMessageType {
     
     UPDATE_WAREHOUSE_STATUS, //WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
     
+    MOVE_NEXT_INV, //WarehouseMangerController -> RobotOutputMgr
+    SEND_ROBOT_ERROR, //RobotInputMgr -> WarehouseMangerController
+    REQUEST_ROBOT_RECOVERY, //WarehouseMangerController -> RobotOutputMgr
+    INIT_WAREHOUSE, //WarehouseMangerController -> WarehouseOutputMgr
+    REQUEST_LOAD_STATUS, //WarehouseMangerController -> WarehouseOutputMgr
+    REQUST_POS_STATUS,  //WarehouseMangerController -> WarehouseOutputMgr
+    REQUEST_WAREHOUSE_RECOVERY, //WarehouseMangerController -> WarehouseOutputMgr 
+    SEND_LOAD_STATUS, //WarehouseInputMgr -> WarehouseMangerController
+    SEND_POS_STATUS, //WarehouseInputMgr -> WarehouseMangerController
+
     TEST_SUPERVISOR_UI_SEND_WIDGET_CATALOG, TEST_SUPERVISOR_UI_REQUEST_ORDER_STATUS, TEST_SUPERVISOR_UI_SEND_WAREHOUSE_INVENTORY_INFO,
     ;
     

@@ -16,12 +16,13 @@ import org.apache.log4j.Logger;
  *
  * @author seuki77
  */
-public class WarehouseInputMgr extends WarehouseRunnable{
+public class WarehouseInputMgr implements Runnable {
     private static WarehouseInputMgr sInstance = null;
     static Logger logger = Logger.getLogger(WarehouseInputMgr.class);
-    
+    ArdunioReader mArdunioReader = new ArdunioReader();
+        
     private WarehouseInputMgr() {
-        super(WComponentType.WAREHOUSE_INPUT_MGR);
+     
     }
     
     public static WarehouseInputMgr getInstance() {
@@ -32,22 +33,26 @@ public class WarehouseInputMgr extends WarehouseRunnable{
     }
 
     @Override
-    protected void eventHandle(EventMessage event) {
-
+    public void run() {
+            // TODO Auto-generated method stub
+            String inputData = null;
+            String value = null;
+            if(mArdunioReader.startServer() == true) {
+                while(true) {
+                    inputData = mArdunioReader.readData();
+                    if(inputData != null) {
+                       
+                        if(inputData.startsWith("L") == true || inputData.startsWith("R") == true) {
+                          value  = inputData.substring(1);
+                          //ToDo : Send value to WarehouseManageController
+                        }
+                    }
+                }
+            }
     }
 
     public static void start() {
         logger.info("WarehouseInputMgr start");
         new Thread(getInstance()).start();
-    }
-
-    @Override
-    protected void initBus() {
-        addBus(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
-    }
-
-    @Override
-    public void ping() {
-        sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.COMPONENT_HELLO,null);
-    }
+    }  
 }

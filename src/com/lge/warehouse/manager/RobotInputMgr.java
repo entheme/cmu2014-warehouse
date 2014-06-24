@@ -10,18 +10,25 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
+import static com.lge.warehouse.manager.WarehouseManagerController.logger;
+import com.lge.warehouse.util.InventoryName;
+import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.QuantifiedWidget;
+import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author seuki77
  */
-public class RobotInputMgr extends WarehouseRunnable{
+public class RobotInputMgr implements Runnable {
     private static RobotInputMgr sInstance = null;
     static Logger logger = Logger.getLogger(RobotInputMgr.class);
+    ArdunioReader mArdunioReader = new ArdunioReader();
     
     private RobotInputMgr() {
-        super(WComponentType.ROBOT_INPUT_MGR);
+
     }
     
     public static RobotInputMgr getInstance() {
@@ -30,24 +37,28 @@ public class RobotInputMgr extends WarehouseRunnable{
         }
         return sInstance;
     }
-
+    
     @Override
-    protected void eventHandle(EventMessage event) {
-
+    public void run() {
+            // TODO Auto-generated method stub
+            String inputData = null;
+            String value = null;
+            if(mArdunioReader.startServer() == true) {
+                while(true) {
+                    inputData = mArdunioReader.readData();
+                    if(inputData != null) {
+                       
+                        if(inputData.startsWith("E") == true) {
+                          value  = inputData.substring(1);
+                          //ToDo : Send value to WarehouseManageController
+                        }
+                    }
+                }
+            }
     }
-
+    
     public static void start() {
         logger.info("RobotInputMgr start");
         new Thread(getInstance()).start();
-    }
-
-    @Override
-    protected void initBus() {
-        addBus(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
-    }
-
-    @Override
-    public void ping() {
-        sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.COMPONENT_HELLO,null);
     }
 }
