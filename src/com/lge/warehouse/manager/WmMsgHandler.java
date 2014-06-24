@@ -15,16 +15,15 @@ import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.common.bus.p2p.P2PConnection;
 import com.lge.warehouse.common.bus.p2p.P2PReceiver;
 import com.lge.warehouse.common.bus.p2p.P2PSender;
+import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
-/**
- *
- * @author kihyung2.lee
- */
+
+
 public final class WmMsgHandler extends WarehouseRunnable  {
 	private static WmMsgHandler sInstance = null;
 	static Logger logger = Logger.getLogger(WmMsgHandler.class);

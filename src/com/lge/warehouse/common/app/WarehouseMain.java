@@ -34,8 +34,7 @@ public class WarehouseMain extends WarehouseRunnable{
 	protected void initBus() {
 		// TODO Auto-generated method stub
 		if(WarehouseContext.TEST_MODE){
-			readyForMonitor(WComponentType.CUSTOMER_INF);
-			readyForMonitor(WComponentType.SUPERVISOR_UI);
+			readyForMonitor(WComponentType.WM_MSG_HANDLER);
 		}
 		readyForMonitor(WComponentType.CUSTOMER_SERVICE_MANAGER);
 		readyForMonitor(WComponentType.PENDING_ORDER_MANAGER);

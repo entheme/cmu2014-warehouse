@@ -70,12 +70,11 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 	}
 	protected void threadStart(){
 		Thread.currentThread().setName(getId().name());
-		if(WarehouseContext.TEST_MODE)
-			sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
-		else{
+		
 			if((getId() == WComponentType.CUSTOMER_SERVICE_MANAGER)||
 					(getId() == WComponentType.PENDING_ORDER_MANAGER)||
-					(getId() == WComponentType.WAREHOUSE_SUPERVISOR)
+					(getId() == WComponentType.WAREHOUSE_SUPERVISOR)||
+					((WarehouseContext.TEST_MODE==true)&&(getId() == WComponentType.WM_MSG_HANDLER))
 					){
 				sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
 			}else if((getId() == WComponentType.WM_MSG_HANDLER)||
@@ -85,7 +84,7 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 				sendMsg(WComponentType.MANAGER_SYSTEM, EventMessageType.READY_TO_OPERATE, null);
 			}
 
-		}
+		
 		logger.info(getId()+" thread start");
 	}
 	protected void threadStop(){

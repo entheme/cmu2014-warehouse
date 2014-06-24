@@ -19,8 +19,9 @@ public class WarehouseTestSystem {
     public static void initialize() {
         logger.info("Ordering System is initializing...");
         // TODO: Do initialization
-        ClientInterfaceStub.start();        
-        
+//        ClientInterfaceStub.start();        
+//        SupervisorUIStub.start();
+        WarehouseManagerStub.start();
         logger.info("Ordering System has been initialized");
     }
     
@@ -33,6 +34,7 @@ public class WarehouseTestSystem {
         return sInstance;
     }
     public static void ping(){
-        ClientInterfaceStub.getInstance().ping();
+//        ClientInterfaceStub.getInstance().ping();
+//        SupervisorUIStub.getInstance().ping();
     }
 }

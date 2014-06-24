@@ -45,13 +45,13 @@ public final class P2PConnection{
 
 	static void initContext(){
 		try {
-			if(WarehouseContext.TEST_MODE){
-				
-				mFactory = new ActiveMQConnectionFactory(
-						"vm://localhost?broker.persistent=false");
-
-				mConnection = mFactory.createConnection();
-			}else{
+//			if(WarehouseContext.TEST_MODE){
+//				
+//				mFactory = new ActiveMQConnectionFactory(
+//						"vm://localhost?broker.persistent=false");
+//
+//				mConnection = mFactory.createConnection();
+//			}else{
 				Properties props = new Properties();
 				props.setProperty(Context.INITIAL_CONTEXT_FACTORY,"org.apache.activemq.jndi.ActiveMQInitialContextFactory");
 
@@ -62,7 +62,7 @@ public final class P2PConnection{
 						.lookup("ConnectionFactory");
 				//            mFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 				mConnection = mFactory.createConnection();
-			}
+//			}
 			mConnection.start();
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block

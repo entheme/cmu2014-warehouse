@@ -6,8 +6,8 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
+import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
 public class SupervisorUIStub extends WarehouseRunnable {
