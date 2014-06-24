@@ -48,9 +48,9 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		case SYSTEM_READY:
 			break;
 		case WAREHOUSE_ADD_REQUEST: 	//from WmMsgHandler
-		mWarehouseProxyHandler.handleWarehouseAddRequest();
+			mWarehouseProxyHandler.handleWarehouseAddRequest();
 			doNextFillOrder();
-		break;
+			break;
 		case RESPONSE_PENDING_ORDER:	//from PendingOrderManager
 			if (event.getBody() instanceof Order){
 				Order order = (Order)event.getBody();
@@ -60,7 +60,6 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 					logger.info("No inventory, push BackOrder");
 					mOrderProvider.pushBackOrder(order);
 				}
-				updateOrderStatus();
 			} else{
 				handleBodyError(event);
 			}
@@ -79,28 +78,23 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				Order order = (Order)event.getBody();
 				mWarehouseProxyHandler.finishFillOrder(event.getSrc(), order);
 				doNextFillOrder();
-				updateOrderStatus();
 			}else {
 				handleBodyError(event);
 			}
 			break;
 		case REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER:
-			WidgetCatalog widgetCatalog1 = WidgetCatalogRepository.getInstance().getWidgetCatalog();
-			widgetCatalog1.dump();
-			
-			sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, widgetCatalog1);
+			sendWidgetCatalog(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER);
 			break;
 		case REQUEST_CATAGORY_FROM_SUPERVISOR_UI:
-			WidgetCatalog widgetCatalog2 = WidgetCatalogRepository.getInstance().getWidgetCatalog();
-			widgetCatalog2.dump();
-			
-			sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_CATAGORY_TO_SUPERVISOR_UI, widgetCatalog2);
+			sendWidgetCatalog(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_CATAGORY_TO_SUPERVISOR_UI);
 			break;
 		case SEND_WIDGET_CATALOG_UPDATE:
 			if (event.getBody() instanceof NewWidgetInfo){
 				NewWidgetInfo widgetCatalog = (NewWidgetInfo) event.getBody();
 				WidgetCatalogRepository.getInstance().addNewWidget(widgetCatalog);
-				sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, WidgetCatalogRepository.getInstance().getWidgetCatalog());
+				sendWidgetCatalog(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER);
+				sendWidgetCatalog(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_CATAGORY_TO_SUPERVISOR_UI);
+				mWarehouseProxyHandler.sendWidgetCatalog();
 			}else {
 				handleBodyError(event);
 			}
@@ -138,6 +132,14 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			logger.info("unhandled event :"+event);
 			break;
 		}
+		updateOrderStatus();
+	}
+
+	private void sendWidgetCatalog(WComponentType dest, EventMessageType message) {
+		WidgetCatalog widgetCatalog = WidgetCatalogRepository.getInstance().getWidgetCatalog();
+		widgetCatalog.dump();
+
+		sendMsg(dest, message, widgetCatalog);
 	}
 	private void updateOrderStatus(){
 		sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.REQUEST_PENDING_ORDER_STATUS, null);

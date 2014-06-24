@@ -34,15 +34,14 @@ public class WarehouseInventoryInfo implements Serializable{
 		return mInventoryInfoList.containsKey(inventoryName);
 	}
 	public List<QuantifiedWidget> getInventoryInfo(InventoryName inventoryName){
+		List<QuantifiedWidget> list = new ArrayList<QuantifiedWidget>();
 		if(mInventoryInfoList.containsKey(inventoryName)){
-			List<QuantifiedWidget> list = new ArrayList<QuantifiedWidget>();
 			HashMap<WidgetInfo, Integer> widgetInfoMap = mInventoryInfoList.get(inventoryName);
 			for(WidgetInfo wi : widgetInfoMap.keySet()){
 				list.add(new QuantifiedWidget(wi, widgetInfoMap.get(wi)));
 			}
-			return list;
-		}else
-			return null;
+		}
+		return list;
 	}
 	public int getWarehouseId(){
 		return mWarehouseId;

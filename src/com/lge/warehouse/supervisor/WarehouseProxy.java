@@ -119,4 +119,8 @@ public class WarehouseProxy {
 			mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
 		}
 	}
+	public void sendWidgetCatalog() {
+		// TODO Auto-generated method stub
+		sendObj(EventMessageType.SEND_WDIGET_CATALOG_TO_WM_MSG_HANDLER, WidgetCatalogRepository.getInstance().getWidgetCatalog());
+	}
 }

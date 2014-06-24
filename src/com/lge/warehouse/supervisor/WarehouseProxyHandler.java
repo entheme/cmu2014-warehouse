@@ -40,7 +40,13 @@ public class WarehouseProxyHandler {
         WarehouseProxy wh = new WarehouseProxy(mWarehouseCounter, mMsgListener);
         mWarehouses.put(wh.getWarehouseIdentity(), wh);
         mMsgInf.sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.WAREHOUSE_ADD_ACCEPT, new Integer(mWarehouseCounter));
+        wh.sendWidgetCatalog();
     }
+	public void sendWidgetCatalog() {
+		for(WarehouseProxy wp : mWarehouses.values()){
+			wp.sendWidgetCatalog();
+		}
+	}
     public boolean hasInventory(Order order){
     	for(WarehouseProxy wp : mWarehouses.values()){
     		if(wp.hasInventory(order))

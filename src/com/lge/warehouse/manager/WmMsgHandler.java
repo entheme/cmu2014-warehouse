@@ -20,6 +20,7 @@ import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WarehouseStatus;
+import com.lge.warehouse.util.WidgetCatalog;
 /**
  *
  * @author kihyung2.lee
@@ -67,6 +68,13 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 				sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_INVENTORY_INFO, inventoryInfo);
 			}else{
 				handleBodyError(event);
+			}
+			break;
+		case SEND_WDIGET_CATALOG_TO_WM_MSG_HANDLER:
+			if(event.getBody() instanceof WidgetCatalog){
+				WidgetCatalog widgetCatalog = (WidgetCatalog)event.getBody();
+				logger.info("WidgetCatalog received");
+				//To be implemented
 			}
 			break;
 		case FILL_ORDER:
