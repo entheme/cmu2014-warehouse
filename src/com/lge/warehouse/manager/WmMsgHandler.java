@@ -19,6 +19,7 @@ import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 /**
  *
  * @author kihyung2.lee
@@ -126,7 +127,9 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 		addBus(WComponentType.WAREHOUSE_SUPERVISOR);
 		addBus(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
 	}
-
+	private void sendWarehouseStatus(WarehouseStatus warehouseStatus){
+		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.UPDATE_WAREHOUSE_STATUS, warehouseStatus);
+	}
 	@Override
 	public void ping() {
 		sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.COMPONENT_HELLO,null);

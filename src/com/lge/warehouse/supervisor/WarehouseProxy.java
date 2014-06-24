@@ -24,6 +24,7 @@ import com.lge.warehouse.common.bus.p2p.P2PSender;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 
 /**
  *
@@ -85,11 +86,11 @@ public class WarehouseProxy {
 			logger.info("finish fill order, orderId = "+order.getOrderId());
 			mCompletedOrderList.add(order);
 			mProgressOrder = null;
-			for(QuantifiedWidget qw : order.getItemList()){
-				int prevCount = mInventoryRepository.getInventoryCount(qw.getWidget());
-				prevCount -= qw.getQuantity();
-				mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
-			}
+//			for(QuantifiedWidget qw : order.getItemList()){
+//				int prevCount = mInventoryRepository.getInventoryCount(qw.getWidget());
+//				prevCount -= qw.getQuantity();
+//				mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
+//			}
 			order.setOrderStatus(Order.Status.ORDER_COMPLETE);
 			mInventoryRepository.dump();
 		}else{
@@ -108,5 +109,14 @@ public class WarehouseProxy {
 	public Order getInProgressOrderList() {
 		// TODO Auto-generated method stub
 		return mProgressOrder;
+	}
+	public void updateWarehouseStatus(WarehouseStatus warehouseStatus) {
+		// TODO Auto-generated method stub
+		List<QuantifiedWidget> list = warehouseStatus.getInventoryListOfBot();
+		for(QuantifiedWidget qw : list){
+			int prevCount = mInventoryRepository.getInventoryCount(qw.getWidget());
+			prevCount -= qw.getQuantity();
+			mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
+		}
 	}
 }

@@ -19,6 +19,7 @@ import com.lge.warehouse.common.app.MsgInterface;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 
 /**
  *
@@ -85,6 +86,12 @@ public class WarehouseProxyHandler {
 				inProgressOrderList.add(order);
 		}
 		return inProgressOrderList;
+	}
+	public void updateWarehouseStatus(String warehouseName,
+			WarehouseStatus warehouseStatus) {
+		// TODO Auto-generated method stub
+		WarehouseProxy wp = mWarehouses.get(warehouseName);
+		wp.updateWarehouseStatus(warehouseStatus);
 	}
 	
 }

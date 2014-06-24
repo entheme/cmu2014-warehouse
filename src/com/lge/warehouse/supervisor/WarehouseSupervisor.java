@@ -16,6 +16,7 @@ import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
 import com.lge.warehouse.util.WidgetCatalogRepository;
 
@@ -121,6 +122,15 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 					orderStatusInfo.addInProgressOrder(order);
 				}
 				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_ORDER_STATUS, orderStatusInfo);
+			}else {
+				handleBodyError(event);
+			}
+			break;
+		case UPDATE_WAREHOUSE_STATUS:
+			if(event.getBody() instanceof WarehouseStatus){
+				WarehouseStatus warehouseStatus = (WarehouseStatus)event.getBody();
+				mWarehouseProxyHandler.updateWarehouseStatus(event.getSrc(), warehouseStatus);
+				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.UPDATE_WAREHOUSE_STATUS, warehouseStatus);
 			}else {
 				handleBodyError(event);
 			}

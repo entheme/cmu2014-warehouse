@@ -1,12 +1,9 @@
 package com.lge.warehouse.common.test;
 
-import java.util.HashMap;
-
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.util.WidgetInfo;
 
 public class WarehouseManagerStub extends WarehouseRunnable{
 	private static WarehouseManagerStub sInstance = null;
