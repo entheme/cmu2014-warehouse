@@ -41,13 +41,19 @@ public class WarehouseInputMgr extends DeviceInputMgr {
         String value = null;
          
         if(inputData.startsWith("L") == true) { 
-             value  = inputData.substring(1);
-            //ToDo : Send value to WarehouseManageController
-            //Send processed order's information to WM_MSG_HANDLER
+            value  = inputData.substring(1);
+             /*Send processed warehouse's inventory complete information as inventory station number(0~3) to WAREHOUSE_MANAGER_CONTROLLER
+               So, the value is inventory stattion number like following,
+               inventory station number 0 : shipping center
+               inventory station number 1 ~ 3 : inventory station  
+             */
             sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.SEND_LOAD_STATUS, value);
         }
         else if(inputData.startsWith("R") == true) {
              value  = inputData.substring(1);
+             /*Send processed robot's position to WAREHOUSE_MANAGER_CONTROLLER whenever the robot's position is changed
+               To do : explain the value. 
+             */
              sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.SEND_POS_STATUS, value);
         }
     }
