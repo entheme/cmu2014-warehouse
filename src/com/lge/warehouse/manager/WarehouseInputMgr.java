@@ -47,14 +47,14 @@ public class WarehouseInputMgr extends DeviceInputMgr {
                inventory station number 0 : shipping center
                inventory station number 1 ~ 3 : inventory station  
              */
-            sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.SEND_LOAD_STATUS, value);
+            sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_LOAD_STATUS, value);
         }
         else if(inputData.startsWith("R") == true) {
              value  = inputData.substring(1);
              /*Send processed robot's position to WAREHOUSE_MANAGER_CONTROLLER whenever the robot's position is changed
                To do : explain the value. 
              */
-             sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.SEND_POS_STATUS, value);
+             sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.ROBOT_POSITION_STATUS, value);
         }
     }
  

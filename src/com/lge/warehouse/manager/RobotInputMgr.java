@@ -45,7 +45,7 @@ public class RobotInputMgr extends DeviceInputMgr {
         if(inputData.startsWith("E") == true) { 
              value  = inputData.substring(1);
             //Send processed robot's error information to WAREHOUSE_MANAGER_CONTROLLER
-            sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.SEND_ROBOT_ERROR, value);
+            sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.ROBOT_ERROR_STATUS, value);
         }
     }
     
