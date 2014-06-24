@@ -58,8 +58,8 @@ public class WarehouseProxy {
     public String getWarehouseIdentity(){
     	return mDest;
     }
-    public void updateInventoryInfo(WarehouseInventoryInfo warehouseInventoryInfo){
-    	mInventoryRepository.updateInventoryInfo(warehouseInventoryInfo);
+    public void fillInventoryInfo(WarehouseInventoryInfo warehouseInventoryInfo){
+    	mInventoryRepository.fillInventoryWidget(warehouseInventoryInfo);
     	warehouseInventoryInfo = mInventoryRepository.getWarehouseInventoryInfo();
     	mSender.sendObject(new EventMessage(mSrc, mDest, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo));
     }

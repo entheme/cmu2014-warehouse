@@ -48,10 +48,10 @@ public class WarehouseProxyHandler {
     	}
         return false;
     }
-	public void updateInventory(WarehouseInventoryInfo warehouseInventoryInfo) {
+	public void fillInventoryWidget(WarehouseInventoryInfo warehouseInventoryInfo) {
 		// TODO Auto-generated method stub
 		WarehouseProxy wp = mWarehouses.get(WComponentType.WM_MSG_HANDLER.name()+warehouseInventoryInfo.getWarehouseId());
-		wp.updateInventoryInfo(warehouseInventoryInfo);
+		wp.fillInventoryInfo(warehouseInventoryInfo);
 	}
 	public boolean requestFillOrder(Order order) {
 		// TODO Auto-generated method stub
