@@ -14,21 +14,22 @@ import com.lge.warehouse.common.app.WarehouseContext;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
-import com.lge.warehouse.util.WidgetInfo;
+import com.lge.warehouse.util.WidgetCatalogRepository;
+import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
 
 /**
  *
  * @author seuki77
  */
-public class WarehouseInventoryInfoRepository {
+class WarehouseInventoryInfoRepository {
 	private static Logger logger = Logger.getLogger(WarehouseInventoryInfoRepository.class);
 	WarehouseInventoryInfo mInventoryInfo = new WarehouseInventoryInfo();
 	public WarehouseInventoryInfoRepository(){
-		mInventoryInfo.addInventory(InventoryName.INVENTORY_1, new WidgetInfo(0,"Item1",1000), 100);
-		mInventoryInfo.addInventory(InventoryName.INVENTORY_2, new WidgetInfo(1,"Item2",1000), 100);
-		mInventoryInfo.addInventory(InventoryName.INVENTORY_3, new WidgetInfo(2,"Item3",1000), 100);
-		mInventoryInfo.addInventory(InventoryName.INVENTORY_4, new WidgetInfo(3,"Item4",1000), 100);
-		mInventoryInfo.addInventory(InventoryName.INVENTORY_4, new WidgetInfo(4,"Item5",1000), 100);
+		mInventoryInfo.addInventory(InventoryName.INVENTORY_1, WidgetCatalogRepository.getInstance().getWidgetInfo(0), 100);
+		mInventoryInfo.addInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(1), 100);
+		mInventoryInfo.addInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(2), 100);
+		mInventoryInfo.addInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 100);
+		mInventoryInfo.addInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 100);
 	}
 	public int getInventoryCount(WidgetInfo wi){
 		int inventoryCnt = 0;

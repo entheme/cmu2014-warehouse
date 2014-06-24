@@ -6,20 +6,18 @@
 
 package com.lge.warehouse.supervisor;
 
-import java.util.HashMap;
-
 import org.apache.log4j.Logger;
 
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
+import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 import com.lge.warehouse.util.WidgetCatalogRepository;
-import com.lge.warehouse.util.WidgetInfo;
 
 /**
  *
@@ -92,10 +90,16 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			
 			sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, widgetCatalog1);
 			break;
+		case REQUEST_CATAGORY_FROM_SUPERVISOR_UI:
+			WidgetCatalog widgetCatalog2 = WidgetCatalogRepository.getInstance().getWidgetCatalog();
+			widgetCatalog2.dump();
+			
+			sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_SUPERVISOR_UI, widgetCatalog2);
+			break;
 		case SEND_WIDGET_CATALOG_UPDATE:
-			if (event.getBody() instanceof WidgetCatalog){
-				WidgetCatalog widgetCatalog = (WidgetCatalog) event.getBody();
-				WidgetCatalogRepository.getInstance().setNewWidgetList(widgetCatalog);
+			if (event.getBody() instanceof NewWidgetInfo){
+				NewWidgetInfo widgetCatalog = (NewWidgetInfo) event.getBody();
+				WidgetCatalogRepository.getInstance().addNewWidget(widgetCatalog);
 				sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER, WidgetCatalogRepository.getInstance().getWidgetCatalog());
 			}else {
 				handleBodyError(event);

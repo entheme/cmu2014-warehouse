@@ -8,7 +8,6 @@ package com.lge.warehouse.supervisor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.jms.MessageListener;
@@ -25,7 +24,6 @@ import com.lge.warehouse.common.bus.p2p.P2PSender;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
-import com.lge.warehouse.util.WidgetInfo;
 
 /**
  *

@@ -8,6 +8,8 @@ package com.lge.warehouse.util;
 
 import java.io.Serializable;
 
+import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
+
 /**
  *
  * @author kihyung2.lee

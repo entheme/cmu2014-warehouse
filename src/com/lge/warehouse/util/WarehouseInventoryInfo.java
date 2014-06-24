@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
+
 public class WarehouseInventoryInfo implements Serializable{
 	HashMap<InventoryName, HashMap<WidgetInfo, Integer>> mInventoryInfoList = new HashMap<InventoryName, HashMap<WidgetInfo, Integer>>();
 	private int mWarehouseId = -1;

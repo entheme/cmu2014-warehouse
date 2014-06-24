@@ -6,13 +6,14 @@
 
 package com.lge.warehouse.customer.ui;
 
-import com.lge.warehouse.util.Order;
-import com.lge.warehouse.util.QuantifiedWidget;
-import com.lge.warehouse.util.WidgetCatalog;
-import com.lge.warehouse.util.WidgetInfo;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+
+import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.QuantifiedWidget;
+import com.lge.warehouse.util.WidgetCatalog;
+import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
 
 /**
  *

@@ -38,6 +38,9 @@ public enum EventMessageType {
     REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER,	//CustomerServiceManager -> WarehouseSupervisor to request Widget Catalog list
     RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER,	//WarehouseSupervisor -> CustomerServiceManager to send Widget Catalog list
     
+    REQUEST_CATAGORY_FROM_SUPERVISOR_UI, //SupervisorUI -> WarehouseSupervisor to request Widget Catalog list
+    RESPONSE_CATAGORY_TO_SUPERVISOR_UI, //WarehouseSupervisor -> SupervisorUI to send Widget Catalog list
+    
     SEND_WIDGET_CATALOG_UPDATE,	//SupervisorUI -> WarehouseSupervisor to send Widget Catalog 
     
     REQUEST_ORDER_STATUS,	//SupervisorUI -> WarehouseSupervisor to request order status

@@ -8,7 +8,7 @@ package com.lge.warehouse.supervisor.ui;
 
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
-import com.lge.warehouse.util.WidgetInfo;
+import com.lge.warehouse.util.WidgetCatalogRepository.WidgetInfo;
 
 /**
  *
@@ -126,7 +126,7 @@ public class SupervisorUi extends javax.swing.JFrame {
         WarehouseInventoryInfo warehouseInventoryInfo = new WarehouseInventoryInfo(1);
         System.out.println("quantity = " + quantity);
         
-        warehouseInventoryInfo.addInventory(InventoryName.INVENTORY_1, new WidgetInfo(0, "Item1", 1000), quantity);
+        //warehouseInventoryInfo.addInventory(InventoryName.INVENTORY_1, new WidgetInfo(0, "Item1", 1000), quantity);
         mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
     }//GEN-LAST:event_jButtonInventoryAddActionPerformed
 

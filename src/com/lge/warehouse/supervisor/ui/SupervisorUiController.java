@@ -54,6 +54,9 @@ public class SupervisorUiController extends WarehouseComponent {
 			break;
 		}
 	}
+	public void requestWidgetCatalog(){
+		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null);
+	}
 	public void sendWidgetCatalog(WidgetCatalog widgetCatalog){
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
 	}
