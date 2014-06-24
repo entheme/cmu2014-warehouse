@@ -23,5 +23,6 @@ public enum WComponentType {
     WAREHOUSE_INPUT_MGR,
     WAREHOUSE_OUTPUT_MGR,
     SUPERVISOR_UI,
-    SYSTEM;
+    SYSTEM,
+    MANAGER_SYSTEM;
 }

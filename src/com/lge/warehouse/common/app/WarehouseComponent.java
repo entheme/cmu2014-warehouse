@@ -29,8 +29,16 @@ public abstract class WarehouseComponent implements MessageListener, MsgInterfac
 		if (WarehouseContext.TEST_MODE){
 			addBus(WComponentType.SYSTEM);
 		}else {
-			if (!((id == WComponentType.SUPERVISOR_UI)||(id == WComponentType.CUSTOMER_INF))){
+			if((getId() == WComponentType.CUSTOMER_SERVICE_MANAGER)||
+					(getId() == WComponentType.PENDING_ORDER_MANAGER)||
+					(getId() == WComponentType.WAREHOUSE_SUPERVISOR)
+					){
 				addBus(WComponentType.SYSTEM);
+			}else if((getId() == WComponentType.WM_MSG_HANDLER)||
+					(getId() == WComponentType.WAREHOUSE_MANAGER_CONTROLLER)||
+					(getId() == WComponentType.ROBOT_OUTPUT_MGR)||
+					(getId() == WComponentType.WAREHOUSE_OUTPUT_MGR)){
+				addBus(WComponentType.MANAGER_SYSTEM);
 			}
 		}
 		initBus();

@@ -33,13 +33,13 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 	protected WarehouseRunnable(WComponentType id) {
 		super(id);
 		mQueue = new ArrayBlockingQueue<EventMessage>(50);
-		
+
 	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		threadStart();
-		
+
 		while(!mExit) {
 			try {
 				EventMessage event = mQueue.take();

@@ -1,51 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-package com.lge.warehouse.common.app;
+package com.lge.warehouse.manager;
 
 import java.util.HashMap;
 import java.util.concurrent.BlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
+
+
+
+import com.lge.warehouse.common.app.EventMessageType;
+import com.lge.warehouse.common.app.WComponentType;
+import com.lge.warehouse.common.app.WarehouseContext;
+import com.lge.warehouse.common.app.WarehouseMain;
+import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.common.test.WarehouseTestSystem;
-import com.lge.warehouse.manager.Manager;
 import com.lge.warehouse.ordersys.OrderingSystem;
 import com.lge.warehouse.supervisor.Supervisor;
 
-/**
- *
- * @author seuki77
- */
-public class WarehouseMain extends WarehouseRunnable{
+public class WarehouseManagerMain extends WarehouseRunnable{
+	private static Logger logger = Logger.getLogger(WarehouseManagerMain.class);
 	WComponentType mId = WComponentType.SYSTEM;
 	static HashMap<WComponentType, Boolean> mSystemReadyMap = new HashMap<WComponentType, Boolean>();
 	private BlockingQueue<EventMessage> mQueue;
 	boolean mIsSystemReady;
-	public WarehouseMain(){
-		super(WComponentType.SYSTEM);
+	public WarehouseManagerMain(){
+		super(WComponentType.MANAGER_SYSTEM);
 	}
 
 	@Override
 	protected void initBus() {
 		// TODO Auto-generated method stub
-		if(WarehouseContext.TEST_MODE){
-			readyForMonitor(WComponentType.CUSTOMER_INF);
-			readyForMonitor(WComponentType.SUPERVISOR_UI);
-		}
-		readyForMonitor(WComponentType.CUSTOMER_SERVICE_MANAGER);
-		readyForMonitor(WComponentType.PENDING_ORDER_MANAGER);
-		readyForMonitor(WComponentType.WAREHOUSE_SUPERVISOR);
-		//readyForMonitor(WComponentType.WM_MSG_HANDLER);
-		//readyForMonitor(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
+		
+		readyForMonitor(WComponentType.WM_MSG_HANDLER);
+		readyForMonitor(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
 		//readyForMonitor(WComponentType.ROBOT_INPUT_MGR);
-		//readyForMonitor(WComponentType.ROBOT_OUTPUT_MGR);
+		readyForMonitor(WComponentType.ROBOT_OUTPUT_MGR);
 		//readyForMonitor(WComponentType.WAREHOUSE_INPUT_MGR);
-		//readyForMonitor(WComponentType.WAREHOUSE_OUTPUT_MGR);
+		readyForMonitor(WComponentType.WAREHOUSE_OUTPUT_MGR);
 	}
 	private void readyForMonitor(WComponentType component){
 		addBus(component);
@@ -58,7 +49,7 @@ public class WarehouseMain extends WarehouseRunnable{
 		switch(event.getType()){
 		case READY_TO_OPERATE:
 			if(mIsSystemReady){
-				logger.info("SYSTEM ALREADY READY, but READY_TO_OPERATE received " + event);
+				logger.info("Manager SYSTEM ALREADY READY, but READY_TO_OPERATE received " + event);
 			}
 			mSystemReadyMap.put(WComponentType.valueOf(event.getSrc()), true);
 			for(boolean componentReady : mSystemReadyMap.values()){
@@ -66,7 +57,7 @@ public class WarehouseMain extends WarehouseRunnable{
 					return;
 			}
 			mIsSystemReady = true;
-			logger.info("All System Ready");
+			logger.info("All Manager System Ready");
 			sendSystemReadyMsg();
 			break;
 		default:
@@ -87,32 +78,23 @@ public class WarehouseMain extends WarehouseRunnable{
 	@Override
 	public void ping() {
 		// TODO Auto-generated method stub
-		if(WarehouseContext.TEST_MODE)
-			WarehouseTestSystem.ping();
-		OrderingSystem.ping();
-		Supervisor.ping();
 		Manager.ping();
 	}
 	
-	public static WarehouseMain initWarehouseSystem(){
-		WarehouseMain system = new WarehouseMain();
-
-		if(WarehouseContext.TEST_MODE)
-			WarehouseTestSystem.initialize();
-		OrderingSystem.initialize();
-		Supervisor.initialize();
-		//Manager.initialize();
+	public static WarehouseManagerMain initWarehouseManagerSystem(){
+		WarehouseManagerMain system = new WarehouseManagerMain();
+		Manager.initialize();
 
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException ex) {
-			Logger.getLogger(WarehouseMain.class.getName()).log(Level.SEVERE, null, ex);
+			ex.printStackTrace();
 		}
 		return system;
 	}
 	public static final void main(String[] args){
 		
-		WarehouseMain system = initWarehouseSystem();
+		WarehouseManagerMain system = initWarehouseManagerSystem();
 		system.run();
 	}
 }
