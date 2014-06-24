@@ -63,7 +63,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			} else{
 				handleBodyError(event);
 			}
-			break;
+			return;
 		case FILL_INVENTORY_WIDGET:	//from SupervisorUI
 			if (event.getBody() instanceof WarehouseInventoryInfo){
 				WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo)event.getBody();
