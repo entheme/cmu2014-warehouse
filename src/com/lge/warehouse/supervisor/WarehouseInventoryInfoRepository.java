@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import com.lge.warehouse.common.app.WarehouseContext;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.QuantifiedWidget;
-import com.lge.warehouse.util.WarehouseInventoryInfo;
 
 /**
  *

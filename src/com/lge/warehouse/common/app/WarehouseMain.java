@@ -42,9 +42,9 @@ public class WarehouseMain extends WarehouseRunnable{
 		readyForMonitor(WComponentType.WAREHOUSE_SUPERVISOR);
 		readyForMonitor(WComponentType.WM_MSG_HANDLER);
 		readyForMonitor(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
-		readyForMonitor(WComponentType.ROBOT_INPUT_MGR);
+		//readyForMonitor(WComponentType.ROBOT_INPUT_MGR);
 		readyForMonitor(WComponentType.ROBOT_OUTPUT_MGR);
-		readyForMonitor(WComponentType.WAREHOUSE_INPUT_MGR);
+		//readyForMonitor(WComponentType.WAREHOUSE_INPUT_MGR);
 		readyForMonitor(WComponentType.WAREHOUSE_OUTPUT_MGR);
 	}
 	private void readyForMonitor(WComponentType component){

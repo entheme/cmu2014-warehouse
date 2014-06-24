@@ -29,6 +29,7 @@ class WidgetCatalogRepository {
     	addNewWidget("Tennis",10);
     	addNewWidget("Baseball",150);
     	addNewWidget("Football",500);
+    	addNewWidget("Basketball",400);
     	//for test [end];
     }
     public WidgetInfo getWidgetInfo(int index){

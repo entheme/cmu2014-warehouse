@@ -18,7 +18,6 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.MsgInterface;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.util.Order;
-import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 
 /**

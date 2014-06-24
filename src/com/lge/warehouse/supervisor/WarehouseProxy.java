@@ -23,7 +23,6 @@ import com.lge.warehouse.common.bus.p2p.P2PReceiver;
 import com.lge.warehouse.common.bus.p2p.P2PSender;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
-import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 
 /**

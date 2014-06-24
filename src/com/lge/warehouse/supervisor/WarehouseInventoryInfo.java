@@ -1,4 +1,4 @@
-package com.lge.warehouse.util;
+package com.lge.warehouse.supervisor;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -7,7 +7,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.lge.warehouse.supervisor.WidgetInfo;
+import com.lge.warehouse.util.InventoryName;
+import com.lge.warehouse.util.QuantifiedWidget;
 
 public class WarehouseInventoryInfo implements Serializable{
 	private static Logger logger = Logger.getLogger(WarehouseInventoryInfo.class);
@@ -17,7 +18,7 @@ public class WarehouseInventoryInfo implements Serializable{
 	public WarehouseInventoryInfo(int warehouseId){
 		mWarehouseId = warehouseId;
 	}
-	public void addNewWidgetToInventory(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
+	void addNewWidgetToInventory(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
 		if(!mInventoryInfoList.containsKey(inventoryName)){
 			mInventoryInfoList.put(inventoryName, new HashMap<WidgetInfo,Integer>());
 		}

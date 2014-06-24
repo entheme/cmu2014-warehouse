@@ -15,7 +15,6 @@ import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.OrderStatusInfo;
-import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
 
@@ -63,7 +62,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			} else{
 				handleBodyError(event);
 			}
-			return;
+			break;
 		case FILL_INVENTORY_WIDGET:	//from SupervisorUI
 			if (event.getBody() instanceof WarehouseInventoryInfo){
 				WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo)event.getBody();
@@ -72,6 +71,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			}else{
 				handleBodyError(event);
 			}
+			updateOrderStatus();
 			break;
 		case FINISH_FILL_ORDER:
 			if (event.getBody() instanceof Order){
@@ -81,6 +81,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			}else {
 				handleBodyError(event);
 			}
+			updateOrderStatus();
 			break;
 		case REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER:
 			sendWidgetCatalog(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER);
@@ -127,12 +128,12 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			}else {
 				handleBodyError(event);
 			}
+			updateOrderStatus();
 			break;
 		default:
 			logger.info("unhandled event :"+event);
 			break;
 		}
-		updateOrderStatus();
 	}
 
 	private void sendWidgetCatalog(WComponentType dest, EventMessageType message) {
