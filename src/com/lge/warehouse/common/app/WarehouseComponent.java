@@ -79,6 +79,10 @@ public abstract class WarehouseComponent implements MessageListener, MsgInterfac
 		EventMessage em = new EventMessage(mAlias==null?getId().name():mAlias, dest.name(), type, body);
 		sender.sendObject(em);
 	}
+	public void sendObject(EventMessage em){
+		P2PSender sender = mP2PSenderMap.get(em.getDest());
+		sender.sendObject(em);
+	}
 	protected void handleBodyError(EventMessage event){
 		String errLog = event.getType()+" Has Wrong Body";
 		if(WarehouseContext.DEBUG_WITH_RUNTIME_EXCEPTION)

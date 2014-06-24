@@ -8,14 +8,14 @@ import javax.jms.ObjectMessage;
 
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
-import com.lge.warehouse.common.app.WarehouseComponent;
+import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.ordersys.CustomerServiceManager;
 import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
-public class SupervisorUiController extends WarehouseComponent {
+public class SupervisorUiController extends WarehouseRunnable {
     private SupervisorUi mSupervisorUi;
 	public SupervisorUiController() {
 		super(WComponentType.SUPERVISOR_UI);
@@ -44,6 +44,9 @@ public class SupervisorUiController extends WarehouseComponent {
 	@Override
 	protected void eventHandle(EventMessage event) {
 		// TODO Auto-generated method stub
+		if(event.getSrc().equals(getId().name())){
+			sendObject(event);
+		}
 		switch(event.getType()){
 		case RESPONSE_ORDER_STATUS:
 			if(event.getBody() instanceof OrderStatusInfo){
@@ -64,20 +67,30 @@ public class SupervisorUiController extends WarehouseComponent {
 	}
 	public void requestWidgetCatalog(){
             //System.out.println("controller:request widget catalog");
-		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null);
+		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null);
+		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null));
 	}
 	public void sendWidgetCatalog(WidgetCatalog widgetCatalog){
-		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
+		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
+		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog));
 	}
 	public void requestOrderStatus(){
-		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_ORDER_STATUS, null);
+		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_ORDER_STATUS, null);
+		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.REQUEST_ORDER_STATUS, null));
 	}
 	public void sendWarehouseInventoryInfo(WarehouseInventoryInfo info){
-		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.FILL_INVENTORY_WIDGET,info );
+//		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.FILL_INVENTORY_WIDGET,info );
+		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.FILL_INVENTORY_WIDGET, info));
 	}
 
     void setWidgetCatalogUpdateListener(SupervisorUi aThis) {
         mSupervisorUi = aThis;
     }
+
+	@Override
+	public void ping() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

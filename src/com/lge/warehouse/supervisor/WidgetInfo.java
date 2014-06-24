@@ -1,7 +1,9 @@
 package com.lge.warehouse.supervisor;
 
+import java.io.Serializable;
 
-public class WidgetInfo {
+
+public class WidgetInfo implements Serializable{
 	private final int mProductId;
     private final String mName;
     private final int mPrice;
