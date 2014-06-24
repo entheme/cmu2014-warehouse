@@ -59,7 +59,10 @@ public class WarehouseProxy {
     }
     public void fillInventoryInfo(WarehouseInventoryInfo warehouseInventoryInfo){
     	mInventoryRepository.fillInventoryWidget(warehouseInventoryInfo);
-    	warehouseInventoryInfo = mInventoryRepository.getWarehouseInventoryInfo();
+    	sendWarehouseInventoryInfo();
+    }
+    public void sendWarehouseInventoryInfo(){
+    	WarehouseInventoryInfo warehouseInventoryInfo = mInventoryRepository.getWarehouseInventoryInfo();
     	mSender.sendObject(new EventMessage(mSrc, mDest, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo));
     }
     public boolean hasInventory(Order order){

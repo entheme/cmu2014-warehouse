@@ -40,6 +40,7 @@ public class WarehouseProxyHandler {
         mWarehouses.put(wh.getWarehouseIdentity(), wh);
         mMsgInf.sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.WAREHOUSE_ADD_ACCEPT, new Integer(mWarehouseCounter));
         wh.sendWidgetCatalog();
+        wh.sendWarehouseInventoryInfo();
     }
 	public void sendWidgetCatalog() {
 		for(WarehouseProxy wp : mWarehouses.values()){
