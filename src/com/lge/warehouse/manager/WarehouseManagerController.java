@@ -6,16 +6,12 @@
 
 package com.lge.warehouse.manager;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.manager.OrderStatemachine.WahouseStateMachine;
-import com.lge.warehouse.manager.OrderStatemachine.WMorderStatemachineState;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
@@ -30,8 +26,6 @@ public class WarehouseManagerController extends WarehouseRunnable {
     private static WarehouseManagerController sInstance = null;
     static Logger logger = Logger.getLogger(WarehouseManagerController.class);
     WarehouseInventoryInfo minventoryInfo;
-    WahouseStateMachine warehouseStatemachine = new WahouseStateMachine();
-    NavigationPathSelector PathSelector = new NavigationPathSelector(minventoryInfo);
 
     private WarehouseManagerController() {
         super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
@@ -49,7 +43,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 		switch(event.getType()){
 		case SYSTEM_READY:
 			break;
-		case WAREHOUSE_INVENTORY_INFO:
+                case WAREHOUSE_INVENTORY_INFO:
 			if(event.getBody() instanceof WarehouseInventoryInfo){
 				minventoryInfo = (WarehouseInventoryInfo)event.getBody();
 				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + minventoryInfo.getWarehouseId());
@@ -72,16 +66,9 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				//For Test [START]
 				Order order = (Order)event.getBody();
 				logger.info("FILL_ORDER order id = "+order.getOrderId());
-				System.out.println("FILL_ORDER order id = "+order.getOrderId());
 				for(QuantifiedWidget qw : order.getItemList()){
 					logger.info(qw.getWidget()+" : "+qw.getQuantity());
-					System.out.println(qw.getWidget()+" : "+qw.getQuantity());
 			 	}
-				
-				List<WMorderStatemachineState> newOrderPath = PathSelector.MakeNewNavigationPath(order);
-				warehouseStatemachine.Evt_NewOrder(newOrderPath);
-				
-				
 				try {
 					//To Do: deliver the order to Navigator instead of thread sleep
 					Thread.sleep(5000);
@@ -96,14 +83,14 @@ public class WarehouseManagerController extends WarehouseRunnable {
                                 handleBodyError(event);
 			}
 			break;
-		case UPDATE_WAREHOUSE_STATUS:
+                case UPDATE_WAREHOUSE_STATUS:
 			if(event.getBody() instanceof WarehouseStatus) {
                             WarehouseStatus warehouseStatus = (WarehouseStatus)event.getBody();
                             sendWarehouseStatus(warehouseStatus);
 			}else {
                             handleBodyError(event);
-			} 
-			break;
+                        } 
+                        break;
 		default:
 			logger.info("unhandled event :"+event);
 			break;
