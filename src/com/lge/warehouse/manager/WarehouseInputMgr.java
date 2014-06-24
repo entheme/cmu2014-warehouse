@@ -55,7 +55,7 @@ public class WarehouseInputMgr extends DeviceInputMgr {
     @Override
     protected void threadStart(){
             super.threadStart();
-            setPortNum(506);
+            setPortNum(507);
     }
     
     @Override

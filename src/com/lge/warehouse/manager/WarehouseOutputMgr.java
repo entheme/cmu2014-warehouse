@@ -24,6 +24,7 @@ public class WarehouseOutputMgr extends WarehouseRunnable{
     
     private WarehouseOutputMgr() {
         super(WComponentType.WAREHOUSE_OUTPUT_MGR);
+         mArduinoWriter.setPortNum(506);
     }
     
     public static WarehouseOutputMgr getInstance() {

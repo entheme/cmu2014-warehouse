@@ -16,6 +16,11 @@ public class ArduinoWriter {
 		this.targetIP = ipaddr;
 	}
 
+        public void setPortNum(int portNum)
+        {
+            this.portNum = portNum;
+        }
+        
 	public boolean writeData(String cmd)
  	{
 		if (cmd == null)
