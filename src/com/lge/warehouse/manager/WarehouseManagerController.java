@@ -52,6 +52,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
 		case WAREHOUSE_INVENTORY_INFO:
 			if(event.getBody() instanceof WarehouseInventoryInfo){
 				minventoryInfo = (WarehouseInventoryInfo)event.getBody();
+				PathSelector.SetNewInventory(minventoryInfo);
+				
 				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + minventoryInfo.getWarehouseId());
 			 	for(InventoryName inventoryName : InventoryName.values()){
                                      //Note: Now, The InventoryName means the name of inventory stataion.  

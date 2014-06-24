@@ -26,8 +26,15 @@ public class NavigationPathSelector {
 	RobotAtX robotAtX[] = new RobotAtX[4];
 	private List<WMorderStatemachineState> mPathList;
 	WarehouseInventoryInfo minventoryInfo;
+	
+	private List<QuantifiedWidget> orderItemListfornavation;
+	private List<QuantifiedWidget> tempRemainOrderWidget;
+	
+	
 	public NavigationPathSelector(WarehouseInventoryInfo inventoryInfo)
 	{
+		orderItemListfornavation = new ArrayList<QuantifiedWidget>();
+		tempRemainOrderWidget = new ArrayList<QuantifiedWidget>();
 		minventoryInfo = inventoryInfo;
 		mPathList = new ArrayList<WMorderStatemachineState>();
 		robotMoveToX[0] = new RobotMoveToX(1);
@@ -39,8 +46,6 @@ public class NavigationPathSelector {
 		robotAtX[2] = new RobotAtX(3);
 		robotAtX[3] = new RobotAtX(4);
 	}
-
-	
 	
 	public void addPath(WMorderStatemachineState w){
 		mPathList.add(w);
@@ -53,6 +58,11 @@ public class NavigationPathSelector {
     public void flushPath()
     {
     	mPathList.clear();
+    }
+    
+    public void SetNewInventory(WarehouseInventoryInfo inventoryInfo)
+    {
+    	minventoryInfo = inventoryInfo;
     }
     
     // make new NavigationPathList to use robot navigation to fulfill order
@@ -105,13 +115,19 @@ public class NavigationPathSelector {
 		}
 		//end information
 		
-		// make order QuantifiedWidget list for remove item that take route...
-		List<QuantifiedWidget> OrderItemListfornavation = neworder.getItemList();
+		
+		// copy list for inventory selection.
+		// only for real order.. not for 0 widget.
+		orderItemListfornavation.clear();
 		for(QuantifiedWidget qw : neworder.getItemList())
 		{
-			OrderItemListfornavation.add(qw);
+			if(qw.getQuantity() != 0) 
+			{
+				orderItemListfornavation.add(qw);
+			}
 	 	}
-		System.out.println("[NavigationPathSelector]Number of widget kind at Neworder : " + OrderItemListfornavation.size());
+		
+		System.out.println("[NavigationPathSelector]Number of widget kind at Neworder : " + orderItemListfornavation.size());
     	
     	// One inventory can have two kind of widget. (our system look like... can get more kind of widget..)
     	// Seek first inventory has that kind of widget? and more number of item?
@@ -123,30 +139,41 @@ public class NavigationPathSelector {
 			System.out.println("[NavigationPathSelector]WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
 			if(minventoryInfo.hasInventoryStation(inventoryName)) // If my warehouse has that inventory type..
 			{
-				for(QuantifiedWidget qwInven : minventoryInfo.getInventoryInfo(inventoryName))
+				for(QuantifiedWidget qwInven : minventoryInfo.getInventoryInfo(inventoryName)) //for each widget in Inventory.
 				{
-					List<QuantifiedWidget> TempRemainOrderWidget = OrderItemListfornavation; // for multi widget remove.
+					tempRemainOrderWidget.clear();
+					for(QuantifiedWidget qw : orderItemListfornavation)
+					{
+						tempRemainOrderWidget.add(qw);
+				 	}
 					boolean bAddpath = false;
 					
-					for(int i = 0; i < OrderItemListfornavation.size(); i++)
+					for(int i = 0; i < orderItemListfornavation.size(); i++) // for each widget..
 					{
-						QuantifiedWidget qwOrder = OrderItemListfornavation.get(i);
-						if((qwOrder.getWidget() == qwInven.getWidget()) 
-								&& (qwInven.getQuantity() >= qwOrder.getQuantity()))
+						QuantifiedWidget qwOrder = orderItemListfornavation.get(i);
+						if(qwOrder.getWidget().equals(qwInven.getWidget())) 
 						{
-							System.out.println("ThisInven have more number of widget for order");
-							System.out.println("Inven" + qwInven.getWidget()+" : "+qwInven.getQuantity());
-							System.out.println("Order" + qwOrder.getWidget()+" : " + qwOrder.getQuantity());
-							bAddpath = true;
-							TempRemainOrderWidget.remove(i);
-						}
-						else
-						{;							
+							if(qwInven.getQuantity() >= qwOrder.getQuantity())
+							{
+								System.out.println("ThisInven have more number of widget for order");
+								System.out.println("Inven" + qwInven.getWidget()+" : "+qwInven.getQuantity());
+								System.out.println("Order" + qwOrder.getWidget()+" : " + qwOrder.getQuantity());
+								bAddpath = true;
+								tempRemainOrderWidget.remove(i);
+							}
+							else
+							{;							
+							}
 						}
 						
 				 	}
 					
-					OrderItemListfornavation = TempRemainOrderWidget;
+					orderItemListfornavation.clear();
+					for(QuantifiedWidget qw : tempRemainOrderWidget)
+					{
+						orderItemListfornavation.add(qw);
+				 	}
+					
 					if(bAddpath == true)
 					{
 						System.out.println("This inventory is added route");
@@ -164,16 +191,18 @@ public class NavigationPathSelector {
 			}
 			else
 			{ 
-				// for 
+				// for not 
 				System.out.println("[NavigationPathSelector] this inventory has not [" + InvenIdx + "]st Inventory");
 				addPath(robotMoveToX[InvenIdx]);
 			}
 			
 			
-			//TODO I just want only 4 inventory station.... because now there are only 4 station in real..
+			//TODO I just want only 3 inventory station.... because now there are only 4 station in real..
 			InvenIdx++;
-			if(InvenIdx == 4)
+			if(InvenIdx == 3)
 			{
+				addPath(robotMoveToX[InvenIdx]); // for shipping
+				addPath(robotAtX[InvenIdx]);
 				break;
 			}
 			else
@@ -181,10 +210,6 @@ public class NavigationPathSelector {
 			}
 		}
 		
-    	
-		
-    	
-    	
     	
     	String tempPath = "[NavigationPathSelector] Make path to NewOrder! Selected path is";
     	for(WMorderStatemachineState state : mPathList)
