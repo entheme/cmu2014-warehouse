@@ -3,7 +3,6 @@ package com.lge.warehouse.manager.OrderStatemachine;
 import java.io.Serializable;
 import java.util.List;
 
-
 public abstract class WMorderStatemachineState implements Serializable{
 	
 	WahouseStateMachine warehousestatemachine;

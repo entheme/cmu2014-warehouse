@@ -41,7 +41,7 @@ public class WahouseStateMachine implements Serializable{
 		
 		//SaveState = initState;
 		// If This Save state is not initstate mean Error recovery logic is run
-		CurrentState = initState;
+		CurrentState = waitNewOrderState;
 		load();
 		if(SaveState != null)
 		{

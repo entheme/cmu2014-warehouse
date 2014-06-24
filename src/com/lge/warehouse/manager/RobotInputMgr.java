@@ -22,13 +22,13 @@ import org.apache.log4j.Logger;
  *
  * @author seuki77
  */
-public class RobotInputMgr implements Runnable {
+public class RobotInputMgr extends DeviceInputMgr {
     private static RobotInputMgr sInstance = null;
     static Logger logger = Logger.getLogger(RobotInputMgr.class);
     ArdunioReader mArdunioReader = new ArdunioReader();
     
     private RobotInputMgr() {
-
+        super(WComponentType.ROBOT_INPUT_MGR);
     }
     
     public static RobotInputMgr getInstance() {
@@ -39,22 +39,26 @@ public class RobotInputMgr implements Runnable {
     }
     
     @Override
-    public void run() {
-            // TODO Auto-generated method stub
-            String inputData = null;
-            String value = null;
-            if(mArdunioReader.startServer() == true) {
-                while(true) {
-                    inputData = mArdunioReader.readData();
-                    if(inputData != null) {
-                       
-                        if(inputData.startsWith("E") == true) {
-                          value  = inputData.substring(1);
-                          //ToDo : Send value to WarehouseManageController
-                        }
-                    }
-                }
-            }
+    protected void processingData(String inputData) {
+        String value = null;
+         
+        if(inputData.startsWith("E") == true) { 
+             value  = inputData.substring(1);
+            //Send processed robot's error information to WAREHOUSE_MANAGER_CONTROLLER
+            sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.SEND_ROBOT_ERROR, value);
+        }
+    }
+    
+    @Override
+    protected void threadStart(){
+            super.threadStart();
+            setPortNum(505);
+     }
+    
+    @Override
+    public void ping() {   
+        String test = new String("RobotInputMgr");
+        sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.COMPONENT_HELLO, test);
     }
     
     public static void start() {

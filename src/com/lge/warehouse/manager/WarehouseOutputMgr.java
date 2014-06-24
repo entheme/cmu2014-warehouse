@@ -24,6 +24,7 @@ public class WarehouseOutputMgr extends WarehouseRunnable{
     
     private WarehouseOutputMgr() {
         super(WComponentType.WAREHOUSE_OUTPUT_MGR);
+         mArduinoWriter.setPortNum(506);
     }
     
     public static WarehouseOutputMgr getInstance() {
@@ -39,15 +40,19 @@ public class WarehouseOutputMgr extends WarehouseRunnable{
 		case SYSTEM_READY:
                     break;
                 case INIT_WAREHOUSE:
+                    logger.info("INIT_WAREHOUSE");
                     mArduinoWriter.writeData("I");
                     break;
                 case REQUEST_LOAD_STATUS:
+                    logger.info("REQUEST_LOAD_STATUS");
                     mArduinoWriter.writeData("L");
                     break;
                 case REQUST_POS_STATUS:
+                    logger.info("REQUST_POS_STATUS");
                     mArduinoWriter.writeData("P");
                     break;    
                 case REQUEST_WAREHOUSE_RECOVERY:
+                    logger.info("REQUEST_WAREHOUSE_RECOVERY");
                     mArduinoWriter.writeData("R");
                     break;    
 		default:

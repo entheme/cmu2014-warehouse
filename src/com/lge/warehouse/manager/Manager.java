@@ -40,9 +40,9 @@ public class Manager {
     public static void ping(){
         WmMsgHandler.getInstance().ping();
         WarehouseManagerController.getInstance().ping();
-        //WarehouseInputMgr.getInstance().ping();
+        WarehouseInputMgr.getInstance().ping();
         WarehouseOutputMgr.getInstance().ping();
-        //RobotInputMgr.getInstance().ping();
+        RobotInputMgr.getInstance().ping();
         RobotOutputMgr.getInstance().ping();
     }
 }

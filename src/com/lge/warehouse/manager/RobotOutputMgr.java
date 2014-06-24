@@ -30,6 +30,7 @@ public class RobotOutputMgr extends WarehouseRunnable{
     
     private RobotOutputMgr() {
         super(WComponentType.ROBOT_OUTPUT_MGR);
+        mArduinoWriter.setPortNum(504);
     }
     
     public static RobotOutputMgr getInstance() {
@@ -45,9 +46,11 @@ public class RobotOutputMgr extends WarehouseRunnable{
 		case SYSTEM_READY:
                     break;
                 case MOVE_NEXT_INV:
+                    logger.info("MOVE_NEXT_INV");
                     mArduinoWriter.writeData("M");
                     break;
                 case REQUEST_ROBOT_RECOVERY:
+                    logger.info("REQUEST_ROBOT_RECOVERY");
                     mArduinoWriter.writeData("R");
                     break;
 		default:

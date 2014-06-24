@@ -41,60 +41,68 @@
 #define FULLCCW  180           // PWM value for servo
 
 // PWM values for Servo
-#define L_FWD_F  0     // Forward Full speed
-#define L_FWD_H  20    // Forward High speed
-#define L_FWD_M  45    // Forward Middle speed
-#define L_FWD_L  70    // Forward Low speed
+#define L_FWD_F  180     // Forward Full speed
+#define L_FWD_H  160    // Forward High speed
+#define L_FWD_M  135    // Forward Middle speed
+#define L_FWD_L  110    // Forward Low speed
 #define L_STOP   90
-#define L_BWD_L  110
-#define L_BWD_M  135
-#define L_BWD_H  160
-#define L_BWD_F  180
-#define R_BWD_F  0
-#define R_BWD_H  20
-#define R_BWD_M  45
-#define R_BWD_L  70
+#define L_BWD_L  70
+#define L_BWD_M  45
+#define L_BWD_H  20
+#define L_BWD_F  0
+
+#define R_BWD_F  180
+#define R_BWD_H  160
+#define R_BWD_M  135
+#define R_BWD_L  110
 #define R_STOP   90
-#define R_FWD_L  110
-#define R_FWD_M  135
-#define R_FWD_H  160
-#define R_FWD_F  180
+#define R_FWD_L  70
+#define R_FWD_M  45
+#define R_FWD_H  20
+#define R_FWD_F  0
+
 #define ADJ_NONE  0
 #define ADJ_RIGHT 1
 #define ADJ_LEFT  2
 #define ADJ_STOP  3
 
 // Client socket port#
-#define PORTID 504             // IP socket port#
+#define PORTID    550             // IP socket port#
 
 // QTI Sensor Control
 #define  QTIL    9
 #define  QTIC    8
 #define  QTIR    2
-#define  WHITE_THRESHOLD    30
-#define  BLACK_THRESHOLD    30
-#define  COLOR_BLACK        0
-#define  COLOR_WHITE        1
-#define  COLOR_UNKNOWN      2
-#define  SENSOR_L_ONLY      100
-#define  SENSOR_C_ONLY      101
-#define  SENSOR_R_ONLY      102
-#define  SENSOR_ALL         103
-#define  SENSOR_UNKNOWN     199
+#define  COLOR_THRESHOLD    30
+#define  COLOR_WHITE        0x0
+#define  COLOR_BLACK        0x1
+
+#define  SENSOR_NONE        0x0
+#define  SENSOR_L           0x1
+#define  SENSOR_C           0x2
+#define  SENSOR_LC          0x3
+#define  SENSOR_R           0x4
+#define  SENSOR_LR          0x5
+#define  SENSOR_CR          0x6
+#define  SENSOR_LCR         0x7
+
+#define  ZONE_INV_IN        1
+#define  ZONE_INV_OUT       0
 
 #define API_ERR  -1
 #define API_OK   0
 
-#define CMD_ERR      -1
-#define CMD_MIN      0
-#define CMD_STOP     0
-#define CMD_MOVE     1
-#define CMD_FWD      2
-#define CMD_BWD      3
-#define CMD_TURN     4
-#define CMD_READ_QTI 5
-#define CMD_TEST     6
-#define CMD_MAX      6
+#define CMD_ERR             -1
+#define CMD_MIN             0
+#define CMD_STOP            0
+#define CMD_MOVE            1
+#define CMD_RECOVERY        2
+#define CMD_FWD             3
+#define CMD_BWD             4
+#define CMD_TURN            5
+#define CMD_READ_QTI        6
+#define CMD_TEST            7
+#define CMD_MAX             7
 
 int   LtServoVal;              // Left servo PWM value
 int   RtServoVal;              // Right servo PWM value
@@ -120,8 +128,12 @@ byte mac[6];                   // MAC address of the WIFI shield
 boolean done;                  // Loop flag
 boolean commandRead;           // Loop flag
 
+unsigned long Delay_For_90_Degree = 1300;
 int curPosition = 0;
 int pos = 0;
+
+int curZone = ZONE_INV_IN;
+int newZone = ZONE_INV_IN;
 
 void setup() 
 {
@@ -150,6 +162,8 @@ void loop()
    {
       executeCmd(whCmd);
    }
+   
+   // send error status ==> 'E' + data
 }
 
 int getCmdFromWarehouseManager()
@@ -184,19 +198,22 @@ int getCmdFromWarehouseManager()
          case 'M':
             cmd = CMD_MOVE;
             break;
+         case 'R':
+            cmd = CMD_RECOVERY;
+            break;
          case 'F':
             cmd = CMD_FWD;
             break;
          case 'B':
             cmd = CMD_BWD;
             break;
-         case 'R':
+         case 'T':
             cmd = CMD_TURN;
             break;
          case 'Q':
             cmd = CMD_READ_QTI;
             break;
-         case 'T':
+         case 'E':
             cmd = CMD_TEST;
             break;
          default:
@@ -232,10 +249,10 @@ void executeCmd(int cmd)
              moveBackward();
              break;
         case CMD_TURN:
-             turnRight();
+             turnRightDegree(90);
              break;
         case CMD_READ_QTI:
-             checkSensor();
+             getSensorStatus();
              break;
         case CMD_TEST:
              break;
@@ -247,87 +264,258 @@ void executeCmd(int cmd)
 
 void moveNextInventory()
 {
-  int sVal = 0;
-  int prevStatus = ADJ_NONE;
-   Serial.print("moveNextInventory...\n");
+  char sVal = 0, lineVal = 0;
+  boolean isArrival = false;
+  
+  Serial.print("moveNextInventory...\n");
    
-   Serial.print("move forward\n");
-   moveForward();
-   
-   while (prevStatus != ADJ_STOP)
+   while (isArrival == false)
    {
-      sVal = checkSensor();
-      
-      switch (sVal)
-      {
-         case SENSOR_L_ONLY:
-            adjLeft(1);
-            prevStatus = ADJ_LEFT;
-            break;
-         case SENSOR_C_ONLY:
-            if (prevStatus == ADJ_LEFT)
-            {
-               adjRight(1);
-               prevStatus = ADJ_NONE;
-            }
-            else if (prevStatus == ADJ_RIGHT)
-            {
-               adjLeft(1);
-               prevStatus = ADJ_NONE;
-            }
-            break;
-         case SENSOR_R_ONLY:
-            adjRight(1);
-            prevStatus = ADJ_RIGHT;
-            break;
-         case SENSOR_ALL:
-            stopRobot();
-            prevStatus = ADJ_STOP;
-            break;
-         default:
-            Serial.print("unknown sensor value..\n");
-            break;
-      }
-      
-      delay(20);    
+     sVal = getSensorStatus();
+     
+     curZone = getZone(sVal, curZone);
+     
+     if (curZone == ZONE_INV_IN)
+       lineVal = (0x7 & (~sVal));
+     else
+       lineVal = (0x7 & sVal);
+     Serial.print("lineVal = 0x");
+     Serial.println(lineVal, HEX);
+     
+     switch (lineVal)
+     {
+       case SENSOR_NONE: // 0x0
+         adjustCenter();
+         break;
+       case SENSOR_L:    // 0x1
+         adjustCenterUsingLeftTurn();
+         break;
+       case SENSOR_C:    // 0x2
+         moveForward();
+         break;
+       case SENSOR_R:    // 0x4
+         adjustCenterUsingRightTurn();
+         break;
+       case SENSOR_CR:   // 0x6 ---> This is arrival case!
+         moveToEnd();
+         turnRightDegree(90);
+         adjustCenter();
+         isArrival = true;
+         break;
+       case SENSOR_LCR:  // 0x7
+       case SENSOR_LC:   // 0x3
+       case SENSOR_LR:   // 0x5
+         Serial.print("Someting wrong...0x");
+         Serial.print(sVal, HEX);
+         //adjustCenter();
+         break;
+       default:
+         Serial.println("unknown sensor value");
+         break;
+     }
    }
 }
 
-int checkSensor()
+int getZone(char val, int prevZone)
 {
-   int retVal, valL, valC, valR;
+  int zone = prevZone;
+  
+  switch (val)
+  {
+     case SENSOR_NONE: // 0x0
+       zone = ZONE_INV_OUT;
+       break;
+     case SENSOR_L:    // 0x1
+       break;
+     case SENSOR_C:    // 0x2
+       zone = ZONE_INV_OUT;
+       break;
+     case SENSOR_LC:   // 0x3
+       break;
+     case SENSOR_R:    // 0x4
+       break;
+     case SENSOR_LR:   // 0x5
+       zone = ZONE_INV_IN;
+       break;
+     case SENSOR_CR:   // 0x6
+       break;
+     case SENSOR_LCR:  // 0x7
+       zone = ZONE_INV_IN;
+       break;
+     default:
+       Serial.println("unknown sensor value");
+       break;
+  }
+  Serial.print("Zone: ");
+  Serial.print(prevZone);
+  Serial.print(" -> ");
+  Serial.println(zone);
+  
+  return zone;
+}
+
+boolean adjustCenter()
+{
+  Serial.println("adjustCenter.............");
+  boolean isFound = false;
+  int adjDegree[7] = {5, 15, 30, 60, 90, 140, 180}; // ==> {-5 , +10 , -20 , +40 , -50 , +90 , -90}
+  int i;
+  unsigned long adjDelay;
+  unsigned long tS, tE, tD;
+  char sVal = 0;
+  
+  for (i=0 ; i < 7 && isFound == false ; i++)
+  {
+    adjDelay = getDelayForDegree(adjDegree[i]);
+    
+    tS = millis();
+    
+    if (i%2)
+      turnRight();
+    else
+      turnLeft();
+      
+    do
+    {
+      sVal = getOnLineStatus();
+      if (sVal == SENSOR_C)
+      {
+        isFound = true;
+        break;
+      }
+      tE = millis();
+      tD = tE - tS;
+    } while (tD < adjDelay);
+    
+    stopRobot();
+  }
+  
+  return isFound;
+}
+
+unsigned long getDelayForDegree(int degree)
+{
+  unsigned long tDelay;
+  tDelay = (Delay_For_90_Degree * degree) / 90;
+  return tDelay;
+}
+
+void adjustCenterUsingRightTurn()
+{
+  Serial.println("adjustCenterUsingRightTurn");
+  char sVal = 0;
+  turnRight();
+  while (getSensorStatus() != SENSOR_C)
+    delay(10);
+  stopRobot();
+}
+
+void adjustCenterUsingLeftTurn()
+{
+  Serial.println("adjustCenterUsingLeftTurn");
+  char sVal = 0;
+  turnLeft();
+  while (getSensorStatus() != SENSOR_C)
+    delay(10);
+  stopRobot();
+}
+
+// Turn x degrees to the right 
+void turnRightDegree(int degree)
+{
+  Serial.print("turnRightDegree: ");
+  Serial.println(degree);
+  unsigned long tDelay;
+  if (degree <= 0 || degree > 90)
+  {
+    Serial.println("invalid degree");
+    return;
+  }
+  Serial.println("tDelay");
+  tDelay = (Delay_For_90_Degree * degree) / 90;
+  Serial.println(tDelay);
+  
+  RtServo.write(FULLSTOP);
+  LtServo.write(L_FWD_L);
+  delay(tDelay);
+  RtServo.write(FULLSTOP);
+  LtServo.write(FULLSTOP);
+}
+
+// Turn x degrees to the left
+void turnLeftDegree(int degree)
+{
+  Serial.print("turnLeftDegree: ");
+  Serial.println(degree);
+  int tDelay;
+  if (degree <= 0 || degree > 90)
+  {
+    Serial.println("invalid degree");
+    return;
+  }
+  
+  tDelay = (Delay_For_90_Degree * degree) / 90;
+  
+  RtServo.write(FULLSTOP);
+  LtServo.write(L_BWD_L);
+  //RtServo.write(R_FWD_L);
+  //LtServo.write(FULLSTOP);
+  delay(tDelay);
+  RtServo.write(FULLSTOP);
+  LtServo.write(FULLSTOP);
+}
+
+// move to the end on inventory (until sensor = SENSOR_LCR)
+void moveToEnd()
+{
+  Serial.println("moveToEnd");
+  char sVal = 0;
+  moveForward();
+  while (getSensorStatus() != SENSOR_LCR)
+  {
+    ;
+  }
+  stopRobot();
+}
+
+char getOnLineStatus()
+{
+  Serial.print("getOnLineStatus: 0x");
+  char sVal, lineVal;
+  sVal = getSensorStatus();
+  
+  curZone = getZone(sVal, curZone);
+  if (curZone == ZONE_INV_IN)
+    lineVal = 0x7 & (~sVal);
+  else
+    lineVal = 0x7 & sVal;
+    
+  Serial.println(lineVal, HEX);
+  
+  return lineVal;
+}
+
+char getSensorStatus()
+{
+   char retVal = SENSOR_NONE;
+   char valL, valC, valR;
    
-   valL = getSensorVal(QTIL);
-   valC = getSensorVal(QTIC);
-   valR = getSensorVal(QTIR);
+   valL = readSensor(QTIL);
+   valC = readSensor(QTIC);
+   valR = readSensor(QTIR);
    
-   if (valL == COLOR_BLACK && valC == COLOR_WHITE && valR == COLOR_WHITE)
-   {
-      Serial.print("sensor...L only\n");
-      retVal = SENSOR_L_ONLY;
-   }
-   else if (valL == COLOR_WHITE && valC == COLOR_BLACK && valR == COLOR_WHITE)
-   {
-      Serial.print("sensor...C only\n");
-      retVal = SENSOR_C_ONLY;
-   }
-   else if (valL == COLOR_WHITE && valC == COLOR_WHITE && valR == COLOR_BLACK)
-   {
-      Serial.print("sensor...R only\n");
-      retVal = SENSOR_R_ONLY;
-   }
-   else if (valL == COLOR_BLACK && valC == COLOR_BLACK && valR == COLOR_BLACK)
-   {
-      Serial.print("sensor...ALL\n");
-      retVal = SENSOR_ALL;
-   }
-   else
-      retVal = SENSOR_UNKNOWN;
-   
+   retVal = (valL << 0) | (valC << 1) | (valR << 2);
+   Serial.print("Sensor: ");
+   Serial.print(valR, DEC);
+   Serial.print(valC, DEC);
+   Serial.println(valL, DEC);
+   Serial.print("retVal: 0x");
+   Serial.println(retVal, HEX);
+
    return retVal;
 }
 
-int getSensorVal(int port)
+char readSensor(int port)
 {
    long val = 0;
    if (port != QTIL && port != QTIC && port != QTIR)
@@ -338,16 +526,14 @@ int getSensorVal(int port)
    }
    
    val = RCTime(port);
-   Serial.print("Port ");
-   Serial.print(port);
-   Serial.print(", val = ");
-   Serial.println(val);
-   if (val < WHITE_THRESHOLD)
-      return COLOR_WHITE;
-   else if (val > BLACK_THRESHOLD)
-      return COLOR_BLACK;
-   
-   return COLOR_UNKNOWN;
+   //Serial.print("Port ");
+   //Serial.print(port);
+   //Serial.print(", val = ");
+   //Serial.println(val);
+   if (val < COLOR_THRESHOLD)
+      return COLOR_WHITE; // = 0x0
+   else
+      return COLOR_BLACK; // = 0x1
 }
 
 void initRobot()
@@ -356,139 +542,36 @@ void initRobot()
 }
 void moveForward()
 {
-   //LtServo.write(FULLCCW);
-   //RtServo.write(FULLCW);
+   Serial.println("moveForward");
    RtServo.write(R_FWD_L);
    LtServo.write(L_FWD_L);
 }
 void moveBackward()
 {
-   //LtServo.write(FULLCW);
-   //RtServo.write(FULLCCW);
+   Serial.println("moveBackward");
    RtServo.write(R_BWD_H);
    LtServo.write(L_BWD_H);
 }
 void turnRight()
 {
+   Serial.println("turnRight");
    RtServo.write(FULLSTOP);
    LtServo.write(L_FWD_L);
-   delay(1200);
-   RtServo.write(FULLSTOP);
-   LtServo.write(FULLSTOP);
 }
 void turnLeft()
 {
-   RtServo.write(R_FWD_L);
-   LtServo.write(FULLSTOP);
-   delay(1200);
+   Serial.println("turnLeft");
    RtServo.write(FULLSTOP);
-   LtServo.write(FULLSTOP);
+   LtServo.write(L_BWD_L);
+   //RtServo.write(R_FWD_L);
+   //LtServo.write(FULLSTOP);
 }
 void stopRobot()
 {
+   Serial.println("stopRobot");
    LtServo.write(FULLSTOP);
    RtServo.write(FULLSTOP);
 }
-void adjRight(int nStep)
-{
-}
-void adjLeft(int nStep)
-{
-}
-void waitLoad()
-{
-}
-void waitComplete()
-{
-}
-
- void old_loop() 
- {
-    // Listen for a new client.
-   WiFiClient client = server.available();
- 
-   // Wait until we are connected to the client.
-   if (client) 
-   {
-     Serial.print("Client connected..."); 
-
-     // Here is the command parser. Commands are in the format of
-     // command character. 
-     
-     Serial.println( "Waiting for a command..." );
-       
-     while ( client.available() == 0 ) 
-     {
-        // There is no input...
-        delay( 500 );
-     }     
- 
-     command = client.read();         // Read a character from the client.  
-     Serial.print( "Command:: " );
-     Serial.println( command );         
-    
-     // The command interpreter starts here. Bascally, we act on the single character command.
-
-     switch ( command )
-     {
-        case 'X': // This is an exit command and disconnects from the client
-        case 'x': 
-             done= true;
-             break;
-         
-        case 'F': // Drives the bot forward
-        case 'f': 
-             LtServo.write(FULLCCW);  
-             RtServo.write(FULLCW); 
-             break;
-
-        case 'B': // Drives the bot backward
-        case 'b': 
-             LtServo.write(FULLCW);  
-             RtServo.write(FULLCCW); 
-             break;
-
-        case 'S': // Stops the bot
-        case 's': 
-             LtServo.write(FULLSTOP);  
-             RtServo.write(FULLSTOP); 
-             break;
-         
-        case 'R': // Rolls the bot right then stops after 1/2 second
-        case 'r': 
-             LtServo.write(FULLCCW);  
-             RtServo.write(FULLSTOP);
-             delay(500);
-             LtServo.write(FULLSTOP);  
-             RtServo.write(FULLSTOP);             
-             break;
-
-        case 'L': // Rolls the bot left then stops after 1/2 second
-        case 'l': 
-             LtServo.write(FULLSTOP);  
-             RtServo.write(FULLCW);
-             delay(500);
-             LtServo.write(FULLSTOP);  
-             RtServo.write(FULLSTOP);             
-             break;
-          
-        default: // If we don't know what the command is, we just say so and exit.
-             Serial.print( "Unrecognized Command:: " );
-             Serial.println( command );
-    
-     } // switch
-
-     // Note that we disconnect here because the Arduino server only stays connected as long
-     // as the client streams data. As soon as the client stream stops, the server automatically
-     // disconnects from the server... so only one command is sent through at a time
-
-     client.stop();
-     Serial.println( "Client Disconnected.\n" );
-     Serial.println( "........................." );
-     
-   } // if client is connected
- 
- } // loop
 
 /************************************************************************************************
 * Start Wifi Server
