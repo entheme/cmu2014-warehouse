@@ -101,6 +101,11 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 				}
 				WarehouseStatus warehouseStatus = new WarehouseStatus();
 				List<QuantifiedWidget> inventoryListOnBot = new ArrayList<QuantifiedWidget>();
+				logger.info("WAREHOUSE_STATUS_INFO");
+				for(InventoryName inventoryName : InventoryName.values()){
+					if(inventoryInfo.hasInventoryStation(inventoryName))
+						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
+				}
 				warehouseStatus.addVisitedStationListOfBot("");
 				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
 				warehouseStatus.setLocationOfBot("0->1");
@@ -109,33 +114,51 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 				sendWarehouseStatus(warehouseStatus);
 				
 				
-				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_1, widgetCatalog.getWidgetInfoAt(0), 10);
-				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(0), 10));
-				warehouseStatus.addVisitedStationListOfBot("1");
-				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
-				warehouseStatus.setLocationOfBot("1");
-				warehouseStatus.setNextStop("Inventory status 2");
-				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
-				sendWarehouseStatus(warehouseStatus);
 				
-				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_2, widgetCatalog.getWidgetInfoAt(1), 10);
-				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(1), 10));
-				warehouseStatus.addVisitedStationListOfBot("2");
-				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
-				warehouseStatus.setLocationOfBot("2");
-				warehouseStatus.setNextStop("Inventory status 3");
-				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
-				sendWarehouseStatus(warehouseStatus);
+//				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_1, widgetCatalog.getWidgetInfoAt(0), 10);
+//				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(0), 10));
+//				warehouseStatus.addVisitedStationListOfBot("1");
+//				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
+//				warehouseStatus.setLocationOfBot("1");
+//				warehouseStatus.setNextStop("Inventory status 2");
+//				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
+//				logger.info("WAREHOUSE_STATUS_INFO");
+//				for(InventoryName inventoryName : InventoryName.values()){
+//					if(inventoryInfo.hasInventoryStation(inventoryName))
+//						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
+//				}
+//				sendWarehouseStatus(warehouseStatus);
+				testFillOrder(InventoryName.INVENTORY_1, order, inventoryListOnBot, warehouseStatus);
 				
-				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_3, widgetCatalog.getWidgetInfoAt(3), 10);
-				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(1), 10));
-				warehouseStatus.addVisitedStationListOfBot("3");
-				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
-				warehouseStatus.setLocationOfBot("3");
-				warehouseStatus.setNextStop("Inventory status 4");
-				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
-				sendWarehouseStatus(warehouseStatus);
+//				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_2, widgetCatalog.getWidgetInfoAt(1), 10);
+//				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(1), 10));
+//				warehouseStatus.addVisitedStationListOfBot("2");
+//				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
+//				warehouseStatus.setLocationOfBot("2");
+//				warehouseStatus.setNextStop("Inventory status 3");
+//				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
+//				logger.info("WAREHOUSE_STATUS_INFO");
+//				for(InventoryName inventoryName : InventoryName.values()){
+//					if(inventoryInfo.hasInventoryStation(inventoryName))
+//						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
+//				}
+//				sendWarehouseStatus(warehouseStatus);
+				testFillOrder(InventoryName.INVENTORY_2, order, inventoryListOnBot, warehouseStatus);
 				
+//				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_3, widgetCatalog.getWidgetInfoAt(3), 10);
+//				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(3), 10));
+//				warehouseStatus.addVisitedStationListOfBot("3");
+//				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
+//				warehouseStatus.setLocationOfBot("3");
+//				warehouseStatus.setNextStop("Inventory status 4");
+//				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
+//				logger.info("WAREHOUSE_STATUS_INFO");
+//				for(InventoryName inventoryName : InventoryName.values()){
+//					if(inventoryInfo.hasInventoryStation(inventoryName))
+//						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
+//				}
+//				sendWarehouseStatus(warehouseStatus);
+				testFillOrder(InventoryName.INVENTORY_4, order, inventoryListOnBot, warehouseStatus);
 				
 				sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.FINISH_FILL_ORDER, order);
 			}else {
@@ -143,6 +166,25 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 			}
 			break;
 		}
+	}
+	private void testFillOrder(InventoryName inventoryName, Order order, List<QuantifiedWidget> inventoryListOnBot, WarehouseStatus warehouseStatus){
+		for(QuantifiedWidget quantifiedWidget : order.getItemList()){
+			if(inventoryInfo.hasInventory(inventoryName, quantifiedWidget.getWidget())){
+				inventoryInfo.reductInventoryWidget(inventoryName, quantifiedWidget.getWidget(), quantifiedWidget.getQuantity());
+				inventoryListOnBot.add(new QuantifiedWidget(quantifiedWidget.getWidget(), quantifiedWidget.getQuantity()));
+			}
+		}
+		warehouseStatus.addVisitedStationListOfBot(inventoryName.name());
+		warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
+		warehouseStatus.setLocationOfBot(inventoryName.name());
+		warehouseStatus.setNextStop(InventoryName.fromInteger(InventoryName.fromInventoryName(inventoryName)+1).name());
+		warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
+		logger.info("WAREHOUSE_STATUS_INFO");
+		for(InventoryName name : InventoryName.values()){
+			if(inventoryInfo.hasInventoryStation(name))
+				logger.info(inventoryInfo.getInventoryInfo(name));
+		}
+		sendWarehouseStatus(warehouseStatus);
 	}
 	private void sendWarehouseStatus(WarehouseStatus warehouseStatus){
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.UPDATE_WAREHOUSE_STATUS, warehouseStatus);

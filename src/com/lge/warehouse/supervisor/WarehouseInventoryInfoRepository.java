@@ -67,7 +67,13 @@ class WarehouseInventoryInfoRepository {
 			if(warehouseInventoryInfo.hasInventoryStation(inventoryName)){
 				List<QuantifiedWidget> qwList = warehouseInventoryInfo.getInventoryInfo(inventoryName);
 				for(QuantifiedWidget qw : qwList){
-					mInventoryInfo.fillInventoryWidget(inventoryName, qw.getWidget(), qw.getQuantity());
+					if(mInventoryInfo.hasInventory(inventoryName, qw.getWidget())){
+						mInventoryInfo.fillInventoryWidget(inventoryName, qw.getWidget(), qw.getQuantity());
+						logger.info("already existed widget, fillInventoryWidget ");
+					}else{
+						mInventoryInfo.addNewWidgetToInventory(inventoryName, qw.getWidget(), qw.getQuantity());
+						logger.info("new Widget, addNewWidgetToInventory");
+					}
 				}
 			}
 		}

@@ -152,7 +152,8 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.REQUEST_PENDING_ORDER, null);
 		}else {
 			logger.info("back order is ready, request filling order to WmMsgHandler");
-			sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FILL_ORDER, order);
+			//sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FILL_ORDER, order);
+			mWarehouseProxyHandler.requestFillOrder(order);
 		}
 	}
 	public static void start() {
