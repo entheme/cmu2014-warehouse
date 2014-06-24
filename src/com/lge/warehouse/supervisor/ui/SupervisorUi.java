@@ -277,6 +277,16 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jTextAreaOrder.setText(orderStatus);
         
     }
+
+    @Override
+    public void updateRobotStatus(String robotStatus) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updateInvenetoryStatus(String inventoryStatus) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
 }
