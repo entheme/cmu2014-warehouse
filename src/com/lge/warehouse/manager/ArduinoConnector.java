@@ -46,6 +46,7 @@ public class ArduinoConnector {
                     logger.info("Waiting for Arduino on port " + portNum + "." );
                     
                     clientSocket = serverSocket.accept();
+                    clientSocket.setSoTimeout(7000);
                     
                     logger.info("Client is connected: " + clientSocket.toString());
                     
@@ -107,7 +108,8 @@ public class ArduinoConnector {
                     if(in != null)
                     {
                         ardData = in.readLine();
-                        logger.debug("data :" + ardData);
+                        if(ardData != null)
+                            logger.debug("data :" + ardData);
                     }
                         
 	    	//System.out.println ("Data from Arduino: " + ardData);
