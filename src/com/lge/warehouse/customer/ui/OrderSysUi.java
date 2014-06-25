@@ -163,6 +163,9 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
 		// TODO Auto-generated method stub
     	logger.info("updateUi");
     	jListWidget.updateUI();
+        //update list cursor
+        if(jListWidget.getSelectedIndex() == -1)
+            jListWidget.setSelectedIndex(0);
 	}
     /**
      * @param args the command line arguments

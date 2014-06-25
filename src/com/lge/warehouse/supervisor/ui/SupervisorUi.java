@@ -271,6 +271,12 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jButtonAddWidget.setEnabled(bEnable);
     }
     
+    private void updateInventoryComboBox() {
+        System.out.println("jComboBoxWidget.getSelectedIndex() : " + jComboBoxWidget.getSelectedIndex());
+        if(jComboBoxWidget.getSelectedIndex() == -1)
+            jComboBoxWidget.setSelectedIndex(0);
+    }
+    
     private int getCatalogSize() {
         if(mWidgetCatalog == null)
             return 0;
@@ -355,6 +361,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         mWidgetCatalog = widgetCatalog;
         jComboBoxWidget.updateUI();
         updateWidgetManagementUi();
+        updateInventoryComboBox();
 
     }
 
