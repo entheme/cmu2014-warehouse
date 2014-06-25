@@ -57,8 +57,10 @@ public class WarehouseManagerController extends WarehouseRunnable {
     	String StringFormat = "";
     	List<QuantifiedWidget> inventoryListOnBot = new ArrayList<QuantifiedWidget>();
     	List<WMorderStatemachineState> PathList = new ArrayList<WMorderStatemachineState>();
+    	
     	PathList = warehouseStatemachine.getCurrentState().getPassedNavigationPath();
     	
+    	//visited Station information
     	if(PathList.isEmpty())
     	{
     		StringFormat += "[NULL]";
@@ -68,7 +70,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
     		for(WMorderStatemachineState pa : PathList)
 			{
 	    		StringFormat += pa.toString();
-	    		if(pa instanceof RobotAtX)
+	    		if(pa instanceof RobotAtX) // for robot holding widget lsit.
 	    		{
 	    			for(QuantifiedWidget qw : ((RobotAtX) pa).getQwOrderList())
 	    			{
@@ -81,6 +83,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
     	warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
 		warehouseStatus.setLocationOfBot(warehouseStatemachine.getCurrentState().toString());
 		
+		// for remain path list.
 		PathList = warehouseStatemachine.getCurrentState().getNavigationPath();
 		StringFormat = "NULL";
 		for(WMorderStatemachineState pa : PathList)
@@ -104,6 +107,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 
     @Override
     protected void eventHandle(EventMessage event) {
+    	CmdToOther Cmd = CmdToOther.CMD_NONE;
 		switch(event.getType()){
 		case SYSTEM_READY:
 			break;
@@ -139,9 +143,12 @@ public class WarehouseManagerController extends WarehouseRunnable {
 					System.out.println(qw.getWidget()+" : "+qw.getQuantity());
 			 	}
 				
+				// need to check Warehouse and Robot is alive.
+				sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.INIT_WAREHOUSE, null);
+				
+				
 				List<WMorderStatemachineState> newOrderPath = PathSelector.MakeNewNavigationPath(order);
-				SendWarehouseStatus();
-				CmdToOther Cmd = warehouseStatemachine.Evt_NewOrder(newOrderPath);
+				Cmd = warehouseStatemachine.Evt_NewOrder(newOrderPath);
 				HandleStateMachineCmd(Cmd);
 				
 				
@@ -149,17 +156,17 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				/*
 				try {
 					//To Do: deliver the order to Navigator instead of thread sleep
+        	                                    //Follwing code is just for test.
+                                //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.INIT_WAREHOUSE, null);
+                                //sendMsg(WComponentType.ROBOT_OUTPUT_MGR, EventMessageType.MOVE_NEXT_INV, null);
+              
+                                Thread.sleep(5000);
+                                
+                                //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS, null);
+                                //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS, null);
+                                //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_WAREHOUSE_RECOVERY, null);
+
 	                                    
-	                                    //Follwing code is just for test.
-	                                    //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.INIT_WAREHOUSE, null);
-	                                    //sendMsg(WComponentType.ROBOT_OUTPUT_MGR, EventMessageType.MOVE_NEXT_INV, null);
-	                  
-	                                    Thread.sleep(5000);
-	                                    
-	                                    //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS, null);
-	                                    //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS, null);
-	                                    //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_WAREHOUSE_RECOVERY, null);
-	                  
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -200,12 +207,13 @@ public class WarehouseManagerController extends WarehouseRunnable {
                 //Note: if order is not processing, ignore this event    
                 if(value == 0)
                 {
-                	warehouseStatemachine.Evt_WareHouseButtonIsOn(4);
+                	Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(4);
                 }
                 else
                 {
-                	warehouseStatemachine.Evt_WareHouseButtonIsOn(value);
+                	Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(value);
                 }
+                HandleStateMachineCmd(Cmd);
             }
             else 
             {
@@ -222,12 +230,13 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				//Note: if order is not processing, ignore this event    
                 if(value == 0)
                 {
-                	warehouseStatemachine.Evt_WareHouseSensorIsOn(4);
+                	Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(4);
                 }
                 else
                 {
-                	warehouseStatemachine.Evt_WareHouseSensorIsOn(value);
+                	Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(value);
                 }
+                HandleStateMachineCmd(Cmd);
 			}
 			else 
 			{
@@ -277,6 +286,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
     			break;
     			
     	}
+    	
+    	SendWarehouseStatus();
     }
     
 
