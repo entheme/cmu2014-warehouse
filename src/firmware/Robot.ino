@@ -34,23 +34,27 @@
 //#define HOTEL
 
 // Servo Motor Control
-#define LTSERVOPIN  5          // Left servo pin
+#define LTSERVOPIN  4         // Left servo pin
 #define RTSERVOPIN  6          // Right servo pin
 
 // PWM values for Servo
 //#define L_FWD_H  136   // +45
 //#define L_FWD_M  100   // +9
-#define L_FWD_L  96    // +5
-#define L_STOP   91
-#define L_BWD_L  86    // -5
+#define L_FWD_L      97    // +6
+#define L_FWD_SLOW   94    // +3
+#define L_STOP       91
+#define L_BWD_SLOW   88    // -3
+#define L_BWD_L      85    // -6
 //#define L_BWD_M  82    // -9
 //#define L_BWD_H  46    // -45
 
 //#define R_BWD_F  135   // +45
 //#define R_BWD_M  99    // +9
-#define R_BWD_L  95    // +5
-#define R_STOP   90
-#define R_FWD_L  85    // -5
+#define R_BWD_L      96    // +6
+#define R_BWD_SLOW   93    // +3
+#define R_STOP       90
+#define R_FWD_SLOW   86    // -4
+#define R_FWD_L      83    // -7
 //#define R_FWD_M  81    // -9
 //#define R_FWD_H  45    // -45
 
@@ -60,13 +64,15 @@
 #define ADJ_STOP  3
 
 // Client socket port#
-#define PORTID    550             // IP socket port#
+#define PORT    550             // IP socket port#
 
 // QTI Sensor Control
 #define  QTIL    9
 #define  QTIC    8
 #define  QTIR    2
-#define  COLOR_THRESHOLD    30
+#define  COLOR_THRESHOLD_L    30
+#define  COLOR_THRESHOLD_C    30
+#define  COLOR_THRESHOLD_R    30
 #define  COLOR_WHITE        0x0
 #define  COLOR_BLACK        0x1
 
@@ -81,9 +87,6 @@
 
 #define  ZONE_INV_IN        1
 #define  ZONE_INV_OUT       0
-
-#define API_ERR  -1
-#define API_OK   0
 
 #define CMD_ERR             -1
 #define CMD_MIN             0
@@ -102,16 +105,15 @@ int   RtServoVal;              // Right servo PWM value
 Servo LtServo;                 // Left servo object
 Servo RtServo;                 // Right servo object
 
-#if defined(CMU)
 char ssid[] = "CMU";           // The network SSID (name) 
-#else
-char ssid[] = "Shadyside Inn";
-char pass[] = "hotel5405";     // The network Password
-#endif
+//char ssid[] = "Shadyside Inn";
+//char pass[] = "hotel5405";     // The network Password
 
-int status = WL_IDLE_STATUS;   // The status of the network connections
-WiFiServer server(PORTID);     // The WIFI status,.. we are using port 504
-char inChar;                   // This is a character sent from the client
+int status = WL_IDLE_STATUS;     // The status of the network connections
+//WiFiServer server(PORTID);     // The WIFI status,.. we are using port 504
+//IPAddress wmServerIP(128,237,121,217); // Warehouse Manager IP
+IPAddress wmServerIP(10,255,204,159); // Warehouse Manager IP
+WiFiClient wmClient = 0;
 char whCmd;                    // This is the actual command character
 char command;
 IPAddress ip;                  // The IP address of the shield
@@ -121,6 +123,8 @@ byte mac[6];                   // MAC address of the WIFI shield
 boolean done;                  // Loop flag
 boolean commandRead;           // Loop flag
 
+boolean existDataToSend = false;
+
 unsigned long Delay_For_90_Degree = 1300;
 int curPosition = 0;
 int pos = 0;
@@ -128,21 +132,20 @@ int pos = 0;
 int curZone = ZONE_INV_IN;
 int newZone = ZONE_INV_IN;
 
+unsigned long tLastAlive = 0;
+
 void setup() 
 {
    // Initialize serial port. This is used for debug.
-   Serial.begin(9600); 
-
+   Serial.begin(9600);
+   
    // Initialize servos
-   LtServo.attach(LTSERVOPIN);
-   RtServo.attach(RTSERVOPIN);
+   LtServo.attach(LTSERVOPIN); // 10
+   RtServo.attach(RTSERVOPIN); // 6
    stopRobot();
 
    // Attempt to connect to Wifi network indicated by SSID.
-   startWifiServer();
-   
-   // Initialize some status for starting point
-   initRobot();
+   startWifi();
    
    Serial.print("setup...done\n");
 } // setup
@@ -150,38 +153,39 @@ void setup()
 void loop()
 {
    whCmd = getCmdFromWarehouseManager();
-   
    if (whCmd >= CMD_MIN && whCmd <= CMD_MAX)
    {
       executeCmd(whCmd);
    }
    
-   // send error status ==> 'E' + data
+   sendStatusToServer();
+   
+   
+   //getSensorStatus();
+   moveNextInventory();
+   //RtServo.write(R_FWD_SLOW);
+   //LtServo.write(L_FWD_SLOW);
+   //turnRightSlow
 }
 
 int getCmdFromWarehouseManager()
 {
    char cmddata;
    int  cmd = CMD_ERR;
-   // Waiting for a new Client.
-   WiFiClient client = server.available();
    
-   if (client)
+   if (wmClient.connected() == false)
    {
-      Serial.print("Welcome Client !!!\n");
-      while (client.available() == 0) 
-      {
-         if (!client.connected())
-         {
-            client.stop();
-            return CMD_ERR;
-         }
-         delay(10);
-      }
-      
-      cmddata = client.read();
+     Serial.print("getCmdFromWarehouseManager: Err\n");
+     wmClient.stop();
+     //wmClient = 0;
+     return CMD_ERR;
+   }
+   
+   if (wmClient.available())
+   {
+      cmddata = wmClient.read();
       Serial.print( "Cmd: ");
-      Serial.println(cmddata);
+      Serial.println(cmddata, HEX);
       
       switch (cmddata)
       {
@@ -215,8 +219,6 @@ int getCmdFromWarehouseManager()
             cmd = CMD_ERR;
             break;
       }
-      
-      client.stop();
    }
    
    return cmd;
@@ -231,6 +233,9 @@ void executeCmd(int cmd)
              break;
         case CMD_MOVE:
              moveNextInventory();
+             break;
+        case CMD_RECOVERY:
+             turnRightDegree(90);
              break;
         //------------------------------------
         // Test Cases are below...
@@ -255,6 +260,77 @@ void executeCmd(int cmd)
     }
 }
 
+void sendStatusToServer(void)
+{
+  boolean ret = false;
+  
+  if (wmClient.connected() == false)
+  {
+    Serial.print("\n\nTrying to connect...");
+    Serial.println(wmServerIP);
+    if (wmClient.connect(wmServerIP, PORT) == false)
+    { // connection fail ... retry next time
+      wmClient.stop();
+      //wmClient = 0;
+      return;
+    }
+    Serial.print("Connected to Warehouse Manager: ");
+    Serial.print(wmServerIP);
+    Serial.print(", Port: ");
+    Serial.println(PORT, DEC);
+  }
+  
+  if (existDataToSend == true)
+    sendDataToServer();
+  else // send alive data ...
+    sendAliveToServer();
+  
+  return;
+}
+
+boolean sendDataToServer(void)
+{
+  if (wmClient.connected() == false)
+  {
+    wmClient.stop();
+    //wmClient = 0;
+    return false;
+  }
+  
+  wmClient.print("E");
+  //wmClient.print(" ... ");
+  wmClient.print("\n");
+  wmClient.flush();
+  existDataToSend = false;
+  
+  return true;
+}
+
+boolean sendAliveToServer(void)
+{
+  unsigned long curTime;
+  
+  curTime = millis();
+  if (curTime < (tLastAlive + 1000))
+    return true;
+  
+  if (wmClient.connected() == false)
+  {
+    wmClient.stop();
+    //wmClient = 0;
+    return false;
+  }
+  
+  wmClient.print("s");
+  //wmClient.print(" ... ");
+  wmClient.print("\n");
+  wmClient.flush();
+  
+  tLastAlive = millis();
+  
+  return true;
+}
+
 void moveNextInventory()
 {
   char sVal = 0, lineVal = 0;
@@ -264,6 +340,8 @@ void moveNextInventory()
    
    while (isArrival == false)
    {
+     sendAliveToServer();
+     
      sVal = getSensorStatus();
      curZone = getZone(sVal, curZone);
      
@@ -292,7 +370,7 @@ void moveNextInventory()
          moveToEnd();
          turnRightDegree(90);
          moveBackward();
-         delay(500);
+         delay(800);
          stopRobot();
          adjustCenter();
          isArrival = true;
@@ -301,7 +379,7 @@ void moveNextInventory()
        case SENSOR_LC:   // 0x3
        case SENSOR_LR:   // 0x5
          Serial.print("Someting wrong...0x");
-         Serial.print(sVal, HEX);
+         Serial.println(sVal, HEX);
          //adjustCenter();
          break;
        default:
@@ -351,9 +429,11 @@ int getZone(char val, int prevZone)
 
 boolean adjustCenter()
 {
-  Serial.println("adjustCenter.............");
+  Serial.println("\nadjustCenter...");
   boolean isFound = false;
-  int adjDegree[7] = {5, 15, 30, 60, 90, 140, 180}; // ==> {-5 , +10 , -20 , +40 , -50 , +90 , -90}
+  int adjDegree[7] = {15, 45, 75, 105, 135, 165, 180}; // ==> {-15 , +30 , -45 , +60 , -75 , +90 , -90}
+  //int adjDegree[7] = {5, 15, 30, 60, 90, 140, 180}; // ==> {-5 , +10 , -20 , +40 , -50 , +90 , -90}
+  //int adjDegree[7] = {3, 9, 16, 30, 50, 80, 100}; // ==> {-3 , +6 , -10 , +20 , -30 , +50 , -50}
   int i;
   unsigned long adjDelay;
   unsigned long tS, tE, tD;
@@ -367,13 +447,13 @@ boolean adjustCenter()
     
     if (i%2)
     {
-      Serial.print("search Right: ");
-      turnRight();
+      Serial.print("search Left: ");
+      turnLeftSlow();
     }
     else
-    {
-      Serial.print("search Left: ");
-      turnLeft();
+    { 
+      Serial.print("search Right: ");
+      turnRightSlow();
     }
       
     do
@@ -388,6 +468,8 @@ boolean adjustCenter()
       tD = tE - tS;
     } while (tD < adjDelay);
     
+    stopRobot();
+    
     Serial.print(adjDegree[i], DEC);
     Serial.print(" degree, ");
     Serial.print(adjDelay, DEC);
@@ -395,8 +477,6 @@ boolean adjustCenter()
     Serial.print(tD, DEC);
     Serial.print(", isFound=");
     Serial.println(isFound, DEC);
-    
-    stopRobot();
   }
   
   return isFound;
@@ -412,20 +492,24 @@ unsigned long getDelayForDegree(int degree)
 void adjustCenterUsingRightTurn()
 {
   Serial.println("adjustCenterUsingRightTurn");
-  char sVal = 0;
+  char lineVal = 0;
   turnRight();
-  while (getOnLineStatus() != SENSOR_C)
-    delay(10);
+  do
+  {
+    lineVal = getOnLineStatus();
+  } while (lineVal != SENSOR_C && lineVal != SENSOR_L);
   stopRobot();
 }
 
 void adjustCenterUsingLeftTurn()
 {
   Serial.println("adjustCenterUsingLeftTurn");
-  char sVal = 0;
+  char lineVal = 0;
   turnLeft();
-  while (getOnLineStatus() != SENSOR_C)
-    delay(10);
+  do
+  {
+    lineVal = getOnLineStatus();
+  } while (lineVal != SENSOR_C && lineVal != SENSOR_R);
   stopRobot();
 }
 
@@ -489,7 +573,6 @@ void moveToEnd()
 
 char getOnLineStatus()
 {
-  Serial.print("getOnLineStatus: 0x");
   char sVal, lineVal;
   sVal = getSensorStatus();
   
@@ -499,6 +582,7 @@ char getOnLineStatus()
   else
     lineVal = 0x7 & sVal;
     
+  Serial.print("getOnLineStatus: 0x");
   Serial.println(lineVal, HEX);
   
   return lineVal;
@@ -527,28 +611,32 @@ char getSensorStatus()
 char readSensor(int port)
 {
    long val = 0;
+   long threshold;
    if (port != QTIL && port != QTIC && port != QTIR)
    {
       Serial.print("Error:: invalid QTI port ");
       Serial.print(port);
-      return API_ERR; 
+      return 0; 
    }
    
+   if (port == QTIL)
+     threshold = COLOR_THRESHOLD_L;
+   else if (port == QTIC)
+     threshold = COLOR_THRESHOLD_C;
+   else
+     threshold = COLOR_THRESHOLD_R;
+   
    val = RCTime(port);
-   //Serial.print("Port ");
-   //Serial.print(port);
-   //Serial.print(", val = ");
-   //Serial.println(val);
-   if (val < COLOR_THRESHOLD)
+   Serial.print("Port ");
+   Serial.print(port);
+   Serial.print(", val = ");
+   Serial.println(val);
+   if (val < threshold)
       return COLOR_WHITE; // = 0x0
    else
       return COLOR_BLACK; // = 0x1
 }
 
-void initRobot()
-{
-   Serial.print("initRobot...\n");
-}
 void moveForward()
 {
    Serial.println("moveForward");
@@ -566,26 +654,48 @@ void turnRight()
    Serial.println("turnRight");
    RtServo.write(R_STOP);
    LtServo.write(L_FWD_L);
+   
+   //RtServo.write(R_BWD_L);
+   //LtServo.write(L_STOP);
 }
 void turnLeft()
 {
    Serial.println("turnLeft");
    RtServo.write(R_STOP);
    LtServo.write(L_BWD_L);
+   
    //RtServo.write(R_FWD_L);
    //LtServo.write(L_STOP);
 }
+void turnRightSlow()
+{
+   Serial.println("turnRightSlow");
+   RtServo.write(R_STOP);
+   LtServo.write(L_FWD_SLOW); // FWD
+   
+    //RtServo.write(R_STOP + 2); // BWD
+   //LtServo.write(L_STOP);
+}
+void turnLeftSlow()
+{
+   Serial.println("turnLeftSlow");
+   RtServo.write(R_STOP);
+   LtServo.write(L_BWD_SLOW); // BWD
+   
+   //RtServo.write(R_STOP - 2); // FWD
+   //LtServo.write(L_STOP); 
+}
 void stopRobot()
 {
-   Serial.println("stopRobot");
    LtServo.write(L_STOP);
    RtServo.write(R_STOP);
+   Serial.println("stopRobot");
 }
 
 /************************************************************************************************
 * Start Wifi Server
 ************************************************************************************************/
-void startWifiServer()
+void startWifi()
 {
    // Attempt to connect to Wifi network indicated by SSID.
    while ( status != WL_CONNECTED) 
@@ -607,8 +717,8 @@ void startWifiServer()
    printConnectionStatus();
    
    // Start the server and print a message to the terminial.
-   server.begin();
-   Serial.println("The Command Server is started.");
+   //server.begin();
+   //Serial.println("The Command Server is started.");
    Serial.print("--------------------------------------\n\n");
 }
  
