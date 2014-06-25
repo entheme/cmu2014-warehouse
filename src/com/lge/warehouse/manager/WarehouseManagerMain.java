@@ -5,17 +5,10 @@ import java.util.concurrent.BlockingQueue;
 
 import org.apache.log4j.Logger;
 
-
-
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
-import com.lge.warehouse.common.app.WarehouseContext;
-import com.lge.warehouse.common.app.WarehouseMain;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.common.test.WarehouseTestSystem;
-import com.lge.warehouse.ordersys.OrderingSystem;
-import com.lge.warehouse.supervisor.Supervisor;
 
 public class WarehouseManagerMain extends WarehouseRunnable{
 	private static Logger logger = Logger.getLogger(WarehouseManagerMain.class);
