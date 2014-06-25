@@ -10,8 +10,13 @@ import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.supervisor.WidgetInfo;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.NewWidgetInfo;
+import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -41,6 +46,11 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jPanelOrder = new javax.swing.JPanel();
         jScrollPaneOrder = new javax.swing.JScrollPane();
         jTextAreaOrderStatus = new javax.swing.JTextArea();
+        jPanel1 = new javax.swing.JPanel();
+        jCheckBoxCompleteOrder = new javax.swing.JCheckBox();
+        jCheckBoxPendingOrder = new javax.swing.JCheckBox();
+        jCheckBoxBackorder = new javax.swing.JCheckBox();
+        jCheckBoxInProgressOrder = new javax.swing.JCheckBox();
         jPanelInventory = new javax.swing.JPanel();
         jScrollPaneInventory = new javax.swing.JScrollPane();
         jTextAreaInventoryStatus = new javax.swing.JTextArea();
@@ -78,19 +88,84 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jTextAreaOrderStatus.setRows(5);
         jScrollPaneOrder.setViewportView(jTextAreaOrderStatus);
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jCheckBoxCompleteOrder.setSelected(true);
+        jCheckBoxCompleteOrder.setText("Complete");
+        jCheckBoxCompleteOrder.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBoxCompleteOrderStateChanged(evt);
+            }
+        });
+
+        jCheckBoxPendingOrder.setSelected(true);
+        jCheckBoxPendingOrder.setText("Pending");
+        jCheckBoxPendingOrder.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBoxPendingOrderStateChanged(evt);
+            }
+        });
+
+        jCheckBoxBackorder.setSelected(true);
+        jCheckBoxBackorder.setText("Backorder");
+        jCheckBoxBackorder.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBoxBackorderStateChanged(evt);
+            }
+        });
+
+        jCheckBoxInProgressOrder.setSelected(true);
+        jCheckBoxInProgressOrder.setText("InProgress");
+        jCheckBoxInProgressOrder.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBoxInProgressOrderStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jCheckBoxCompleteOrder)
+                .addGap(47, 47, 47)
+                .addComponent(jCheckBoxPendingOrder)
+                .addGap(54, 54, 54)
+                .addComponent(jCheckBoxBackorder)
+                .addGap(38, 38, 38)
+                .addComponent(jCheckBoxInProgressOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 140, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxCompleteOrder)
+                    .addComponent(jCheckBoxPendingOrder)
+                    .addComponent(jCheckBoxBackorder)
+                    .addComponent(jCheckBoxInProgressOrder))
+                .addContainerGap(7, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanelOrderLayout = new javax.swing.GroupLayout(jPanelOrder);
         jPanelOrder.setLayout(jPanelOrderLayout);
         jPanelOrderLayout.setHorizontalGroup(
             jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelOrderLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)
+                .addGroup(jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneOrder)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanelOrderLayout.setVerticalGroup(
             jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelOrderLayout.createSequentialGroup()
-                .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOrderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -233,7 +308,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jPanelInventoryLayout.setVerticalGroup(
             jPanelInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInventoryLayout.createSequentialGroup()
-                .addComponent(jScrollPaneInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addComponent(jScrollPaneInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelInventoryManagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -391,6 +466,22 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         updateWidgetManagementUi();
     }//GEN-LAST:event_jButtonAddWidgetActionPerformed
 
+    private void jCheckBoxCompleteOrderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxCompleteOrderStateChanged
+        updateOrderStatusString();
+    }//GEN-LAST:event_jCheckBoxCompleteOrderStateChanged
+
+    private void jCheckBoxPendingOrderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxPendingOrderStateChanged
+        updateOrderStatusString();
+    }//GEN-LAST:event_jCheckBoxPendingOrderStateChanged
+
+    private void jCheckBoxBackorderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxBackorderStateChanged
+        updateOrderStatusString();
+    }//GEN-LAST:event_jCheckBoxBackorderStateChanged
+
+    private void jCheckBoxInProgressOrderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxInProgressOrderStateChanged
+        updateOrderStatusString();
+    }//GEN-LAST:event_jCheckBoxInProgressOrderStateChanged
+
     private boolean requestOrderStatus() {
         if(mSupervisorUiController == null)
             return false;
@@ -459,6 +550,31 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private void makeUiValueDefault() {
         jSpinnerWidgetQuantity.setValue(new Integer(0));
     }
+    
+    private void updateOrderStatusString() {
+        boolean bChkComplete = jCheckBoxCompleteOrder.isSelected();
+        boolean bChkPending = jCheckBoxPendingOrder.isSelected();
+        boolean bChkBackorder = jCheckBoxBackorder.isSelected();
+        boolean bChkInProgress = jCheckBoxInProgressOrder.isSelected();
+        StringBuffer sb = new StringBuffer();
+        List<Order> orderList = new ArrayList<Order>();
+        
+        if(bChkComplete)
+            orderList.addAll(mOrderStatus.getCompleteOrderList());
+        if(bChkPending)
+            orderList.addAll(mOrderStatus.getPendingOrderList());
+        if(bChkBackorder)
+            orderList.addAll(mOrderStatus.getBackOrderList());
+        if(bChkInProgress)
+            orderList.addAll(mOrderStatus.getInProgressOrderList());
+        Collections.sort(orderList, new Order.OrderCompare());
+        
+        for(Order order : orderList) {
+            sb.append(order.toString()).append("\n");
+        }
+         
+        jTextAreaOrderStatus.setText(sb.toString());
+    }
     /**
      * @param args the command line arguments
      */
@@ -498,6 +614,10 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private javax.swing.JButton jButtonAddTest;
     private javax.swing.JButton jButtonAddWidget;
     private javax.swing.JButton jButtonInventoryAdd;
+    private javax.swing.JCheckBox jCheckBoxBackorder;
+    private javax.swing.JCheckBox jCheckBoxCompleteOrder;
+    private javax.swing.JCheckBox jCheckBoxInProgressOrder;
+    private javax.swing.JCheckBox jCheckBoxPendingOrder;
     private javax.swing.JComboBox jComboBoxInventory;
     private javax.swing.JComboBox jComboBoxWidget;
     private javax.swing.JLabel jLabel1;
@@ -509,6 +629,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private javax.swing.JLabel jLabelWidgetManagement;
     private javax.swing.JLabel jLabelWidgetNameToBeAdded;
     private javax.swing.JLabel jLabelWidgetPriceToBeAdded;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanelInventory;
     private javax.swing.JPanel jPanelInventoryManagement;
     private javax.swing.JPanel jPanelOrder;
@@ -532,6 +653,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     // End of variables declaration//GEN-END:variables
     private SupervisorUiController mSupervisorUiController;
     private WidgetCatalog mWidgetCatalog;
+    private OrderStatusInfo mOrderStatus;
 
     @Override
     public void updateCatalog(WidgetCatalog widgetCatalog) {
@@ -544,9 +666,9 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     }
 
     @Override
-    public void updateOrderStatus(String orderStatus) {
-        jTextAreaOrderStatus.setText(orderStatus);
-        
+    public void updateOrderStatus(OrderStatusInfo orderStatus) {
+        mOrderStatus = orderStatus;
+        updateOrderStatusString();
     }
 
     @Override

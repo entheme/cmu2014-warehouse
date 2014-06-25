@@ -53,7 +53,7 @@ public class SupervisorUiController extends WarehouseRunnable {
 			if(event.getBody() instanceof OrderStatusInfo){
 				OrderStatusInfo statusInfo = (OrderStatusInfo)event.getBody();
                                 //System.out.println("got order status");
-                                mSupervisorUi.updateOrderStatus(statusInfo.toString());
+                                mSupervisorUi.updateOrderStatus(statusInfo);
 				
 			}
 			break;

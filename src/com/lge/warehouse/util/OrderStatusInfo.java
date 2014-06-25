@@ -1,14 +1,14 @@
 package com.lge.warehouse.util;
 
+import com.lge.warehouse.common.app.WarehouseContext;
+import com.lge.warehouse.util.Order.OrderCompare;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
-
-import com.lge.warehouse.common.app.WarehouseContext;
 
 public class OrderStatusInfo implements Serializable {
 	private static Logger logger = Logger.getLogger(OrderStatusInfo.class);
@@ -78,6 +78,8 @@ public class OrderStatusInfo implements Serializable {
         orderList.addAll(getInProgressOrderList());
         orderList.addAll(getCompleteOrderList());
         
+        Collections.sort(orderList, new OrderCompare());
+
         for(Order order : orderList) {
             result += order.toString() + "\n";
         }
