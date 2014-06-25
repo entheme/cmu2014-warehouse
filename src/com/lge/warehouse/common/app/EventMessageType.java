@@ -56,8 +56,8 @@ public enum EventMessageType {
     
     MOVE_NEXT_INV, //WarehouseMangerController -> RobotOutputMgr
     ROBOT_ERROR_STATUS, //RobotInputMgr -> WarehouseMangerController
-    ROBOT_IS_CONNECTED, //RobotInputMgr -> WarehouseMangerController
-    ROBOT_IS_DISCONNECTED, //RobotInputMgr -> WarehouseMangerController
+    ROBOT_IS_CONNECTED, //RobotInputMgr -> WarehouseMangerController -> WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
+    ROBOT_IS_DISCONNECTED, //RobotInputMgr -> WarehouseMangerController -> WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
     REQUEST_ROBOT_RECOVERY, //WarehouseMangerController -> RobotOutputMgr
     INIT_WAREHOUSE, //WarehouseMangerController -> WarehouseOutputMgr
     REQUEST_LOAD_STATUS, //WarehouseMangerController -> WarehouseOutputMgr
@@ -65,8 +65,8 @@ public enum EventMessageType {
     REQUEST_WAREHOUSE_RECOVERY, //WarehouseMangerController -> WarehouseOutputMgr 
     WAREHOUSE_LOAD_STATUS, //WarehouseInputMgr -> WarehouseMangerController
     ROBOT_POSITION_STATUS, //WarehouseInputMgr -> WarehouseMangerController
-    WAREHOUSE_IS_CONNECTED, //WarehouseInputMgr -> WarehouseMangerController
-    WAREHOUSE_IS_DISCONNECTED, //WarehouseInputMgr -> WarehouseMangerController
+    WAREHOUSE_IS_CONNECTED, //WarehouseInputMgr -> WarehouseMangerController -> WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
+    WAREHOUSE_IS_DISCONNECTED, //WarehouseInputMgr -> WarehouseMangerController -> WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
 
     TEST_SUPERVISOR_UI_SEND_WIDGET_CATALOG, TEST_SUPERVISOR_UI_REQUEST_ORDER_STATUS, TEST_SUPERVISOR_UI_SEND_WAREHOUSE_INVENTORY_INFO,
     ;
