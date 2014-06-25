@@ -33,8 +33,15 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 				if(tempRobotAtX.getID() == ThisStateID)
 				{
 					System.out.println(toString() + "Robot is near to station");
-					warehousestatemachine.getRobotAtXst(ThisStateID).setPassedNavigationPath(passedNavigationPath);
-					warehousestatemachine.getRobotAtXst(ThisStateID-1).PathClearAndSetnextPath(navigationPath);
+					if(ThisStateID == 4)
+					{
+						// no more navi path...
+					}
+					else
+					{
+						warehousestatemachine.getRobotAtXst(ThisStateID).setPassedNavigationPath(passedNavigationPath);
+						warehousestatemachine.getRobotAtXst(ThisStateID-1).PathClearAndSetnextPath(navigationPath);
+					}
 					warehousestatemachine.setState(warehousestatemachine.getRobotAtXst(ThisStateID-1));
 					// change state to wait worker button push.
 					returnval = CmdToOther.CMD_NONE;

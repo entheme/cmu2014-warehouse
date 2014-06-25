@@ -52,8 +52,9 @@ public class WarehouseManagerController extends WarehouseRunnable {
     
     
     //for SupervisorUI and Inventory update.
-    public void SendWarehouseStatus()
+    public void SendWarehouseStatus() // have some problem to navigation path selector.
     {
+    	/*
     	String StringFormat = "";
     	List<QuantifiedWidget> inventoryListOnBot = new ArrayList<QuantifiedWidget>();
     	List<WMorderStatemachineState> PathList = new ArrayList<WMorderStatemachineState>();
@@ -99,6 +100,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 		warehouseStatus.setWarehouseInventoryInfo(minventoryInfo);
 		
 		sendWarehouseStatus(warehouseStatus);
+		*/
     }
     
 
@@ -137,10 +139,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				Order order = (Order)event.getBody();
 				Handlingorder = order;
 				logger.info("FILL_ORDER order id = "+order.getOrderId());
-				System.out.println("FILL_ORDER order id = "+order.getOrderId());
 				for(QuantifiedWidget qw : order.getItemList()){
 					logger.info(qw.getWidget()+" : "+qw.getQuantity());
-					System.out.println(qw.getWidget()+" : "+qw.getQuantity());
 			 	}
 				
 				// need to check Warehouse and Robot is alive.
@@ -207,7 +207,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
                 //Note: if order is not processing, ignore this event    
                 if(value == 0)
                 {
-                	Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(4);
+                	//do nothing.
+                	//Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(4);
                 }
                 else
                 {
@@ -230,7 +231,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				//Note: if order is not processing, ignore this event    
                 if(value == 0)
                 {
-                	Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(4);
+                	// do nothing.
                 }
                 else
                 {

@@ -9,17 +9,18 @@ import com.lge.warehouse.util.QuantifiedWidget;
 public class RobotAtX extends WMorderStatemachineState implements Serializable{
 
 	int ThisStateID;
-	private List<QuantifiedWidget> qwOrderList; // for robot holding widget list.
+	private List<QuantifiedWidget> RobotHand_qwOrderList; // for robot holding widget list.
 	
 	public RobotAtX(int thisStateID) {
 		super();
 		ThisStateID = thisStateID;
+		RobotHand_qwOrderList = new ArrayList<QuantifiedWidget>();
 	}
 	
 	public RobotAtX(WahouseStateMachine warehousestatemachine, int thisStateID) {
 		super(warehousestatemachine);
 		ThisStateID = thisStateID;
-		qwOrderList = new ArrayList<QuantifiedWidget>();
+		RobotHand_qwOrderList = new ArrayList<QuantifiedWidget>();
 	}
 	
 	public int getID()
@@ -29,20 +30,20 @@ public class RobotAtX extends WMorderStatemachineState implements Serializable{
 
 
 	public List<QuantifiedWidget> getQwOrderList() {
-		return qwOrderList;
+		return RobotHand_qwOrderList;
 	}
 
 	public void setQwOrderList(List<QuantifiedWidget> qwOrderList) {
-		qwOrderList.clear();
-		for(QuantifiedWidget qw : qwOrderList)
-		{
-			qwOrderList.add(qw);
-	 	}
+		//RobotHand_qwOrderList.clear();
+		//for(QuantifiedWidget qw : qwOrderList)
+		//{
+		//	RobotHand_qwOrderList.add(qw);
+	 	//}
 	}
 	
 	public void addQwOrderList(QuantifiedWidget qwOrderList)
 	{
-		this.qwOrderList.add(qwOrderList);
+		this.RobotHand_qwOrderList.add(qwOrderList);
 	}
 
 	@Override
