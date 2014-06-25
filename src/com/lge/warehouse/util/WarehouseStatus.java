@@ -84,7 +84,20 @@ public class WarehouseStatus implements Serializable{
 
     @Override
     public String toString() {
-        return "WarehouseStatus{" + "mLocationOfBot=" + mLocationOfBot + ", mInventoryListOnBot=" + mInventoryListOnBot + ", mVisitedStationList=" + mVisitedStationList + ", mNextStop=" + mNextStop + '}';
+        StringBuffer sb = new StringBuffer();
+        
+        sb.append("Robot Status\n\n");
+        sb.append("Location :").append(mLocationOfBot).append("\n\n");
+        sb.append("Inventory List\n");
+        for(QuantifiedWidget quantifiedWidget:mInventoryListOnBot) {
+            sb.append(quantifiedWidget).append("\n");
+        }
+        sb.append("\n");
+        sb.append("Visited Station(s) :").append(mVisitedStationList).append("\n\n");
+        sb.append("Next Stop : ").append(mNextStop);
+        return sb.toString();
+        
+        //return "WarehouseStatus{" + "mLocationOfBot=" + mLocationOfBot + ", mInventoryListOnBot=" + mInventoryListOnBot + ", mVisitedStationList=" + mVisitedStationList + ", mNextStop=" + mNextStop + '}';
     }
     
 }
