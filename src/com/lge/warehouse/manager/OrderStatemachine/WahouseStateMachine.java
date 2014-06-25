@@ -49,13 +49,17 @@ public class WahouseStateMachine implements Serializable{
 		}
 		else
 		{
-			CurrentState = initState;
+			CurrentState = waitNewOrderState;
 		}
 		
 	}
 	
 	public void Evt_initComplete() {CurrentState.Evt_initComplete();}
-	public void Evt_NewOrder(List<WMorderStatemachineState> path) {CurrentState.Evt_NewOrder(path);}
+	public void Evt_NewOrder(List<WMorderStatemachineState> path) 
+	{
+		CurrentState.flushPassNavigationPath();
+		CurrentState.Evt_NewOrder(path);
+	}
 	public void Evt_WareHouseSensorIsOn(int sensorNum) {CurrentState.Evt_WareHouseSensorIsOn(sensorNum);}
 	public void Evt_WareHouseButtonIsOn(int buttonNum) {CurrentState.Evt_WareHouseButtonIsOn(buttonNum);}
 	public void Evt_RobotErrorStateChange(int ErrorNum) {CurrentState.Evt_RobotErrorStateChange(ErrorNum);}
@@ -67,7 +71,6 @@ public class WahouseStateMachine implements Serializable{
 	public WMorderStatemachineState getRobotMoveToXst(int targetX) {return robotMoveToX[targetX];}
 	public WMorderStatemachineState getRobotAtXst(int targetX) {return robotAtX[targetX];	}
 	public WMorderStatemachineState getAduinoError() {return aduinoHasError;	}
-	
 	public WMorderStatemachineState getCurrentState() { return CurrentState;	}
 	public WMorderStatemachineState getLastState() {return SaveState;	}
 
