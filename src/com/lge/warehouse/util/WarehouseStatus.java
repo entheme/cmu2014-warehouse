@@ -84,7 +84,7 @@ public class WarehouseStatus implements Serializable{
 
     @Override
     public String toString() {
-        return "WarehouseStatus{" + "mLocationOfBot=" + mLocationOfBot + ", mInventoryListOnBot=" + mInventoryListOnBot + ", mVisitedStationList=" + mVisitedStationList + ", mNextStop=" + mNextStop + ", mInventoryInfo=" + mInventoryInfo + '}';
+        return "WarehouseStatus{" + "mLocationOfBot=" + mLocationOfBot + ", mInventoryListOnBot=" + mInventoryListOnBot + ", mVisitedStationList=" + mVisitedStationList + ", mNextStop=" + mNextStop + '}';
     }
     
 }

@@ -1,14 +1,12 @@
 package com.lge.warehouse.supervisor;
 
+import com.lge.warehouse.util.InventoryName;
+import com.lge.warehouse.util.QuantifiedWidget;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-
-import com.lge.warehouse.util.InventoryName;
-import com.lge.warehouse.util.QuantifiedWidget;
 
 public class WarehouseInventoryInfo implements Serializable{
 	private static Logger logger = Logger.getLogger(WarehouseInventoryInfo.class);
@@ -58,7 +56,24 @@ public class WarehouseInventoryInfo implements Serializable{
 	
     @Override
     public String toString() {
-        return "WarehouseInventoryInfo{" + "mInventoryInfoList=" + mInventoryInfoList + ", mWarehouseId=" + mWarehouseId + '}';
+        StringBuffer sb = new StringBuffer();
+        
+        List<QuantifiedWidget> list = new ArrayList<QuantifiedWidget>();
+        
+        //sb.append("Warehouse\n");
+        sb.append("Inventory Info\n\n");
+        
+        for(int i=0;i<mInventoryInfoList.size();i++) {
+            InventoryName inventoryName = InventoryName.fromInteger(i);
+            list = getInventoryInfo(inventoryName);
+            sb.append("-").append(inventoryName).append("\n");
+            for(QuantifiedWidget quantifiedWidget:list) {
+                sb.append(quantifiedWidget.toString()+"\n");
+            }
+            sb.append("\n");
+        }
+        
+        return sb.toString();
     }
 	public boolean hasInventory(InventoryName inventoryName, WidgetInfo widget) {
 		// TODO Auto-generated method stub

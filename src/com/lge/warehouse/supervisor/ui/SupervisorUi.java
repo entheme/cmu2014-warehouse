@@ -374,8 +374,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
     @Override
     public void updateRobotStatus(String robotStatus) {
-        mWarehouseStatus += "\n" + robotStatus;
-        jTextAreaRobot.setText(mWarehouseStatus);
+        //mWarehouseStatus += "\n" + robotStatus;
+        jTextAreaRobot.setText(robotStatus);
     }
 
     @Override
