@@ -57,6 +57,8 @@ public abstract class DeviceInputMgr implements Runnable {
                         inputData = mArduinoCon.readData();
                         if(inputData != null) {
                             processingData(inputData);
+                        } else {
+                            connectionLost();
                         }
                     }
                 }
@@ -66,6 +68,7 @@ public abstract class DeviceInputMgr implements Runnable {
         }
     
         protected abstract void processingData(String inputData);
+        protected abstract void connectionLost();
         
         protected void setPortNum(int portNum) {
 		mPortNum = portNum;

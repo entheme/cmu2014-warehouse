@@ -72,7 +72,7 @@ public class ArduinoConnector {
                 if(isRun == false)
                     return;
                 
-                logger.debug("clientSocket is disconnected");
+                logger.debug("Client is disconnected");
                 
                 try {
                     serverSocket.close();
@@ -112,7 +112,7 @@ public class ArduinoConnector {
 		} catch (IOException e) {
 			logger.debug("readLine failed::");
                         connectionLost();
-    		return null;
+                        return null;
 		}
 		
 		return ardData;

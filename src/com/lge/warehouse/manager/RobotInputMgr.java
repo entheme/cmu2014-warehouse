@@ -41,6 +41,12 @@ public class RobotInputMgr extends DeviceInputMgr {
     }
     
     @Override
+    protected void connectionLost() {
+        logger.info("Robot is disconnected");
+        sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.ROBOT_IS_DISCONNECTED, null);
+    }
+    
+    @Override
     protected void threadStart(){
             super.threadStart();
             setPortNum(550);

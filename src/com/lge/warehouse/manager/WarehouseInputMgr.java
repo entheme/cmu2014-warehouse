@@ -8,6 +8,7 @@ package com.lge.warehouse.manager;
 
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
+import static com.lge.warehouse.manager.RobotInputMgr.logger;
 import org.apache.log4j.Logger;
 
 /**
@@ -52,6 +53,12 @@ public class WarehouseInputMgr extends DeviceInputMgr {
         }
     }
  
+    @Override
+    protected void connectionLost() {
+        logger.info("Warehouse is disconnected");
+        sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_IS_DISCONNECTED, null);
+    }
+    
     @Override
     protected void threadStart(){
             super.threadStart();

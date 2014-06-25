@@ -57,7 +57,7 @@ public class DeviceOutput implements Runnable {
         while(true) {
             getCommand();
             System.out.println("Send Data :" + mStr);
-            mArduinoCon.writeData(mStr +"\n");
+            mArduinoCon.writeData(mStr);
         }
     }
     

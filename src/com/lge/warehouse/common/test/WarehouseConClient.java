@@ -68,9 +68,10 @@ public class WarehouseConClient {
 	}
         
         public void receiveMessage() {  
-            try {      
-                  String test = bis.readLine();
-                  System.out.println(test);  
+            try {  
+                 char[] chars = new char[4096];
+                 bis.read(chars);
+                 System.out.println(String.valueOf(chars));  
             } catch (IOException ex) {
                 Logger.getLogger(WarehouseConClient.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("exeception...");
@@ -96,10 +97,10 @@ public class WarehouseConClient {
                  w.connect("127.0.0.1", 550);
             }
 
-            StringBuffer message = new StringBuffer();
-            message.append("GET /Forum/ HTTP/1.1\r\n");
-            message.append("Host: 0pen.us\r\n");
-            message.append("\r\n");
+            //StringBuffer message = new StringBuffer();
+            //message.append("GET /Forum/ HTTP/1.1\r\n");
+            //message.append("Host: 0pen.us\r\n");
+            //message.append("\r\n");
 
           //  w.sendMessage(new String(message));
               
