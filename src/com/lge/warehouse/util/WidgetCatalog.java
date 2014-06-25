@@ -20,7 +20,8 @@ import com.lge.warehouse.supervisor.WidgetInfo;
 public class WidgetCatalog implements Serializable{
 	private static Logger logger = Logger.getLogger(WidgetCatalog.class);
 	private List<WidgetInfo> mWidgetList;
-	public WidgetCatalog(List<WidgetInfo> widgetInfoList){
+        static final int WIDGET_CATALOG_MAX = 6;
+        public WidgetCatalog(List<WidgetInfo> widgetInfoList){
 		mWidgetList = widgetInfoList;
 	}
 	public int getWidgetInfoCnt(){
@@ -38,6 +39,11 @@ public class WidgetCatalog implements Serializable{
 			logger.info(widgetInfo);
 		}
 	}
+        public boolean isWdgetCatalogExpandable() {
+            if(getWidgetInfoCnt() < WIDGET_CATALOG_MAX)
+                return true;
+            return false;
+        }
 	@Override
 	public int hashCode() {
 		final int prime = 31;
