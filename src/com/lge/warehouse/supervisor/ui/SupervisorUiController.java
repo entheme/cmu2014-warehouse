@@ -46,7 +46,6 @@ public class SupervisorUiController extends WarehouseRunnable {
 
 	@Override
 	protected void eventHandle(EventMessage event) {
-		// TODO Auto-generated method stub
 		logger.info("eventHandle "+event);
 		
 		switch(event.getType()){
@@ -68,7 +67,7 @@ public class SupervisorUiController extends WarehouseRunnable {
                     
                 case WAREHOUSE_INVENTORY_INFO:
                     if(event.getBody() instanceof WarehouseInventoryInfo){
-                        System.out.println("got inventory status");
+                        //System.out.println("got inventory status");
                         WarehouseInventoryInfo inventoryInfo = (WarehouseInventoryInfo) event.getBody();
                         mSupervisorUi.updateInvenetoryStatus(inventoryInfo.toString());
                     }
@@ -76,9 +75,9 @@ public class SupervisorUiController extends WarehouseRunnable {
                     
                 case UPDATE_WAREHOUSE_STATUS:
                     if(event.getBody() instanceof WarehouseStatus){
-                        System.out.println("got warehouse status");
+                        //System.out.println("got warehouse status");
                         WarehouseStatus warehouseStatus = (WarehouseStatus) event.getBody();
-                        mSupervisorUi.updateRobotStatus(warehouseStatus.toString());
+                        mSupervisorUi.updateRobotStatus(warehouseStatus);
                     }
                     break;
 		}

@@ -6,6 +6,7 @@
 
 package com.lge.warehouse.supervisor.ui;
 
+import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
 
 /**
@@ -15,6 +16,6 @@ import com.lge.warehouse.util.WidgetCatalog;
 public interface SupervisorUiUpdate {
     void updateCatalog(WidgetCatalog widgetCatalog);
     void updateOrderStatus(String orderStatus);
-    void updateRobotStatus(String robotStatus);
+    void updateRobotStatus(WarehouseStatus warehouseStatus);
     void updateInvenetoryStatus(String inventoryStatus);
 }

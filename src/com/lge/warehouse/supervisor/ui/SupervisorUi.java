@@ -10,6 +10,7 @@ import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.supervisor.WidgetInfo;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.NewWidgetInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
 
 /**
@@ -531,7 +532,6 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     // End of variables declaration//GEN-END:variables
     private SupervisorUiController mSupervisorUiController;
     private WidgetCatalog mWidgetCatalog;
-    private String mWarehouseStatus = new String("");
 
     @Override
     public void updateCatalog(WidgetCatalog widgetCatalog) {
@@ -545,15 +545,17 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
     @Override
     public void updateOrderStatus(String orderStatus) {
-        //jTextAreaOrder.setText(orderStatus);
         jTextAreaOrderStatus.setText(orderStatus);
         
     }
 
     @Override
-    public void updateRobotStatus(String robotStatus) {
-        //jTextAreaRobot.setText(robotStatus);
-        jTextAreaInventoryList.setText(robotStatus);
+    public void updateRobotStatus(WarehouseStatus warehouseStatus) {
+        jTextFieldRobotLocation.setText(warehouseStatus.getLocationOfBot());
+        jTextAreaInventoryList.setText(warehouseStatus.getInventoryListOfBot().toString());
+        jTextAreaVisitedStation.setText(warehouseStatus.getVisitedStationListOfBot().toString());
+        jTextFieldNextStop.setText(warehouseStatus.getNextStop());
+        jTextFieldRobotStatus.setText("OK");
     }
 
     @Override
