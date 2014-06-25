@@ -88,7 +88,7 @@ public class SupervisorUiController extends WarehouseRunnable {
 	}
 	public void requestAddNewWidgetItem(String widgetName, int price){
 		NewWidgetInfo newWidgetInfo = new NewWidgetInfo(widgetName, price);
-		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.ADD_NEW_WIDGET_ITEM, null));
+		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.ADD_NEW_WIDGET_ITEM, newWidgetInfo));
 	}
 	public void requestWidgetCatalog(){
             //System.out.println("controller:request widget catalog");
