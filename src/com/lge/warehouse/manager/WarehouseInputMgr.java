@@ -33,7 +33,11 @@ public class WarehouseInputMgr extends DeviceInputMgr {
     @Override
     protected void processingData(String inputData) {
         String value = null;
-        logger.info("WAREHOUSE_LOAD_STATUS :" + inputData);
+        
+        if(inputData == null) {
+            logger.info("inpuptData is null");
+            return;
+        }
         
         if(inputData.startsWith("L") == true) { 
             value  = inputData.substring(1);
