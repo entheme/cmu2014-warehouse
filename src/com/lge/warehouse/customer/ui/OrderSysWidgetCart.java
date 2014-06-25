@@ -26,7 +26,12 @@ public class OrderSysWidgetCart {
     private static OrderSysUiUpdate sUiUpdate = null;
   
     static {
-        initWidgetCart();
+        //createWidgetCart();
+    }
+    
+    private static void addWidget(WidgetInfo widgetInfo) {
+        QuantifiedWidget quantifiedWidget = new QuantifiedWidget(widgetInfo, 0);
+        widgetCart.add(quantifiedWidget);
     }
     
     public static String getWidgetInfoByIndex(int index){
@@ -48,27 +53,30 @@ public class OrderSysWidgetCart {
         return widgetCart.get(index).getQuantity();
     }
     
-    public static void initWidgetCart(){
+    public static void createWidgetCart() {
         int widgetCount = getWidgetCatlogSize();
-        boolean bWidgetCartCreated = false;
         
-        if(widgetCart.size() > 0) 
-            bWidgetCartCreated = true;
+        if(widgetCart.size() > 0) {
+            widgetCart.clear();
+        }
          
         for(int i=0; i<widgetCount; i++){
-            if(bWidgetCartCreated) {
-                setWidgetQuantity(i, 0);
-            }
-            else {
-                QuantifiedWidget quantifiedWidget = new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(i), 0);
-                widgetCart.add(quantifiedWidget);
-            }
+            addWidget(widgetCatalog.getWidgetInfoAt(i));
+        }
+    }
+    
+    public static void initWidgetCart(){
+        int widgetCount = getWidgetCatlogSize();
+     
+        for(int i=0; i<widgetCount; i++){
+            setWidgetQuantity(i, 0);
         }
     }
     public static void setWidgetCatalog(WidgetCatalog widgetCatalog){
     	logger.info("setWidgetCatalog catalog size = "+widgetCatalog.getWidgetInfoCnt());
     	OrderSysWidgetCart.widgetCatalog = widgetCatalog;
     	sUiUpdate.updateUi();
+        createWidgetCart();
     }
     public static void setUiUpdateListener(OrderSysUiUpdate uiUpdate){
     	sUiUpdate = uiUpdate;
