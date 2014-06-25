@@ -58,6 +58,8 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				}else{
 					logger.info("No inventory, push BackOrder");
 					mOrderProvider.pushBackOrder(order);
+					doNextFillOrder();
+					updateOrderStatus();
 				}
 			} else{
 				handleBodyError(event);

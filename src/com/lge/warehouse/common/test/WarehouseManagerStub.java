@@ -158,7 +158,7 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 //						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
 //				}
 //				sendWarehouseStatus(warehouseStatus);
-				testFillOrder(InventoryName.INVENTORY_4, order, inventoryListOnBot, warehouseStatus);
+				testFillOrder(InventoryName.INVENTORY_3, order, inventoryListOnBot, warehouseStatus);
 				
 				sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.FINISH_FILL_ORDER, order);
 			}else {
