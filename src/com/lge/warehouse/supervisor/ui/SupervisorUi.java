@@ -36,50 +36,72 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPaneInfo = new javax.swing.JTabbedPane();
-        jScrollPaneIOrder = new javax.swing.JScrollPane();
-        jTextAreaOrder = new javax.swing.JTextArea();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanelOrder = new javax.swing.JPanel();
+        jScrollPaneOrder = new javax.swing.JScrollPane();
+        jTextAreaOrderStatus = new javax.swing.JTextArea();
+        jPanelInventory = new javax.swing.JPanel();
         jScrollPaneInventory = new javax.swing.JScrollPane();
-        jTextAreaInventory = new javax.swing.JTextArea();
-        jScrollPaneRobot = new javax.swing.JScrollPane();
-        jTextAreaRobot = new javax.swing.JTextArea();
+        jTextAreaInventoryStatus = new javax.swing.JTextArea();
+        jPanelInventoryManagement = new javax.swing.JPanel();
         jComboBoxInventory = new javax.swing.JComboBox();
         jComboBoxWidget = new javax.swing.JComboBox();
         jSpinnerWidgetQuantity = new javax.swing.JSpinner();
         jButtonInventoryAdd = new javax.swing.JButton();
         jButtonAddTest = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jPanelWidgetManagement = new javax.swing.JPanel();
         jTextFieldNewWidget = new javax.swing.JTextField();
-        jButtonAddWidget = new javax.swing.JButton();
         jTextFieldNewWidgetPrice = new javax.swing.JTextField();
+        jButtonAddWidget = new javax.swing.JButton();
+        jLabelWidgetManagement = new javax.swing.JLabel();
+        jLabelWidgetNameToBeAdded = new javax.swing.JLabel();
+        jLabelWidgetPriceToBeAdded = new javax.swing.JLabel();
+        jPanelRobot = new javax.swing.JPanel();
+        jLabelLocation = new javax.swing.JLabel();
+        jTextFieldRobotLocation = new javax.swing.JTextField();
+        jLabelInventoryList = new javax.swing.JLabel();
+        jScrollPaneInventoryList = new javax.swing.JScrollPane();
+        jTextAreaInventoryList = new javax.swing.JTextArea();
+        jLabelVisitedStation = new javax.swing.JLabel();
+        jScrollPaneVisitedStation = new javax.swing.JScrollPane();
+        jTextAreaVisitedStation = new javax.swing.JTextArea();
+        jLabelNextStop = new javax.swing.JLabel();
+        jTextFieldNextStop = new javax.swing.JTextField();
+        jLabelRobotStatus = new javax.swing.JLabel();
+        jTextFieldRobotStatus = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTabbedPaneInfo.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jTabbedPaneInfoStateChanged(evt);
-            }
-        });
+        jTextAreaOrderStatus.setColumns(20);
+        jTextAreaOrderStatus.setRows(5);
+        jScrollPaneOrder.setViewportView(jTextAreaOrderStatus);
 
-        jTextAreaOrder.setEditable(false);
-        jTextAreaOrder.setColumns(20);
-        jTextAreaOrder.setRows(5);
-        jScrollPaneIOrder.setViewportView(jTextAreaOrder);
+        javax.swing.GroupLayout jPanelOrderLayout = new javax.swing.GroupLayout(jPanelOrder);
+        jPanelOrder.setLayout(jPanelOrderLayout);
+        jPanelOrderLayout.setHorizontalGroup(
+            jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOrderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanelOrderLayout.setVerticalGroup(
+            jPanelOrderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelOrderLayout.createSequentialGroup()
+                .addComponent(jScrollPaneOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 418, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
-        jTabbedPaneInfo.addTab("Order", jScrollPaneIOrder);
+        jTabbedPane1.addTab("Order", jPanelOrder);
 
-        jTextAreaInventory.setEditable(false);
-        jTextAreaInventory.setColumns(20);
-        jTextAreaInventory.setRows(5);
-        jScrollPaneInventory.setViewportView(jTextAreaInventory);
+        jPanelInventory.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTabbedPaneInfo.addTab("Inventory", jScrollPaneInventory);
+        jTextAreaInventoryStatus.setColumns(20);
+        jTextAreaInventoryStatus.setRows(5);
+        jScrollPaneInventory.setViewportView(jTextAreaInventoryStatus);
 
-        jTextAreaRobot.setEditable(false);
-        jTextAreaRobot.setColumns(20);
-        jTextAreaRobot.setRows(5);
-        jScrollPaneRobot.setViewportView(jTextAreaRobot);
-
-        jTabbedPaneInfo.addTab("Robot", jScrollPaneRobot);
+        jPanelInventoryManagement.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jComboBoxInventory.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Inventory1", "Inventory2", "Inventory3" }));
 
@@ -87,6 +109,10 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
             public int getSize() { return getCatalogSize(); }
             public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i).getName();}
         });
+
+        jSpinnerWidgetQuantity.setToolTipText("Adjust the number of widget to be added");
+        jSpinnerWidgetQuantity.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jSpinnerWidgetQuantity.setOpaque(true);
 
         jButtonInventoryAdd.setText("Add");
         jButtonInventoryAdd.addActionListener(new java.awt.event.ActionListener() {
@@ -102,6 +128,44 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
             }
         });
 
+        jLabel1.setText("Inventory Management");
+
+        javax.swing.GroupLayout jPanelInventoryManagementLayout = new javax.swing.GroupLayout(jPanelInventoryManagement);
+        jPanelInventoryManagement.setLayout(jPanelInventoryManagementLayout);
+        jPanelInventoryManagementLayout.setHorizontalGroup(
+            jPanelInventoryManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInventoryManagementLayout.createSequentialGroup()
+                .addComponent(jLabel1)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanelInventoryManagementLayout.createSequentialGroup()
+                .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(69, 69, 69)
+                .addComponent(jButtonAddTest, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addComponent(jButtonInventoryAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanelInventoryManagementLayout.setVerticalGroup(
+            jPanelInventoryManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInventoryManagementLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelInventoryManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInventoryManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelInventoryManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButtonInventoryAdd)
+                        .addComponent(jButtonAddTest))))
+        );
+
+        jPanelWidgetManagement.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         jButtonAddWidget.setText("Add a widget");
         jButtonAddWidget.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -109,48 +173,163 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
             }
         });
 
+        jLabelWidgetManagement.setText("Widget Management");
+
+        jLabelWidgetNameToBeAdded.setText("Name");
+
+        jLabelWidgetPriceToBeAdded.setText("Price");
+
+        javax.swing.GroupLayout jPanelWidgetManagementLayout = new javax.swing.GroupLayout(jPanelWidgetManagement);
+        jPanelWidgetManagement.setLayout(jPanelWidgetManagementLayout);
+        jPanelWidgetManagementLayout.setHorizontalGroup(
+            jPanelWidgetManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelWidgetManagementLayout.createSequentialGroup()
+                .addGroup(jPanelWidgetManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelWidgetManagementLayout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jLabelWidgetManagement))
+                    .addGroup(jPanelWidgetManagementLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jLabelWidgetNameToBeAdded)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextFieldNewWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelWidgetPriceToBeAdded)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextFieldNewWidgetPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(153, 153, 153)
+                .addComponent(jButtonAddWidget))
+        );
+        jPanelWidgetManagementLayout.setVerticalGroup(
+            jPanelWidgetManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelWidgetManagementLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButtonAddWidget))
+            .addGroup(jPanelWidgetManagementLayout.createSequentialGroup()
+                .addComponent(jLabelWidgetManagement)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelWidgetManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelWidgetManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextFieldNewWidgetPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelWidgetPriceToBeAdded))
+                    .addGroup(jPanelWidgetManagementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabelWidgetNameToBeAdded)
+                        .addComponent(jTextFieldNewWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+        );
+
+        javax.swing.GroupLayout jPanelInventoryLayout = new javax.swing.GroupLayout(jPanelInventory);
+        jPanelInventory.setLayout(jPanelInventoryLayout);
+        jPanelInventoryLayout.setHorizontalGroup(
+            jPanelInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInventoryLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanelWidgetManagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanelInventoryManagement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneInventory))
+                .addContainerGap())
+        );
+        jPanelInventoryLayout.setVerticalGroup(
+            jPanelInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelInventoryLayout.createSequentialGroup()
+                .addComponent(jScrollPaneInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelInventoryManagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelWidgetManagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Inventory", jPanelInventory);
+
+        jLabelLocation.setText("Location");
+
+        jLabelInventoryList.setText("Inventory List");
+
+        jTextAreaInventoryList.setColumns(20);
+        jTextAreaInventoryList.setRows(5);
+        jScrollPaneInventoryList.setViewportView(jTextAreaInventoryList);
+
+        jLabelVisitedStation.setText("Visited Station");
+
+        jTextAreaVisitedStation.setColumns(20);
+        jTextAreaVisitedStation.setRows(5);
+        jScrollPaneVisitedStation.setViewportView(jTextAreaVisitedStation);
+
+        jLabelNextStop.setText("Next Stop");
+
+        jLabelRobotStatus.setText("Robot Status");
+
+        javax.swing.GroupLayout jPanelRobotLayout = new javax.swing.GroupLayout(jPanelRobot);
+        jPanelRobot.setLayout(jPanelRobotLayout);
+        jPanelRobotLayout.setHorizontalGroup(
+            jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelRobotLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelRobotLayout.createSequentialGroup()
+                        .addComponent(jLabelVisitedStation)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanelRobotLayout.createSequentialGroup()
+                        .addComponent(jLabelInventoryList)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelRobotLayout.createSequentialGroup()
+                        .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPaneVisitedStation, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelRobotLayout.createSequentialGroup()
+                                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabelRobotStatus)
+                                    .addComponent(jLabelNextStop)
+                                    .addComponent(jLabelLocation))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
+                                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextFieldNextStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                                        .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.Alignment.TRAILING))
+                                    .addComponent(jTextFieldRobotLocation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(24, 24, 24))))
+        );
+        jPanelRobotLayout.setVerticalGroup(
+            jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelRobotLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelLocation)
+                    .addComponent(jTextFieldRobotLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelInventoryList)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabelVisitedStation)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPaneVisitedStation, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelNextStop)
+                    .addComponent(jTextFieldNextStop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelRobotStatus)
+                    .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Robot", jPanelRobot);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonInventoryAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonAddTest, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldNewWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFieldNewWidgetPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 71, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButtonAddWidget))
-                    .addComponent(jTabbedPaneInfo))
-                .addContainerGap())
+                .addContainerGap()
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addComponent(jTabbedPaneInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 413, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxInventory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonInventoryAdd)
-                    .addComponent(jButtonAddTest)
-                    .addComponent(jTextFieldNewWidget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAddWidget)
-                    .addComponent(jTextFieldNewWidgetPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -175,26 +354,6 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         
         makeUiValueDefault();
     }//GEN-LAST:event_jButtonInventoryAddActionPerformed
-
-    private void jTabbedPaneInfoStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneInfoStateChanged
-        //System.out.println("focused tab is " + jTabbedPaneInfo.getSelectedIndex());
-        switch(jTabbedPaneInfo.getSelectedIndex()) {
-            case 0: // Order
-                //requestOrderStatus();
-                updateInvenetoryManagementUi();
-                break;
-            case 1: // Inventory
-                //requestInventoryStatus();
-                updateInvenetoryManagementUi();
-                break;
-            case 2: // Robot
-                //requestRobotStatus();
-                updateInvenetoryManagementUi();
-                break;
-            default:
-                break;
-        }
-    }//GEN-LAST:event_jTabbedPaneInfoStateChanged
 
     private void jButtonAddTestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAddTestActionPerformed
       
@@ -251,24 +410,24 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     }
     
     private void updateInvenetoryManagementUi() {
-        boolean bEnable = false;
-        if(jTabbedPaneInfo.getSelectedIndex() == 1)
-            bEnable = true;
-        else
-            bEnable = false;
-        
-        jComboBoxInventory.setEnabled(bEnable);
-        jComboBoxWidget.setEnabled(bEnable);
-        jSpinnerWidgetQuantity.setEnabled(bEnable);
-        jButtonInventoryAdd.setEnabled(bEnable);
+//        boolean bEnable = false;
+//        if(jTabbedPaneInfo.getSelectedIndex() == 1)
+//            bEnable = true;
+//        else
+//            bEnable = false;
+//        
+//        jComboBoxInventory.setEnabled(bEnable);
+//        jComboBoxWidget.setEnabled(bEnable);
+//        jSpinnerWidgetQuantity.setEnabled(bEnable);
+//        jButtonInventoryAdd.setEnabled(bEnable);
     }
     
     private void updateWidgetManagementUi() {
-        boolean bEnable = mWidgetCatalog.isWdgetCatalogExpandable();
+        //boolean bEnable = mWidgetCatalog.isWdgetCatalogExpandable();
         
-        jTextFieldNewWidget.setEnabled(bEnable);
-        jTextFieldNewWidgetPrice.setEnabled(bEnable);
-        jButtonAddWidget.setEnabled(bEnable);
+        //jTextFieldNewWidget.setEnabled(bEnable);
+        //jTextFieldNewWidgetPrice.setEnabled(bEnable);
+        //jButtonAddWidget.setEnabled(bEnable);
     }
     
     private void updateInventoryComboBox() {
@@ -340,16 +499,35 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private javax.swing.JButton jButtonInventoryAdd;
     private javax.swing.JComboBox jComboBoxInventory;
     private javax.swing.JComboBox jComboBoxWidget;
-    private javax.swing.JScrollPane jScrollPaneIOrder;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabelInventoryList;
+    private javax.swing.JLabel jLabelLocation;
+    private javax.swing.JLabel jLabelNextStop;
+    private javax.swing.JLabel jLabelRobotStatus;
+    private javax.swing.JLabel jLabelVisitedStation;
+    private javax.swing.JLabel jLabelWidgetManagement;
+    private javax.swing.JLabel jLabelWidgetNameToBeAdded;
+    private javax.swing.JLabel jLabelWidgetPriceToBeAdded;
+    private javax.swing.JPanel jPanelInventory;
+    private javax.swing.JPanel jPanelInventoryManagement;
+    private javax.swing.JPanel jPanelOrder;
+    private javax.swing.JPanel jPanelRobot;
+    private javax.swing.JPanel jPanelWidgetManagement;
     private javax.swing.JScrollPane jScrollPaneInventory;
-    private javax.swing.JScrollPane jScrollPaneRobot;
+    private javax.swing.JScrollPane jScrollPaneInventoryList;
+    private javax.swing.JScrollPane jScrollPaneOrder;
+    private javax.swing.JScrollPane jScrollPaneVisitedStation;
     private javax.swing.JSpinner jSpinnerWidgetQuantity;
-    private javax.swing.JTabbedPane jTabbedPaneInfo;
-    private javax.swing.JTextArea jTextAreaInventory;
-    private javax.swing.JTextArea jTextAreaOrder;
-    private javax.swing.JTextArea jTextAreaRobot;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextArea jTextAreaInventoryList;
+    private javax.swing.JTextArea jTextAreaInventoryStatus;
+    private javax.swing.JTextArea jTextAreaOrderStatus;
+    private javax.swing.JTextArea jTextAreaVisitedStation;
     private javax.swing.JTextField jTextFieldNewWidget;
     private javax.swing.JTextField jTextFieldNewWidgetPrice;
+    private javax.swing.JTextField jTextFieldNextStop;
+    private javax.swing.JTextField jTextFieldRobotLocation;
+    private javax.swing.JTextField jTextFieldRobotStatus;
     // End of variables declaration//GEN-END:variables
     private SupervisorUiController mSupervisorUiController;
     private WidgetCatalog mWidgetCatalog;
@@ -367,20 +545,21 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
     @Override
     public void updateOrderStatus(String orderStatus) {
-        //mOrderStatus = orderStatus;
-        jTextAreaOrder.setText(orderStatus);
+        //jTextAreaOrder.setText(orderStatus);
+        jTextAreaOrderStatus.setText(orderStatus);
         
     }
 
     @Override
     public void updateRobotStatus(String robotStatus) {
-        //mWarehouseStatus += "\n" + robotStatus;
-        jTextAreaRobot.setText(robotStatus);
+        //jTextAreaRobot.setText(robotStatus);
+        jTextAreaInventoryList.setText(robotStatus);
     }
 
     @Override
     public void updateInvenetoryStatus(String inventoryStatus) {
-        jTextAreaInventory.setText(inventoryStatus);
+        //jTextAreaInventory.setText(inventoryStatus);
+        jTextAreaInventoryStatus.setText(inventoryStatus);
     }
     
     
