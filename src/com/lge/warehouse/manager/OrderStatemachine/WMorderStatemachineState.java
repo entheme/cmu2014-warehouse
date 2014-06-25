@@ -13,9 +13,12 @@ public abstract class WMorderStatemachineState implements Serializable{
 	public WMorderStatemachineState(){
 		this.warehousestatemachine = null;
 		passedNavigationPath = new ArrayList<WMorderStatemachineState>();
+		navigationPath = new ArrayList<WMorderStatemachineState>();
 	}
 	
 	public WMorderStatemachineState(WahouseStateMachine warehousestatemachine) {
+		passedNavigationPath = new ArrayList<WMorderStatemachineState>();
+		navigationPath = new ArrayList<WMorderStatemachineState>();
 		this.warehousestatemachine = warehousestatemachine;
 	}
 	

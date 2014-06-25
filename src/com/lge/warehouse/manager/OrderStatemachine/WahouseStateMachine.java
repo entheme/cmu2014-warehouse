@@ -39,18 +39,19 @@ public class WahouseStateMachine implements Serializable{
 		robotAtX[3] = new RobotAtX(this,4);
 		aduinoHasError = new AdoinoErrorState(this);
 		
-		//SaveState = initState;
-		// If This Save state is not initstate mean Error recovery logic is run
+		SaveState = waitNewOrderState;
 		CurrentState = waitNewOrderState;
-		load();
-		if(SaveState != null)
-		{
-			setState(SaveState);
-		}
-		else
-		{
-			CurrentState = waitNewOrderState;
-		}
+		
+		//next is for loading warehouse recovery.
+		//load();// If This Save state is not initstate mean Error recovery logic is run
+		//if(SaveState != null)
+		//{
+		//	setState(SaveState);
+		//}
+		//else
+		//{
+		//	CurrentState = waitNewOrderState;
+		//}
 		
 	}
 	
@@ -79,7 +80,7 @@ public class WahouseStateMachine implements Serializable{
 		System.out.println("[StateMachine] StateChange " + CurrentState + "->" + state);
     	this.CurrentState = state;
     	this.SaveState = this.CurrentState; 
-    	save();
+    	//save();
     	//TODO This function need to say other process
     }
 	
