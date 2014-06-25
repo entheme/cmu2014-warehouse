@@ -191,7 +191,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			if(event.getBody() instanceof String) 
 			{
 				String value = (String)event.getBody();
-				logger.info("SEND_ROBOT_ERROR :" + value);
+				logger.info("ROBOT_ERROR_STATUS :" + value);
 			}
 			else 
 			{
@@ -203,7 +203,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
             {
                 String strVal = (String)event.getBody();
                 int value = Integer.parseInt(strVal);
-                logger.info("SEND_LOAD_STATUS :" + value);
+                logger.info("WAREHOUSE_LOAD_STATUS :" + value);
                 //Note: if order is not processing, ignore this event    
                 if(value == 0)
                 {
@@ -225,7 +225,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			{
 				String strVal = (String)event.getBody();
 				int value = Integer.parseInt(strVal);
-				logger.info("SEND_LOAD_STATUS :" + value);
+				logger.info("ROBOT_POSITION_STATUS :" + value);
 				//Note: if order is not processing, ignore this event
 				//Note: if order is not processing, ignore this event    
                 if(value == 0)

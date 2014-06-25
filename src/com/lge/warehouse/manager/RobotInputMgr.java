@@ -8,8 +8,6 @@ package com.lge.warehouse.manager;
 
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
-import static com.lge.warehouse.manager.WarehouseInputMgr.logger;
-import static com.lge.warehouse.manager.WarehouseManagerController.logger;
 import org.apache.log4j.Logger;
 
 /**
