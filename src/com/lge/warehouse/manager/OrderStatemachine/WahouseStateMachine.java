@@ -56,15 +56,15 @@ public class WahouseStateMachine implements Serializable{
 	}
 	
 	public void Evt_initComplete() {CurrentState.Evt_initComplete();}
-	public void Evt_NewOrder(List<WMorderStatemachineState> path) 
+	public CmdToOther Evt_NewOrder(List<WMorderStatemachineState> path) 
 	{
 		CurrentState.flushPassNavigationPath();
-		CurrentState.Evt_NewOrder(path);
+		return CurrentState.Evt_NewOrder(path);
 	}
-	public void Evt_WareHouseSensorIsOn(int sensorNum) {CurrentState.Evt_WareHouseSensorIsOn(sensorNum);}
-	public void Evt_WareHouseButtonIsOn(int buttonNum) {CurrentState.Evt_WareHouseButtonIsOn(buttonNum);}
-	public void Evt_RobotErrorStateChange(int ErrorNum) {CurrentState.Evt_RobotErrorStateChange(ErrorNum);}
-	public void Evt_WareHouseErrorStateChange(int ErrorNum) {CurrentState.Evt_WareHouseErrorStateChange(ErrorNum);}
+	public CmdToOther Evt_WareHouseSensorIsOn(int sensorNum) {return CurrentState.Evt_WareHouseSensorIsOn(sensorNum);}
+	public CmdToOther Evt_WareHouseButtonIsOn(int buttonNum) {return CurrentState.Evt_WareHouseButtonIsOn(buttonNum);}
+	public CmdToOther Evt_RobotErrorStateChange(int ErrorNum) {return CurrentState.Evt_RobotErrorStateChange(ErrorNum);}
+	public CmdToOther Evt_WareHouseErrorStateChange(int ErrorNum) {return CurrentState.Evt_WareHouseErrorStateChange(ErrorNum);}
 	
 		
     public WMorderStatemachineState getInitState() {return initState;}

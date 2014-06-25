@@ -15,6 +15,7 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
+import com.lge.warehouse.manager.OrderStatemachine.CmdToOther;
 import com.lge.warehouse.manager.OrderStatemachine.RobotAtX;
 import com.lge.warehouse.manager.OrderStatemachine.WahouseStateMachine;
 import com.lge.warehouse.manager.OrderStatemachine.WMorderStatemachineState;
@@ -33,6 +34,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
     static Logger logger = Logger.getLogger(WarehouseManagerController.class);
     WarehouseInventoryInfo minventoryInfo;
     WarehouseStatus warehouseStatus = new WarehouseStatus();
+    Order Handlingorder = new Order();
     
     WahouseStateMachine warehouseStatemachine = new WahouseStateMachine();
     NavigationPathSelector PathSelector = new NavigationPathSelector(minventoryInfo);
@@ -95,6 +97,10 @@ public class WarehouseManagerController extends WarehouseRunnable {
 		
 		sendWarehouseStatus(warehouseStatus);
     }
+    
+
+    
+    
 
     @Override
     protected void eventHandle(EventMessage event) {
@@ -125,6 +131,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			if(event.getBody() instanceof Order){
 				//For Test [START]
 				Order order = (Order)event.getBody();
+				Handlingorder = order;
 				logger.info("FILL_ORDER order id = "+order.getOrderId());
 				System.out.println("FILL_ORDER order id = "+order.getOrderId());
 				for(QuantifiedWidget qw : order.getItemList()){
@@ -134,12 +141,12 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				
 				List<WMorderStatemachineState> newOrderPath = PathSelector.MakeNewNavigationPath(order);
 				SendWarehouseStatus();
-				warehouseStatemachine.Evt_NewOrder(newOrderPath);
+				CmdToOther Cmd = warehouseStatemachine.Evt_NewOrder(newOrderPath);
+				HandleStateMachineCmd(Cmd);
 				
 				
 				
-				
-				
+				/*
 				try {
 					//To Do: deliver the order to Navigator instead of thread sleep
 	                                    
@@ -157,8 +164,9 @@ public class WarehouseManagerController extends WarehouseRunnable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				*/
                             //Send processed order's information to WM_MSG_HANDLER
-				sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FINISH_FILL_ORDER, order);
+				//sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FINISH_FILL_ORDER, order);
 				//For Test [END]
 			}else {
                                 handleBodyError(event);
@@ -166,7 +174,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			break;
 
 		case UPDATE_WAREHOUSE_STATUS:
-			if(event.getBody() instanceof WarehouseStatus) {
+			if(event.getBody() instanceof WarehouseStatus) 
+			{
                             WarehouseStatus warehouseStatus = (WarehouseStatus)event.getBody();
                             sendWarehouseStatus(warehouseStatus);
 			}
@@ -188,7 +197,15 @@ public class WarehouseManagerController extends WarehouseRunnable {
                 String strVal = (String)event.getBody();
                 int value = Integer.parseInt(strVal);
                 logger.info("SEND_LOAD_STATUS :" + value);
-                //Note: if order is not processing, ignore this event                 
+                //Note: if order is not processing, ignore this event    
+                if(value == 0)
+                {
+                	warehouseStatemachine.Evt_WareHouseButtonIsOn(4);
+                }
+                else
+                {
+                	warehouseStatemachine.Evt_WareHouseButtonIsOn(value);
+                }
             }
             else 
             {
@@ -202,6 +219,15 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				int value = Integer.parseInt(strVal);
 				logger.info("SEND_LOAD_STATUS :" + value);
 				//Note: if order is not processing, ignore this event
+				//Note: if order is not processing, ignore this event    
+                if(value == 0)
+                {
+                	warehouseStatemachine.Evt_WareHouseSensorIsOn(4);
+                }
+                else
+                {
+                	warehouseStatemachine.Evt_WareHouseSensorIsOn(value);
+                }
 			}
 			else 
 			{
@@ -225,6 +251,34 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			break;
 		}
     }
+    
+    protected void HandleStateMachineCmd(CmdToOther Cmd)
+    {
+    	switch(Cmd)
+    	{
+    		case CMD_NONE:
+    			logger.info("Nothing To do");
+    			break;
+    		
+    		case ROBOT_MOVE_TONEXT:
+    			logger.info("Go robot next destanation");
+    			sendMsg(WComponentType.ROBOT_OUTPUT_MGR, EventMessageType.MOVE_NEXT_INV,null);
+    			break;
+    			
+    		case ROBOT_STOP:
+    			logger.info("Stop robot by Error");
+    			//Need to Stop command
+    			break;
+    			
+    		case ORDER_COMPLETE:
+    			logger.info("Order is complete");
+    			sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FINISH_FILL_ORDER, Handlingorder);
+    			
+    			break;
+    			
+    	}
+    }
+    
 
     public static void start() {
         logger.info("Controller start");
