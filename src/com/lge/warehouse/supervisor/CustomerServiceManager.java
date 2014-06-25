@@ -15,6 +15,7 @@ import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WidgetCatalog;
 
@@ -50,6 +51,7 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 				}else{
 					logger.info("New Order Place - inventory is not engouth, put in BackOrderQueue");
 					handleBackOrder(order);
+					reportOrderStatus();
 				}
 			}else {
 				handleBodyError(event);
@@ -65,6 +67,12 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 			logger.info("unhandled event :"+event);
 			break;
 		}
+	}
+	private void reportOrderStatus(){
+		OrderStatusInfo orderStatusInfo = new OrderStatusInfo();
+		for(Order backOrder : BackOrderQueue.getInstance().getBackOrderList())
+			orderStatusInfo.addBackOrder(backOrder);
+		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.RESPONSE_ORDER_STATUS,orderStatusInfo);
 	}
 	public void handleBackOrder(Order order){
         List<QuantifiedWidget> list = order.getItemList();

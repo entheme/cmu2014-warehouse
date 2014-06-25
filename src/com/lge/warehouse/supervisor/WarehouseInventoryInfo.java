@@ -41,8 +41,11 @@ public class WarehouseInventoryInfo implements Serializable{
 	public void reduceInventoryWidget(WidgetInfo widgetInfo, int count){
 		for(InventoryName inventoryName : InventoryName.values()){
 			if(mInventoryInfoList.containsKey(inventoryName)){
-				int prevCnt = mInventoryInfoList.get(inventoryName).get(widgetInfo);
-				mInventoryInfoList.get(inventoryName).put(widgetInfo, prevCnt-count);
+				if(mInventoryInfoList.get(inventoryName).containsKey(widgetInfo)){
+					int prevCnt = mInventoryInfoList.get(inventoryName).get(widgetInfo);
+					mInventoryInfoList.get(inventoryName).put(widgetInfo, prevCnt-count);
+					logger.info("reduceInventoryWidget "+widgetInfo+", "+prevCnt+"->"+(prevCnt-count));
+				}
 			}
 		}
 	}
@@ -79,28 +82,28 @@ public class WarehouseInventoryInfo implements Serializable{
 		return mWarehouseId;
 	}
 
-	
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        
-        List<QuantifiedWidget> list = new ArrayList<QuantifiedWidget>();
-        
-        //sb.append("Warehouse\n");
-        sb.append("Inventory Info\n\n");
-        
-        for(int i=0;i<mInventoryInfoList.size();i++) {
-            InventoryName inventoryName = InventoryName.fromInteger(i);
-            list = getInventoryInfo(inventoryName);
-            sb.append("-").append(inventoryName).append("\n");
-            for(QuantifiedWidget quantifiedWidget:list) {
-                sb.append(quantifiedWidget.toString()+"\n");
-            }
-            sb.append("\n");
-        }
-        
-        return sb.toString();
-    }
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+
+		List<QuantifiedWidget> list = new ArrayList<QuantifiedWidget>();
+
+		//sb.append("Warehouse\n");
+		sb.append("Inventory Info\n\n");
+
+		for(int i=0;i<mInventoryInfoList.size();i++) {
+			InventoryName inventoryName = InventoryName.fromInteger(i);
+			list = getInventoryInfo(inventoryName);
+			sb.append("-").append(inventoryName).append("\n");
+			for(QuantifiedWidget quantifiedWidget:list) {
+				sb.append(quantifiedWidget.toString()+"\n");
+			}
+			sb.append("\n");
+		}
+
+		return sb.toString();
+	}
 	public boolean hasInventory(InventoryName inventoryName, WidgetInfo widget) {
 		// TODO Auto-generated method stub
 		if(mInventoryInfoList.containsKey(inventoryName)){
@@ -112,5 +115,5 @@ public class WarehouseInventoryInfo implements Serializable{
 		}
 		return false;
 	}
-        
+
 }

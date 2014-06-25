@@ -34,7 +34,7 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 	private Timer mHeartBeatTimer;
 	protected WarehouseRunnable(WComponentType id, boolean enableHeartBeat) {
 		super(id);
-		mQueue = new ArrayBlockingQueue<EventMessage>(50);
+		mQueue = new ArrayBlockingQueue<EventMessage>(100);
 		mEnableHartBeat = enableHeartBeat;
 		mHeartBeatTimer = new Timer();
 	}
