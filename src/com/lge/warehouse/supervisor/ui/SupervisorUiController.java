@@ -4,7 +4,7 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.ordersys.CustomerServiceManager;
+import com.lge.warehouse.supervisor.CustomerServiceManager;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.OrderStatusInfo;
