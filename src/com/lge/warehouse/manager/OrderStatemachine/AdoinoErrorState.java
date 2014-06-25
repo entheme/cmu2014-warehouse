@@ -32,38 +32,53 @@ public class AdoinoErrorState extends WMorderStatemachineState implements Serial
 	}
 
 	@Override
-	public void Evt_RobotErrorStateChange(int iRobotErrorState) {
+	public CmdToOther Evt_RobotErrorStateChange(int iRobotErrorState) {
 		// TODO need right error value error is come? (Ex -1)
 		// TODO need protocol or format of Error state
+		CmdToOther returnval = CmdToOther.CMD_NONE;
 		RobotError = iRobotErrorState;
 		System.out.println(toString()+"AdoinoErrorState Get RobotError State:" + iRobotErrorState);
-		DeterminRecoverLastStateOrNot();
+		returnval = DeterminRecoverLastStateOrNot();
+		return returnval;
 	}
 
 	@Override
-	public void Evt_WareHouseErrorStateChange(int iWareHouseState) {
+	public CmdToOther Evt_WareHouseErrorStateChange(int iWareHouseState) {
 		// TODO need right error value error is come? (Ex -1)
+		CmdToOther returnval = CmdToOther.CMD_NONE;
 		WarehouseError = iWareHouseState;
 		System.out.println(toString()+ "WarehouseErrorState Get WarehouseErrorState:" + iWareHouseState);
-		DeterminRecoverLastStateOrNot();
+		returnval = DeterminRecoverLastStateOrNot();
+		return returnval;
 	}
 	
-	private void DeterminRecoverLastStateOrNot()
+	private CmdToOther DeterminRecoverLastStateOrNot()
 	{
+		CmdToOther returnval = CmdToOther.CMD_NONE;
 		// If no error is remain than return Last state
 		//TODO need to check..  modify to kind of error
 		if(RobotError == 0 && WarehouseError == 0)
 		{
+			if(BeforeErrorState instanceof RobotMoveToX)
+			{
+				returnval = CmdToOther.ROBOT_MOVE_TONEXT;
+			}
+			else
+			{;
+			}
 			warehousestatemachine.setState(BeforeErrorState);
 		}
 		else
 		{
 			System.out.println(toString()+ "Error is remain! Robot Error:" + RobotError + " Warehouse :" + WarehouseError);
 		}
+		
+		return returnval;
 	}
 	
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "[Robot"+RobotError+"OrWarehouseError"+WarehouseError+"State]";
 	}
 
