@@ -64,9 +64,7 @@ public class ArduinoConnector {
 	}
         
         public synchronized boolean IsConnected() {
-            if(clientSocket == null)
-                return false;
-            return clientSocket.isConnected();
+            return isRun;
         }
         
         private synchronized void connectionLost() {
@@ -95,11 +93,6 @@ public class ArduinoConnector {
 	public String readData()
  	{
 		ardData = null;
-                if(IsConnected() == false)
-                {
-                    connectionLost();
-                    return null;
-                }
                          
                 if(isRun == false)
                 {
@@ -116,8 +109,9 @@ public class ArduinoConnector {
                     }
                         
 	    	//System.out.println ("Data from Arduino: " + ardData);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			logger.debug("readLine failed::");
+                        connectionLost();
     		return null;
 		}
 		
@@ -125,20 +119,14 @@ public class ArduinoConnector {
  	}
 	
         public boolean writeData(String cmd)
- 	{
-                if(IsConnected() == false)
-                {
-                    connectionLost();
-                    return false;
-                }
-             
+ 	{             
 		if (cmd == null)
 		{
                     logger.debug("Invalid command for arduino..."+cmd);
                     return false;
 		}
 				
-                if(isRun == false)
+                if(IsConnected() == false)
                 {
                     logger.debug("client was not connected!!");
                     return false;
