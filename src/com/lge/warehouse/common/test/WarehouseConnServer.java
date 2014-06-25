@@ -19,7 +19,7 @@ public class WarehouseConnServer {
     
         public static final void main(String[] args){
 		 
-            DeviceInput.start(mArduinoConForRobot, 5000);
+            DeviceInput.start(mArduinoConForRobot, 550);
             DeviceOutput.start(mArduinoConForRobot);
             
             while(true)

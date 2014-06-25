@@ -93,7 +93,7 @@ public class WarehouseConClient {
             if(args.length > 0) {
                 w.connect(args[0], Integer.parseInt(args[1]));
             } else {
-                 w.connect("127.0.0.1", 5000);
+                 w.connect("127.0.0.1", 550);
             }
 
             StringBuffer message = new StringBuffer();
