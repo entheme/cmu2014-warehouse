@@ -45,7 +45,7 @@ public class WarehouseInputMgr extends DeviceInputMgr {
             logger.info("inputData: " + inputData +" parsedValue: " + value + " is received from warehouse");
             sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_LOAD_STATUS, value);
         }
-        else if(inputData.startsWith("R") == true) {
+        else if(inputData.startsWith("P") == true) {
              value  = inputData.substring(1);
              /*Send processed robot's position to WAREHOUSE_MANAGER_CONTROLLER whenever the robot's position is changed
                To do : explain the value. 
