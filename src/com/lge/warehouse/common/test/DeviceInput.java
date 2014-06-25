@@ -47,6 +47,8 @@ public class DeviceInput implements Runnable  {
            System.out.println("Call startServer");
            if(mArduinoCon.startServer() == true) {
                while(true) {
+                   if(mArduinoCon.IsConnected() == false)
+                       mArduinoCon.startServer();
                    inputData = mArduinoCon.readData();
                    if(inputData != null) {
                        System.out.println(inputData);

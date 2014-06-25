@@ -68,11 +68,9 @@ public class WarehouseConClient {
 	}
         
         public void receiveMessage() {  
-            try {
-             
-                    String test = bis.readLine();
-                    System.out.println(test);
-               
+            try {      
+                  String test = bis.readLine();
+                  System.out.println(test);  
             } catch (IOException ex) {
                 Logger.getLogger(WarehouseConClient.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("exeception...");
@@ -95,7 +93,7 @@ public class WarehouseConClient {
             if(args.length > 0) {
                 w.connect(args[0], Integer.parseInt(args[1]));
             } else {
-                 w.connect("10.255.204.159", 5000);
+                 w.connect("127.0.0.1", 5000);
             }
 
             StringBuffer message = new StringBuffer();
