@@ -7,6 +7,7 @@
 package com.lge.warehouse.util;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.lge.warehouse.supervisor.WidgetInfo;
@@ -22,7 +23,7 @@ public class Order implements Serializable{
         ORDER_BACK_ORDERED,
         ORDER_COMPLETE
     }
-    private long mOrderId = -1;
+    private int mOrderId = -1;
     private Status mStatus;
     private List<QuantifiedWidget> mItemList = new ArrayList<QuantifiedWidget>();
     
@@ -32,10 +33,10 @@ public class Order implements Serializable{
     public List<QuantifiedWidget> getItemList(){
         return mItemList;
     }
-    public void setOrderId(long id){
+    public void setOrderId(int id){
     	mOrderId = id;
     }
-    public long getOrderId(){
+    public int getOrderId(){
     	return mOrderId;
     }
     public int getItemCnt(){
@@ -86,5 +87,12 @@ public class Order implements Serializable{
         result += "\n";
         
         return result;
+    }
+    public static class OrderCompare implements Comparator<Order>{
+		@Override
+		public int compare(Order o1, Order o2) {
+			// TODO Auto-generated method stub
+			return o1.getOrderId() - o2.getOrderId();
+		}
     }
 }
