@@ -54,6 +54,9 @@ public enum EventMessageType {
     
     UPDATE_WAREHOUSE_STATUS, //WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
     
+    WAREHOUSE_RUNNABLE_SEND_ON_THREAD_CONTEXT, 
+    WAREHOUSE_RUNNABLE_HEARTBEAT_MSG,
+    
     MOVE_NEXT_INV, //WarehouseMangerController -> RobotOutputMgr
     ROBOT_ERROR_STATUS, //RobotInputMgr -> WarehouseMangerController
     ROBOT_IS_CONNECTED, //RobotInputMgr -> WarehouseMangerController -> WmMsgHandler ->WarehouseSupervisor ->SupervisorUI

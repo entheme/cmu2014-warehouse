@@ -25,7 +25,7 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 	private WarehouseInventoryInfo inventoryInfo;
 	WidgetCatalog widgetCatalog;
 	private WarehouseManagerStub(){
-		super(WComponentType.WM_MSG_HANDLER);
+		super(WComponentType.WM_MSG_HANDLER, false);
 	}
 
 	public static WarehouseManagerStub getInstance(){

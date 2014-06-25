@@ -13,21 +13,23 @@ public class InitState extends WMorderStatemachineState implements Serializable 
 	}
 
 	@Override
-	public void Evt_initComplete() {
+	public CmdToOther Evt_initComplete() {
 		System.out.println("InitState : Evt_initComplete");
 		warehousestatemachine.setState(warehousestatemachine.getWaitNewOrderState());
+		return CmdToOther.CMD_NONE;
 	}
 
 	// initial state don't handle Error state
 	@Override
-	public void Evt_RobotErrorStateChange(int iRobotErrorState) {
+	public CmdToOther Evt_RobotErrorStateChange(int iRobotErrorState) {
 		System.out.println("InitState  Evt_RobotErrorStateChange : #" + iRobotErrorState + "is change, not implement event");
-		
+		return CmdToOther.CMD_NONE;
 	}
 
 	@Override
-	public void Evt_WareHouseErrorStateChange(int iWareHouseState) {
+	public CmdToOther Evt_WareHouseErrorStateChange(int iWareHouseState) {
 		System.out.println("InitState Evt_WareHouseStateChange : #" + iWareHouseState + "is change, not implement event");
+		return CmdToOther.CMD_NONE;
 	}
 
 	@Override

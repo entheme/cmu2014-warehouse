@@ -38,7 +38,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
     NavigationPathSelector PathSelector = new NavigationPathSelector(minventoryInfo);
 
     private WarehouseManagerController() {
-        super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
+        super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, false);
     }
 
     public static WarehouseManagerController getInstance() {
@@ -48,6 +48,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
         return sInstance;
     }
     
+    
+    //for SupervisorUI and Inventory update.
     public void SendWarehouseStatus()
     {
     	String StringFormat = "";
@@ -170,46 +172,54 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			}
 			break;
 		case ROBOT_ERROR_STATUS:
-			if(event.getBody() instanceof String) {
-                            String value = (String)event.getBody();
-                            logger.info("SEND_ROBOT_ERROR :" + value);
-			}else {
+			if(event.getBody() instanceof String) 
+			{
+				String value = (String)event.getBody();
+				logger.info("SEND_ROBOT_ERROR :" + value);
+			}
+			else 
+			{
 		        handleBodyError(event);
 		    } 
 		    break;
-		case WAREHOUSE_LOAD_STATUS:
-			if(event.getBody() instanceof String) {
-                             String strVal = (String)event.getBody();
-                             int value = Integer.parseInt(strVal);
-                             logger.info("SEND_LOAD_STATUS :" + value);
-                             //Note: if order is not processing, ignore this event
-                             
-			}else {
-			    handleBodyError(event);
-			} 
-			break;
+        case WAREHOUSE_LOAD_STATUS:
+            if(event.getBody() instanceof String) 
+            {
+                String strVal = (String)event.getBody();
+                int value = Integer.parseInt(strVal);
+                logger.info("SEND_LOAD_STATUS :" + value);
+                //Note: if order is not processing, ignore this event                 
+            }
+            else 
+            {
+                handleBodyError(event);
+            } 
+            break;
 		case ROBOT_POSITION_STATUS:
-			if(event.getBody() instanceof String) {
-                             String strVal = (String)event.getBody();
-                             int value = Integer.parseInt(strVal);
-                             logger.info("SEND_LOAD_STATUS :" + value);
-                            //Note: if order is not processing, ignore this event
-			}else {
-                            handleBodyError(event);
+			if(event.getBody() instanceof String)
+			{
+				String strVal = (String)event.getBody();
+				int value = Integer.parseInt(strVal);
+				logger.info("SEND_LOAD_STATUS :" + value);
+				//Note: if order is not processing, ignore this event
+			}
+			else 
+			{
+				handleBodyError(event);
 			} 
 			break;
-                case ROBOT_IS_CONNECTED:
-                        logger.info("ROBOT_IS_CONNECTED");
-                        break;
-                case ROBOT_IS_DISCONNECTED:
-                        logger.info("ROBOT_IS_DISCONNECTED");
-                        break;
-                case WAREHOUSE_IS_CONNECTED:
-                     logger.info("WAREHOUSE_IS_CONNECTED");
-                     break;
-                case WAREHOUSE_IS_DISCONNECTED:
-                        logger.info("WAREHOUSE_IS_DISCONNECTED");
-                        break;
+        case ROBOT_IS_CONNECTED:
+        	logger.info("ROBOT_IS_CONNECTED");
+        	break;
+        case ROBOT_IS_DISCONNECTED:
+        	logger.info("ROBOT_IS_DISCONNECTED");
+        	break;
+        case WAREHOUSE_IS_CONNECTED:
+			 logger.info("WAREHOUSE_IS_CONNECTED");
+			 break;
+        case WAREHOUSE_IS_DISCONNECTED:
+			logger.info("WAREHOUSE_IS_DISCONNECTED");
+			break;
 		default:
 			logger.info("unhandled event :"+event);
 			break;

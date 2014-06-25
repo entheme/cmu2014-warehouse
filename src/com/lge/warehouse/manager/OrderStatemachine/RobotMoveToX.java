@@ -22,8 +22,9 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 	}
 
 	@Override
-	public void Evt_WareHouseSensorIsOn(int iSensorNum) {
+	public CmdToOther Evt_WareHouseSensorIsOn(int iSensorNum) {
 		System.out.println(toString() + ": get Evt_WareHouseSensorIsOn" + iSensorNum);
+		CmdToOther returnval = CmdToOther.CMD_NONE;
 		if(ThisStateID == iSensorNum)
 		{
 			if(navigationPath.get(0) instanceof RobotAtX)
@@ -36,6 +37,7 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 					warehousestatemachine.getRobotAtXst(ThisStateID-1).PathClearAndSetnextPath(navigationPath);
 					warehousestatemachine.setState(warehousestatemachine.getRobotAtXst(ThisStateID-1));
 					// change state to wait worker button push.
+					returnval = CmdToOther.CMD_NONE;
 				}
 				else
 				{
@@ -48,32 +50,58 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 				warehousestatemachine.getRobotMoveToXst(ThisStateID).setPassedNavigationPath(passedNavigationPath);
 				warehousestatemachine.getRobotMoveToXst(ThisStateID).PathClearAndSetnextPath(navigationPath);
 				warehousestatemachine.setState(warehousestatemachine.getRobotMoveToXst(ThisStateID));
+				returnval = CmdToOther.ROBOT_MOVE_TONEXT;
 			}
 		}
 		else
 		{
 			// ignore sensor enent?
 			System.out.println(toString() + "Activate Sensor is not for this station!!");
+			returnval = CmdToOther.CMD_NONE;
 		}
+		
+		return returnval;
 		
 	}
 
 	@Override
-	public void Evt_RobotErrorStateChange(int iRobotErrorState) {
+	public CmdToOther Evt_RobotErrorStateChange(int iRobotErrorState) {
 		System.out.println(toString() + " Evt_RobotErrorStateChange : #" + iRobotErrorState + "is change");
-		AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
-		tempState.SetBeforeErrorState(this);
-		tempState.Evt_RobotErrorStateChange(iRobotErrorState);
-		warehousestatemachine.setState(tempState);
+		CmdToOther returnval = CmdToOther.CMD_NONE;
+		if(iRobotErrorState == 0)
+		{
+			System.out.println("nothing is happen");
+			returnval = CmdToOther.CMD_NONE;
+		}
+		else
+		{
+			AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
+			tempState.SetBeforeErrorState(this);
+			tempState.Evt_RobotErrorStateChange(iRobotErrorState);
+			warehousestatemachine.setState(tempState);
+			returnval = CmdToOther.ROBOT_STOP;
+		}
+		return returnval;
 	}
 
 	@Override
-	public void Evt_WareHouseErrorStateChange(int iWareHouseState) {
+	public CmdToOther Evt_WareHouseErrorStateChange(int iWareHouseState) {
 		System.out.println(toString() + " Evt_WareHouseStateChange : #" + iWareHouseState + "is change");
-		AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
-		tempState.SetBeforeErrorState(this);
-		tempState.Evt_WareHouseErrorStateChange(iWareHouseState);
-		warehousestatemachine.setState(tempState);
+		CmdToOther returnval = CmdToOther.CMD_NONE;
+		if(iWareHouseState == 0)
+		{
+			System.out.println("nothing is happen");
+			returnval = CmdToOther.CMD_NONE;
+		}
+		else
+		{
+			AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
+			tempState.SetBeforeErrorState(this);
+			tempState.Evt_WareHouseErrorStateChange(iWareHouseState);
+			warehousestatemachine.setState(tempState);
+			returnval = CmdToOther.ROBOT_STOP;
+		}
+		return returnval;
 	}
 	
 	@Override
