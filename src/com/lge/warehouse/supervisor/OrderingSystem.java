@@ -4,7 +4,7 @@
 * and open the template in the editor.
 */
 
-package com.lge.warehouse.ordersys;
+package com.lge.warehouse.supervisor;
 
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
@@ -23,7 +23,7 @@ public final class OrderingSystem{
         // TODO: Do initialization
         
         CustomerServiceManager.start();
-        PendingOrderManager.start();
+        BackOrderManager.start();
         logger.info("Ordering System has been initialized");
     }
     
@@ -37,6 +37,6 @@ public final class OrderingSystem{
     }
     public static void ping(){
         CustomerServiceManager.getInstance().ping();
-        PendingOrderManager.getInstance().ping();
+        BackOrderManager.getInstance().ping();
     }
 }

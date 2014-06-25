@@ -48,17 +48,19 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			break;
 		case WAREHOUSE_ADD_REQUEST: 	//from WmMsgHandler
 			mWarehouseProxyHandler.handleWarehouseAddRequest();
+			WarehouseInventoryInfo warehouseInventoryInfo1 = (WarehouseInventoryInfo)event.getBody();
+			warehouseInventoryInfo1 = mWarehouseProxyHandler.getInventoryInfo(); 
+			sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo1);
 			doNextFillOrder();
 			break;
-		case RESPONSE_PENDING_ORDER:	//from PendingOrderManager
+		case NEW_ORDER:	//from BackOrderManager or CustomerServiceManager
 			if (event.getBody() instanceof Order){
 				Order order = (Order)event.getBody();
-				if(mWarehouseProxyHandler.hasInventory(order)){
+				if( (!mWarehouseProxyHandler.isBusy()) && (OrderQueue.getInstance().getSize()==0)){
 					mWarehouseProxyHandler.requestFillOrder(order);
 				}else{
-					logger.info("No inventory, push BackOrder");
-					mOrderProvider.pushBackOrder(order);
-					doNextFillOrder();
+					logger.info("Robot is currenty filling order, put the order to PendingOrder Queue");
+					mOrderProvider.pushPendingOrder(order);
 					updateOrderStatus();
 				}
 			} else{
@@ -72,10 +74,11 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				doNextFillOrder();
 				warehouseInventoryInfo = mWarehouseProxyHandler.getInventoryInfo(); 
 				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo);
+				sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_BACK_ORDER, null);
 			}else{
 				handleBodyError(event);
 			}
-			updateOrderStatus();
+			//updateOrderStatus();
 			break;
 		case FINISH_FILL_ORDER:
 			if (event.getBody() instanceof Order){
@@ -86,9 +89,6 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				handleBodyError(event);
 			}
 			updateOrderStatus();
-			break;
-		case REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER:
-			sendWidgetCatalog(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER);
 			break;
 		case REQUEST_CATAGORY_FROM_SUPERVISOR_UI:
 			sendWidgetCatalog(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_CATAGORY_TO_SUPERVISOR_UI);
@@ -104,7 +104,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			if (event.getBody() instanceof NewWidgetInfo){
 				NewWidgetInfo widgetCatalog = (NewWidgetInfo) event.getBody();
 				WidgetCatalogRepository.getInstance().addNewWidget(widgetCatalog);
-				sendWidgetCatalog(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER);
+				sendWidgetCatalog(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.NOTIFY_WIDGET_CATALOG_CHANGED);
 				sendWidgetCatalog(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_CATAGORY_TO_SUPERVISOR_UI);
 				mWarehouseProxyHandler.sendWidgetCatalog();
 			}else {
@@ -114,11 +114,11 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		case REQUEST_ORDER_STATUS:
 			updateOrderStatus();
 			break;
-		case RESPONSE_PENDING_ORDER_STATUS:
+		case RESPONSE_ORDER_STATUS:
 			if(event.getBody() instanceof OrderStatusInfo){
 				OrderStatusInfo orderStatusInfo = (OrderStatusInfo) event.getBody();
-				for(Order order : mOrderProvider.getBackOrderList()){
-					orderStatusInfo.addBackOrder(order);
+				for(Order order : mOrderProvider.getPendingOrderList()){
+					orderStatusInfo.addPendingOrder(order);
 				}
 				for(Order order : mWarehouseProxyHandler.getCompletedOrderList()){
 					orderStatusInfo.addCompleteOrder(order);
@@ -154,15 +154,15 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		sendMsg(dest, message, widgetCatalog);
 	}
 	private void updateOrderStatus(){
-		sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.REQUEST_PENDING_ORDER_STATUS, null);
+		sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_PENDING_ORDER_STATUS, null);
 	}
 	private void doNextFillOrder(){
 		Order order = mOrderProvider.getOrder();
 		if(order == null){
-			logger.info("No ready backorder, request pending order to PendingOrderManager");
-			sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.REQUEST_PENDING_ORDER, null);
+			logger.info("No Pending Order check BackOrder Queue");
+			sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_BACK_ORDER, null);
 		}else {
-			logger.info("back order is ready, request filling order to WmMsgHandler");
+			logger.info("pending order is ready, request filling order to WmMsgHandler");
 			//sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FILL_ORDER, order);
 			mWarehouseProxyHandler.requestFillOrder(order);
 		}
@@ -175,7 +175,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 	@Override
 	protected void initBus() {
 		addBus(WComponentType.CUSTOMER_SERVICE_MANAGER);
-		addBus(WComponentType.PENDING_ORDER_MANAGER);
+		addBus(WComponentType.BACKORDER_MANAGER);
 		addBus(WComponentType.SUPERVISOR_UI);
 		addBus(WComponentType.WM_MSG_HANDLER);
 	}
@@ -183,7 +183,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 	@Override
 	public void ping() {
 		sendMsg(WComponentType.CUSTOMER_SERVICE_MANAGER, EventMessageType.COMPONENT_HELLO, null);
-		sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.COMPONENT_HELLO, null);
+		sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.COMPONENT_HELLO, null);
 		sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.COMPONENT_HELLO, null);
 	}
 }

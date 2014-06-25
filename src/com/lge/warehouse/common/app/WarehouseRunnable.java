@@ -23,12 +23,7 @@ import javax.jms.ObjectMessage;
 import org.apache.log4j.Logger;
 
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.ordersys.CustomerServiceManager;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
+import com.lge.warehouse.supervisor.CustomerServiceManager;
 
 public abstract class WarehouseRunnable extends WarehouseComponent implements Runnable {
 	private BlockingQueue<EventMessage> mQueue;
@@ -94,7 +89,7 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 		Thread.currentThread().setName(getId().name());
 
 		if((getId() == WComponentType.CUSTOMER_SERVICE_MANAGER)||
-				(getId() == WComponentType.PENDING_ORDER_MANAGER)||
+				(getId() == WComponentType.BACKORDER_MANAGER)||
 				(getId() == WComponentType.WAREHOUSE_SUPERVISOR)||
 				((WarehouseContext.TEST_MODE==true)&&(getId() == WComponentType.WM_MSG_HANDLER))
 				){

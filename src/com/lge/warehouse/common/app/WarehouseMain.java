@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.common.test.WarehouseTestSystem;
 import com.lge.warehouse.manager.Manager;
-import com.lge.warehouse.ordersys.OrderingSystem;
+import com.lge.warehouse.supervisor.OrderingSystem;
 import com.lge.warehouse.supervisor.Supervisor;
 
 /**
@@ -38,7 +38,7 @@ public class WarehouseMain extends WarehouseRunnable{
 			readyForMonitor(WComponentType.WM_MSG_HANDLER);
 		}
 		readyForMonitor(WComponentType.CUSTOMER_SERVICE_MANAGER);
-		readyForMonitor(WComponentType.PENDING_ORDER_MANAGER);
+		readyForMonitor(WComponentType.BACKORDER_MANAGER);
 		readyForMonitor(WComponentType.WAREHOUSE_SUPERVISOR);
 		addBus(WComponentType.CUSTOMER_INF);
 		addBus(WComponentType.SUPERVISOR_UI);

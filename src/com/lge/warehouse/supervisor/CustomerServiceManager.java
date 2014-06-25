@@ -4,7 +4,9 @@
  * and open the template in the editor.
  */
 
-package com.lge.warehouse.ordersys;
+package com.lge.warehouse.supervisor;
+
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -13,6 +15,7 @@ import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WidgetCatalog;
 
 /**
@@ -22,11 +25,9 @@ import com.lge.warehouse.util.WidgetCatalog;
 public final class CustomerServiceManager extends WarehouseRunnable{
 	private static CustomerServiceManager sInstance;
 	static Logger logger = Logger.getLogger(CustomerServiceManager.class);
-	private PlaceOrderHandler mPlaceOrderHandler;
-
+	private static long sOrderCnt=0;
 	private CustomerServiceManager() {
 		super(WComponentType.CUSTOMER_SERVICE_MANAGER, false);
-		mPlaceOrderHandler = new PlaceOrderHandler(this);
 	}
 	public static CustomerServiceManager getInstance() {
 		if(sInstance == null) {
@@ -41,32 +42,42 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 			break;
 		case PLACE_ORDER:
 			if (event.getBody() instanceof Order){
-				mPlaceOrderHandler.handleOrder((Order)event.getBody());
+				Order order = (Order)event.getBody();
+				order.setOrderId(++sOrderCnt);
+				if(WarehouseInventoryInfoRepository.getInstance().hasInventoryForOrder(order)){
+					logger.info("New Order Place - inventory is enough, send to WarehouseSupervisor");
+					sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.NEW_ORDER, order);
+				}else{
+					logger.info("New Order Place - inventory is not engouth, put in BackOrderQueue");
+					handleBackOrder(order);
+				}
 			}else {
 				handleBodyError(event);
 			}
 			break;
 		case REQUEST_CATAGORY_FROM_CUSTOMER_IF:
-			sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_CATAGORY_FROM_CUSTOMER_SERVICE_MANAGER, null);
+		case NOTIFY_WIDGET_CATALOG_CHANGED:
+			WidgetCatalog widgetCatalog = WidgetCatalogRepository.getInstance().getWidgetCatalog();
+			sendMsg(WComponentType.CUSTOMER_INF, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_IF, widgetCatalog);
 			break;
-		case RESPONSE_CATAGORY_TO_CUSTOMER_SERVICE_MANAGER:
-			if (event.getBody() instanceof WidgetCatalog){
-				sendMsg(WComponentType.CUSTOMER_INF, EventMessageType.RESPONSE_CATAGORY_TO_CUSTOMER_IF, event.getBody());
-			}else {
-				handleBodyError(event);
-			}
-			break;
+		
 		default:
 			logger.info("unhandled event :"+event);
 			break;
 		}
 	}
-
+	public void handleBackOrder(Order order){
+        List<QuantifiedWidget> list = order.getItemList();
+        for(QuantifiedWidget qw : list){
+            logger.info(qw.getWidget()+" : cnt("+qw.getQuantity()+")");
+        }
+        BackOrderQueue.getInstance().putOrder(order);
+    }
 	@Override
 	protected void initBus() {
 		addBus(WComponentType.CUSTOMER_INF);
 		addBus(WComponentType.WAREHOUSE_SUPERVISOR);
-		addBus(WComponentType.PENDING_ORDER_MANAGER);
+		addBus(WComponentType.BACKORDER_MANAGER);
 	}
 
 	public static void start() {
@@ -78,6 +89,6 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 	public void ping() {
 		sendMsg(WComponentType.CUSTOMER_INF, EventMessageType.COMPONENT_HELLO, null);
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.COMPONENT_HELLO, null);
-		sendMsg(WComponentType.PENDING_ORDER_MANAGER, EventMessageType.COMPONENT_HELLO, null);
+		sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.COMPONENT_HELLO, null);
 	}
 }

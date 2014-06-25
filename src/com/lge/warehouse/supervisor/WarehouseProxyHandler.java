@@ -113,5 +113,14 @@ public class WarehouseProxyHandler {
 		}
 		return null;
 	}
+	public boolean isBusy() {
+		// TODO Auto-generated method stub
+		for(WarehouseProxy wp : mWarehouses.values()){
+			if(!wp.isBusy()){
+				return false;
+			}
+		}
+		return true;
+	}
 	
 }

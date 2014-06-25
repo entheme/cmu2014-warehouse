@@ -1,12 +1,14 @@
 package com.lge.warehouse.supervisor;
 
-import com.lge.warehouse.util.InventoryName;
-import com.lge.warehouse.util.QuantifiedWidget;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import org.apache.log4j.Logger;
+
+import com.lge.warehouse.util.InventoryName;
+import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.QuantifiedWidget;
 
 public class WarehouseInventoryInfo implements Serializable{
 	private static Logger logger = Logger.getLogger(WarehouseInventoryInfo.class);
@@ -36,6 +38,14 @@ public class WarehouseInventoryInfo implements Serializable{
 		int prevCnt = mInventoryInfoList.get(inventoryName).get(widgetInfo);
 		mInventoryInfoList.get(inventoryName).put(widgetInfo,prevCnt-count);
 	}
+	public void reduceInventoryWidget(WidgetInfo widgetInfo, int count){
+		for(InventoryName inventoryName : InventoryName.values()){
+			if(mInventoryInfoList.containsKey(inventoryName)){
+				int prevCnt = mInventoryInfoList.get(inventoryName).get(widgetInfo);
+				mInventoryInfoList.get(inventoryName).put(widgetInfo, prevCnt-count);
+			}
+		}
+	}
 	public boolean hasInventoryStation(InventoryName inventoryName){
 		return mInventoryInfoList.containsKey(inventoryName);
 	}
@@ -48,6 +58,22 @@ public class WarehouseInventoryInfo implements Serializable{
 			}
 		}
 		return list;
+	}
+	public boolean hasInventory(Order order){
+		for(QuantifiedWidget orderItem : order.getItemList()){
+			for(InventoryName inventoryName : InventoryName.values()){
+				if(hasInventoryStation(inventoryName)){
+					for(QuantifiedWidget inventoryItem : getInventoryInfo(inventoryName)){
+						if(orderItem.getWidget().equals(inventoryItem.getWidget())){
+							if(orderItem.getQuantity()>=inventoryItem.getQuantity()){
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		return true;
 	}
 	public int getWarehouseId(){
 		return mWarehouseId;

@@ -15,14 +15,14 @@ public enum WBus {
     P2P_CustomerIF_CustomerServiceManager(WComponentType.CUSTOMER_INF, WComponentType.CUSTOMER_SERVICE_MANAGER),
     P2P_CustomerServiceManager_CustomerIF(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.CUSTOMER_INF),
     
-    P2P_CustomerServiceManager_PendingOrderManager(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.PENDING_ORDER_MANAGER),
-    P2P_PendingOrderManager_CustomerServiceManager(WComponentType.PENDING_ORDER_MANAGER, WComponentType.CUSTOMER_SERVICE_MANAGER),
+    P2P_CustomerServiceManager_PendingOrderManager(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.BACKORDER_MANAGER),
+    P2P_PendingOrderManager_CustomerServiceManager(WComponentType.BACKORDER_MANAGER, WComponentType.CUSTOMER_SERVICE_MANAGER),
     
     P2P_CustomerServiceManager_WarehouseSupervisor(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.WAREHOUSE_SUPERVISOR),
     P2P_WarehouseSupervisor_CustomerServiceManager(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.CUSTOMER_SERVICE_MANAGER),
   
-    P2P_PendingOrderManager_WarehouseSupervisor(WComponentType.PENDING_ORDER_MANAGER, WComponentType.WAREHOUSE_SUPERVISOR),
-    P2P_WarehouseSupervisor_PendingOrderManager(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.PENDING_ORDER_MANAGER),
+    P2P_PendingOrderManager_WarehouseSupervisor(WComponentType.BACKORDER_MANAGER, WComponentType.WAREHOUSE_SUPERVISOR),
+    P2P_WarehouseSupervisor_PendingOrderManager(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.BACKORDER_MANAGER),
     
     P2P_WarehouseSupervisor_SupervisorUI(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.SUPERVISOR_UI),
     P2P_SupervisorUI_WarehouseServiceManager(WComponentType.SUPERVISOR_UI, WComponentType.WAREHOUSE_SUPERVISOR),
@@ -54,8 +54,8 @@ public enum WBus {
     P2P_CustomerServiceManager_SYSTEM(WComponentType.CUSTOMER_SERVICE_MANAGER, WComponentType.SYSTEM),
     P2P_SYSTEM_CustomerServiceManager(WComponentType.SYSTEM, WComponentType.CUSTOMER_SERVICE_MANAGER),
     
-    P2P_PendingOrderManager_SYSTEM(WComponentType.PENDING_ORDER_MANAGER, WComponentType.SYSTEM),
-    P2P_SYSTEM_PendingOrderManager(WComponentType.SYSTEM, WComponentType.PENDING_ORDER_MANAGER),
+    P2P_PendingOrderManager_SYSTEM(WComponentType.BACKORDER_MANAGER, WComponentType.SYSTEM),
+    P2P_SYSTEM_PendingOrderManager(WComponentType.SYSTEM, WComponentType.BACKORDER_MANAGER),
     
     P2P_WarehouseSupervisor_SYSTEM(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.SYSTEM ),
     P2P_SYSTEM_WarehouseSupervisor(WComponentType.SYSTEM, WComponentType.WAREHOUSE_SUPERVISOR),

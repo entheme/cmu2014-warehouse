@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.lge.warehouse.common.app.WarehouseContext;
 import com.lge.warehouse.util.InventoryName;
+import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 
 /**
@@ -21,7 +22,8 @@ import com.lge.warehouse.util.QuantifiedWidget;
 class WarehouseInventoryInfoRepository {
 	private static Logger logger = Logger.getLogger(WarehouseInventoryInfoRepository.class);
 	WarehouseInventoryInfo mInventoryInfo = new WarehouseInventoryInfo();
-	public WarehouseInventoryInfoRepository(){
+	private static WarehouseInventoryInfoRepository sInstance;
+	private WarehouseInventoryInfoRepository(){
 		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_1, WidgetCatalogRepository.getInstance().getWidgetInfo(0), 0);
 		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(1), 0);
 		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(2), 0);
@@ -29,6 +31,11 @@ class WarehouseInventoryInfoRepository {
 		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 0);
 //		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 100);
 //		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 100);
+	}
+	public static WarehouseInventoryInfoRepository getInstance() {
+		if(sInstance == null)
+			sInstance = new WarehouseInventoryInfoRepository();
+		return sInstance;
 	}
 	public void setInventoryInfo(WarehouseInventoryInfo inventoryInfo){
 		mInventoryInfo = inventoryInfo;
@@ -101,5 +108,10 @@ class WarehouseInventoryInfoRepository {
 	public WarehouseInventoryInfo getWarehouseInventoryInfo() {
 		// TODO Auto-generated method stub
 		return mInventoryInfo;
+	}
+	
+	public boolean hasInventoryForOrder(Order order) {
+		// TODO Auto-generated method stub
+		return mInventoryInfo.hasInventory(order);
 	}
 }

@@ -15,7 +15,7 @@ import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.common.bus.p2p.P2PConnection;
 import com.lge.warehouse.common.bus.p2p.P2PReceiver;
 import com.lge.warehouse.common.bus.p2p.P2PSender;
-import com.lge.warehouse.ordersys.CustomerServiceManager;
+import com.lge.warehouse.supervisor.CustomerServiceManager;
 
 public abstract class WarehouseComponent implements MessageListener, MsgInterface{
 	static Logger logger = Logger.getLogger(WarehouseComponent.class);
@@ -28,7 +28,7 @@ public abstract class WarehouseComponent implements MessageListener, MsgInterfac
 		mId = id;
 		
 		if((getId() == WComponentType.CUSTOMER_SERVICE_MANAGER)||
-				(getId() == WComponentType.PENDING_ORDER_MANAGER)||
+				(getId() == WComponentType.BACKORDER_MANAGER)||
 				(getId() == WComponentType.WAREHOUSE_SUPERVISOR) ||
 				((WarehouseContext.TEST_MODE==true)&&(getId() == WComponentType.WM_MSG_HANDLER))
 				){

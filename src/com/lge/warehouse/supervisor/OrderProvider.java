@@ -15,21 +15,21 @@ public class OrderProvider {
 		mMsgInf = msgInf;
 		mWarehouseProxyHandler = warehouseProxyHandler;
 	}
-	public void pushBackOrder(Order order) {
+	public void pushPendingOrder(Order order) {
 		// TODO Auto-generated method stub
-		BackOrderQueue.getInstance().put(order);
+		OrderQueue.getInstance().put(order);
 	}
 	public Order getOrder(){
-		for(Order order : BackOrderQueue.getInstance().getBackOrderList()){
+		for(Order order : OrderQueue.getInstance().getPendingOrderList()){
 			if(mWarehouseProxyHandler.hasInventory(order)){
-				BackOrderQueue.getInstance().remove(order);
+				OrderQueue.getInstance().remove(order);
 				return order;
 			}
 		}
 		return null;
 	}
-	public List<Order> getBackOrderList() {
+	public List<Order> getPendingOrderList() {
 		// TODO Auto-generated method stub
-		return BackOrderQueue.getInstance().getBackOrderList();
+		return OrderQueue.getInstance().getPendingOrderList();
 	}
 }

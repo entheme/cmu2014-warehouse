@@ -18,25 +18,38 @@ import org.apache.log4j.Logger;
 public class BackOrderQueue {
     static Logger logger = Logger.getLogger(BackOrderQueue.class);
     private static BackOrderQueue sInstance;
-    private BackOrderQueue(){}
-    private List<Order> mBackOrderList = new ArrayList<Order>();
+    private List<Order> mOrderList = new ArrayList<Order>();
     
-    public static BackOrderQueue getInstance(){
+    private BackOrderQueue(){}
+    public static BackOrderQueue getInstance() {
         if(sInstance == null)
             sInstance = new BackOrderQueue();
         return sInstance;
     }
-    public void put(Order order){
-    	order.setOrderStatus(Order.Status.ORDER_BACK_ORDERED);
-        mBackOrderList.add(order);
+    
+    public void putOrder(Order order){
+        synchronized(this){
+        	order.setOrderStatus(Order.Status.ORDER_BACK_ORDERED);
+            mOrderList.add(order);
+        }
     }
-    public void remove(Order order){
-    	mBackOrderList.remove(order);
+    
+    public Order getOrder(){
+        if (!mOrderList.isEmpty()){
+            synchronized(this){
+                if (!mOrderList.isEmpty()){
+                    return mOrderList.remove(0);
+                }
+                return null;
+            }
+        }
+        return null;
     }
-    public List<Order> getBackOrderList(){
-        return mBackOrderList;
+    public synchronized List<Order> getBackOrderList(){
+    	return mOrderList;
     }
-    public int getSize(){
-        return mBackOrderList.size();
-    }
+	public synchronized void removeOrder(Order order) {
+		// TODO Auto-generated method stub
+		mOrderList.remove(order);
+	}
 }

@@ -19,10 +19,10 @@ public enum EventMessageType {
     
     
     PLACE_ORDER,            //Customer interface ->CustomerServiceManager for placing order
-    PENDING_ORDER_READY,     //CustomerServiceManager ->PendingOrderManager for notifying pending order ready
+    REQUEST_BACK_ORDER,		//WarehouseSupervisor ->BackorderManager to check backorder
+    NEW_ORDER,
     
-    REQUEST_PENDING_ORDER, //PendingOrderManager->WarehouseSupervisor for requesting pending order.
-    RESPONSE_PENDING_ORDER,
+    NOTIFY_WIDGET_CATALOG_CHANGED, //WarehouseSupervisor ->CustomerServiceManager to notify widget Catalog changed
     
     WAREHOUSE_INVENTORY_INFO, //SupervisorUI->WarehouseSupervisor->WmMsgHandler for sending each warehouse inventory info
     FILL_INVENTORY_WIDGET, //SupervisorUI -> WarehouseSupervisor for fill widget in inventory
