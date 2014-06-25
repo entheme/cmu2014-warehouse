@@ -83,7 +83,7 @@ public class SupervisorUIStub extends WarehouseRunnable {
 		addBus(WComponentType.WAREHOUSE_SUPERVISOR);
 	}
 	public void sendWidgetCatalog(WidgetCatalog widgetCatalog){
-		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
+//		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
 	}
 	public void requestOrderStatus(){
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_ORDER_STATUS, null);

@@ -6,6 +6,7 @@ import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.ordersys.CustomerServiceManager;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
+import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
@@ -85,15 +86,16 @@ public class SupervisorUiController extends WarehouseRunnable {
                     break;
 		}
 	}
+	public void requestAddNewWidgetItem(String widgetName, int price){
+		NewWidgetInfo newWidgetInfo = new NewWidgetInfo(widgetName, price);
+		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.ADD_NEW_WIDGET_ITEM, null));
+	}
 	public void requestWidgetCatalog(){
             //System.out.println("controller:request widget catalog");
 		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null);
 		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null));
 	}
-	public void sendWidgetCatalog(WidgetCatalog widgetCatalog){
-		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
-		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog));
-	}
+	
 	public void requestOrderStatus(){
 		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_ORDER_STATUS, null);
 		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.REQUEST_ORDER_STATUS, null));

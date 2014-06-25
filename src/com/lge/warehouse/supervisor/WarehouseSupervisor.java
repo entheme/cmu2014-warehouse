@@ -100,7 +100,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.UPDATE_WAREHOUSE_STATUS, warehouseStatusToSupervisorUI);
 			}
 			break;
-		case SEND_WIDGET_CATALOG_UPDATE:
+		case ADD_NEW_WIDGET_ITEM:
 			if (event.getBody() instanceof NewWidgetInfo){
 				NewWidgetInfo widgetCatalog = (NewWidgetInfo) event.getBody();
 				WidgetCatalogRepository.getInstance().addNewWidget(widgetCatalog);

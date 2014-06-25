@@ -44,7 +44,7 @@ public enum EventMessageType {
     
     SEND_WDIGET_CATALOG_TO_WM_MSG_HANDLER, //WarehouseSupervisor ->WmMsgHandler to send Widget Catalog list
     
-    SEND_WIDGET_CATALOG_UPDATE,	//SupervisorUI -> WarehouseSupervisor to send Widget Catalog 
+    ADD_NEW_WIDGET_ITEM, 	//WarehouseSupervisor -> SupervisorUI to request adding new widget item
     
     REQUEST_ORDER_STATUS,	//SupervisorUI -> WarehouseSupervisor to request order status
     RESPONSE_ORDER_STATUS,		//WarehouseSupervisor -> WarehouseSupervisor to send order status
