@@ -1,10 +1,15 @@
 package com.lge.warehouse.manager.OrderStatemachine;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.lge.warehouse.util.QuantifiedWidget;
 
 public class RobotAtX extends WMorderStatemachineState implements Serializable{
 
 	int ThisStateID;
+	private List<QuantifiedWidget> qwOrderList; // for robot holding widget list.
 	
 	public RobotAtX(int thisStateID) {
 		super();
@@ -14,11 +19,30 @@ public class RobotAtX extends WMorderStatemachineState implements Serializable{
 	public RobotAtX(WahouseStateMachine warehousestatemachine, int thisStateID) {
 		super(warehousestatemachine);
 		ThisStateID = thisStateID;
+		qwOrderList = new ArrayList<QuantifiedWidget>();
 	}
 	
 	public int getID()
 	{
 		return ThisStateID;
+	}
+
+
+	public List<QuantifiedWidget> getQwOrderList() {
+		return qwOrderList;
+	}
+
+	public void setQwOrderList(List<QuantifiedWidget> qwOrderList) {
+		qwOrderList.clear();
+		for(QuantifiedWidget qw : qwOrderList)
+		{
+			qwOrderList.add(qw);
+	 	}
+	}
+	
+	public void addQwOrderList(QuantifiedWidget qwOrderList)
+	{
+		this.qwOrderList.add(qwOrderList);
 	}
 
 	@Override
@@ -37,6 +61,7 @@ public class RobotAtX extends WMorderStatemachineState implements Serializable{
 			else
 			{
 				System.out.println(toString() + "Robot will go next station");
+				warehousestatemachine.getRobotMoveToXst(ThisStateID).setPassedNavigationPath(passedNavigationPath);
 				warehousestatemachine.getRobotMoveToXst(ThisStateID).PathClearAndSetnextPath(navigationPath);
 				warehousestatemachine.setState(warehousestatemachine.getRobotMoveToXst(ThisStateID));
 			}

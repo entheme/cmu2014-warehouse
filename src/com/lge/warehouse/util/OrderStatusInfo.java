@@ -71,7 +71,6 @@ public class OrderStatusInfo implements Serializable {
     @Override
     public String toString() {
         String result = new String();
-        String newLine = "\n";
         List<Order> orderList = new ArrayList<Order>();
         
         orderList.addAll(getPendingOrderList());
@@ -80,8 +79,7 @@ public class OrderStatusInfo implements Serializable {
         orderList.addAll(getCompleteOrderList());
         
         for(Order order : orderList) {
-            result += "Order ID:" + order.getOrderId() + " " + order.getItemCnt() + "EA " 
-                    + "Status:" + order.getOrderStatus() + newLine;
+            result += order.toString() + "\n";
         }
         
         return result;

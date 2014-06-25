@@ -23,6 +23,7 @@ public class WaitNewOrderState extends WMorderStatemachineState implements Seria
 			RobotMoveToX tempRobotMoveToX = (RobotMoveToX)path.get(0);
 			if(tempRobotMoveToX.getID() == 1)
 			{
+				warehousestatemachine.getRobotMoveToXst(0).setPassedNavigationPath(passedNavigationPath);
 				warehousestatemachine.getRobotMoveToXst(0).PathClearAndSetnextPath(path);
 				warehousestatemachine.setState(warehousestatemachine.getRobotMoveToXst(0));
 			}
@@ -44,7 +45,6 @@ public class WaitNewOrderState extends WMorderStatemachineState implements Seria
 		System.out.println("WaitNewOrderState  Evt_RobotErrorStateChange : #" + iRobotErrorState + "is change, not implement event");
 		AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
 		tempState.SetBeforeErrorState(this);
-		tempState.setNavigationPath(navigationPath);
 		tempState.Evt_RobotErrorStateChange(iRobotErrorState);
 		warehousestatemachine.setState(tempState);
 	}

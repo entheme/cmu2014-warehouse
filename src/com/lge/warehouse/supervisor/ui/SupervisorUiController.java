@@ -1,21 +1,20 @@
 package com.lge.warehouse.supervisor.ui;
 
-import java.util.logging.Level;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
-
-import org.apache.log4j.Logger;
-
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.ordersys.CustomerServiceManager;
-import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
+import com.lge.warehouse.util.NewWidgetInfo;
+import com.lge.warehouse.util.OrderStatusInfo;
+import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
+import java.util.logging.Level;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
+import org.apache.log4j.Logger;
 
 public class SupervisorUiController extends WarehouseRunnable {
 	private static Logger logger = Logger.getLogger(SupervisorUiController.class);
@@ -58,28 +57,45 @@ public class SupervisorUiController extends WarehouseRunnable {
 			if(event.getBody() instanceof OrderStatusInfo){
 				OrderStatusInfo statusInfo = (OrderStatusInfo)event.getBody();
                                 //System.out.println("got order status");
+                                mSupervisorUi.updateOrderStatus(statusInfo.toString());
 				
 			}
 			break;
                 case RESPONSE_CATAGORY_TO_SUPERVISOR_UI:
-                    //System.out.println("controller:RESPONSE_CATAGORY_TO_SUPERVISOR_UI come");
                     if(event.getBody() instanceof WidgetCatalog){
                         //System.out.println("controller:go");
                         WidgetCatalog widgetCatalog = (WidgetCatalog) event.getBody();
                         mSupervisorUi.updateCatalog(widgetCatalog);
                     }
                     break;
+                    
+                case WAREHOUSE_INVENTORY_INFO:
+                    if(event.getBody() instanceof WarehouseInventoryInfo){
+                        System.out.println("got inventory status");
+                        WarehouseInventoryInfo inventoryInfo = (WarehouseInventoryInfo) event.getBody();
+                        mSupervisorUi.updateInvenetoryStatus(inventoryInfo.toString());
+                    }
+                    break;
+                    
+                case UPDATE_WAREHOUSE_STATUS:
+                    if(event.getBody() instanceof WarehouseStatus){
+                        System.out.println("got warehouse status");
+                        WarehouseStatus warehouseStatus = (WarehouseStatus) event.getBody();
+                        mSupervisorUi.updateRobotStatus(warehouseStatus.toString());
+                    }
+                    break;
 		}
+	}
+	public void requestAddNewWidgetItem(String widgetName, int price){
+		NewWidgetInfo newWidgetInfo = new NewWidgetInfo(widgetName, price);
+		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.ADD_NEW_WIDGET_ITEM, newWidgetInfo));
 	}
 	public void requestWidgetCatalog(){
             //System.out.println("controller:request widget catalog");
 		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null);
 		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.REQUEST_CATAGORY_FROM_SUPERVISOR_UI, null));
 	}
-	public void sendWidgetCatalog(WidgetCatalog widgetCatalog){
-		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
-		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog));
-	}
+	
 	public void requestOrderStatus(){
 		//sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_ORDER_STATUS, null);
 		postEvent(new EventMessage(getId().name(), WComponentType.WAREHOUSE_SUPERVISOR.name(), EventMessageType.REQUEST_ORDER_STATUS, null));

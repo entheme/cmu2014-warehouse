@@ -6,6 +6,7 @@
 
 package com.lge.warehouse.manager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,6 +15,7 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
+import com.lge.warehouse.manager.OrderStatemachine.RobotAtX;
 import com.lge.warehouse.manager.OrderStatemachine.WahouseStateMachine;
 import com.lge.warehouse.manager.OrderStatemachine.WMorderStatemachineState;
 import com.lge.warehouse.util.InventoryName;
@@ -30,6 +32,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
     private static WarehouseManagerController sInstance = null;
     static Logger logger = Logger.getLogger(WarehouseManagerController.class);
     WarehouseInventoryInfo minventoryInfo;
+    WarehouseStatus warehouseStatus = new WarehouseStatus();
+    
     WahouseStateMachine warehouseStatemachine = new WahouseStateMachine();
     NavigationPathSelector PathSelector = new NavigationPathSelector(minventoryInfo);
 
@@ -43,6 +47,52 @@ public class WarehouseManagerController extends WarehouseRunnable {
         }
         return sInstance;
     }
+    
+    public void SendWarehouseStatus()
+    {
+    	String StringFormat = "";
+    	List<QuantifiedWidget> inventoryListOnBot = new ArrayList<QuantifiedWidget>();
+    	List<WMorderStatemachineState> PathList = new ArrayList<WMorderStatemachineState>();
+    	PathList = warehouseStatemachine.getCurrentState().getPassedNavigationPath();
+    	
+    	if(PathList.isEmpty())
+    	{
+    		StringFormat += "[NULL]";
+    	}
+    	else
+    	{
+    		for(WMorderStatemachineState pa : PathList)
+			{
+	    		StringFormat += pa.toString();
+	    		if(pa instanceof RobotAtX)
+	    		{
+	    			for(QuantifiedWidget qw : ((RobotAtX) pa).getQwOrderList())
+	    			{
+	    				inventoryListOnBot.add(qw);
+	    			}
+	    		}
+		 	}
+    	}
+    	warehouseStatus.addVisitedStationListOfBot(StringFormat);
+    	warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
+		warehouseStatus.setLocationOfBot(warehouseStatemachine.getCurrentState().toString());
+		
+		PathList = warehouseStatemachine.getCurrentState().getNavigationPath();
+		StringFormat = "NULL";
+		for(WMorderStatemachineState pa : PathList)
+		{
+			if(pa instanceof RobotAtX)
+			{
+				StringFormat = pa.toString();
+				break;
+			}
+		}
+		
+		warehouseStatus.setNextStop(StringFormat);
+		warehouseStatus.setWarehouseInventoryInfo(minventoryInfo);
+		
+		sendWarehouseStatus(warehouseStatus);
+    }
 
     @Override
     protected void eventHandle(EventMessage event) {
@@ -52,6 +102,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
 		case WAREHOUSE_INVENTORY_INFO:
 			if(event.getBody() instanceof WarehouseInventoryInfo){
 				minventoryInfo = (WarehouseInventoryInfo)event.getBody();
+				PathSelector.SetNewInventory(minventoryInfo);
+				
 				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + minventoryInfo.getWarehouseId());
 			 	for(InventoryName inventoryName : InventoryName.values()){
                                      //Note: Now, The InventoryName means the name of inventory stataion.  
@@ -79,27 +131,31 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			 	}
 				
 				List<WMorderStatemachineState> newOrderPath = PathSelector.MakeNewNavigationPath(order);
+				SendWarehouseStatus();
 				warehouseStatemachine.Evt_NewOrder(newOrderPath);
+				
+				
+				
 				
 				
 				try {
 					//To Do: deliver the order to Navigator instead of thread sleep
-                                        
-                                        //Follwing code is just for test.
-                                        //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.INIT_WAREHOUSE, null);
-                                        //sendMsg(WComponentType.ROBOT_OUTPUT_MGR, EventMessageType.MOVE_NEXT_INV, null);
-                      
-                                        Thread.sleep(5000);
-                                        
-                                        //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS, null);
-                                        //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS, null);
-                                        //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_WAREHOUSE_RECOVERY, null);
-                      
+	                                    
+	                                    //Follwing code is just for test.
+	                                    //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.INIT_WAREHOUSE, null);
+	                                    //sendMsg(WComponentType.ROBOT_OUTPUT_MGR, EventMessageType.MOVE_NEXT_INV, null);
+	                  
+	                                    Thread.sleep(5000);
+	                                    
+	                                    //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS, null);
+	                                    //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS, null);
+	                                    //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_WAREHOUSE_RECOVERY, null);
+	                  
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                                //Send processed order's information to WM_MSG_HANDLER
+                            //Send processed order's information to WM_MSG_HANDLER
 				sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FINISH_FILL_ORDER, order);
 				//For Test [END]
 			}else {
@@ -113,15 +169,15 @@ public class WarehouseManagerController extends WarehouseRunnable {
                             sendWarehouseStatus(warehouseStatus);
 			}
 			break;
-                case ROBOT_ERROR_STATUS:
+		case ROBOT_ERROR_STATUS:
 			if(event.getBody() instanceof String) {
                             String value = (String)event.getBody();
                             logger.info("SEND_ROBOT_ERROR :" + value);
 			}else {
-                            handleBodyError(event);
-                        } 
-                        break;
-                case WAREHOUSE_LOAD_STATUS:
+		        handleBodyError(event);
+		    } 
+		    break;
+		case WAREHOUSE_LOAD_STATUS:
 			if(event.getBody() instanceof String) {
                              String strVal = (String)event.getBody();
                              int value = Integer.parseInt(strVal);
@@ -129,10 +185,10 @@ public class WarehouseManagerController extends WarehouseRunnable {
                              //Note: if order is not processing, ignore this event
                              
 			}else {
-                            handleBodyError(event);
-                        } 
-                        break;
-                case ROBOT_POSITION_STATUS:
+			    handleBodyError(event);
+			} 
+			break;
+		case ROBOT_POSITION_STATUS:
 			if(event.getBody() instanceof String) {
                              String strVal = (String)event.getBody();
                              int value = Integer.parseInt(strVal);
@@ -142,6 +198,18 @@ public class WarehouseManagerController extends WarehouseRunnable {
                             handleBodyError(event);
 			} 
 			break;
+                case ROBOT_IS_CONNECTED:
+                        logger.info("ROBOT_IS_CONNECTED");
+                        break;
+                case ROBOT_IS_DISCONNECTED:
+                        logger.info("ROBOT_IS_DISCONNECTED");
+                        break;
+                case WAREHOUSE_IS_CONNECTED:
+                     logger.info("WAREHOUSE_IS_CONNECTED");
+                     break;
+                case WAREHOUSE_IS_DISCONNECTED:
+                        logger.info("WAREHOUSE_IS_DISCONNECTED");
+                        break;
 		default:
 			logger.info("unhandled event :"+event);
 			break;

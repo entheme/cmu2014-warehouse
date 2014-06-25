@@ -6,8 +6,8 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
+import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
 public class SupervisorUIStub extends WarehouseRunnable {
@@ -83,7 +83,7 @@ public class SupervisorUIStub extends WarehouseRunnable {
 		addBus(WComponentType.WAREHOUSE_SUPERVISOR);
 	}
 	public void sendWidgetCatalog(WidgetCatalog widgetCatalog){
-		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
+//		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.SEND_WIDGET_CATALOG_UPDATE, widgetCatalog);
 	}
 	public void requestOrderStatus(){
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.REQUEST_ORDER_STATUS, null);

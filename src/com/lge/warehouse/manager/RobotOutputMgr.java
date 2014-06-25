@@ -19,12 +19,15 @@ import org.apache.log4j.Logger;
 public class RobotOutputMgr extends WarehouseRunnable{
     private static RobotOutputMgr sInstance = null;
     static Logger logger = Logger.getLogger(RobotOutputMgr.class);
-    ArduinoWriter mArduinoWriter = new ArduinoWriter("tcp://localhost");
+    ArduinoConnector mArduinoConForRobot = null;
     
     private RobotOutputMgr() {
-        super(WComponentType.ROBOT_OUTPUT_MGR);
-        mArduinoWriter.setPortNum(504);
+        super(WComponentType.ROBOT_OUTPUT_MGR);    
     }
+    
+    protected void setArduinoConnector(ArduinoConnector arduinoCon) {
+      mArduinoConForRobot = arduinoCon;
+   }
     
     public static RobotOutputMgr getInstance() {
         if (sInstance == null) {
@@ -35,27 +38,28 @@ public class RobotOutputMgr extends WarehouseRunnable{
 
     @Override
     protected void eventHandle(EventMessage event) {
-		switch(event.getType()){
-		case SYSTEM_READY:
-                    break;
-                case MOVE_NEXT_INV:
-                    logger.info("MOVE_NEXT_INV");
-                    mArduinoWriter.writeData("M");
-                    break;
-                case REQUEST_ROBOT_RECOVERY:
-                    logger.info("REQUEST_ROBOT_RECOVERY");
-                    mArduinoWriter.writeData("R");
-                    break;
-		default:
-			logger.info("unhandled event :"+event);
-			break;
-		}
+        switch(event.getType()){
+        case SYSTEM_READY:
+            break;
+        case MOVE_NEXT_INV:
+            logger.info("MOVE_NEXT_INV");
+            mArduinoConForRobot.writeData("M");
+            break;
+        case REQUEST_ROBOT_RECOVERY:
+            logger.info("REQUEST_ROBOT_RECOVERY");
+            mArduinoConForRobot.writeData("R");
+            break;
+        default:
+            logger.info("unhandled event :"+event);
+            break;
+        }
     }
 
-    public static void start() {
+    public static void start(ArduinoConnector arduinoCon) {
         logger.info("RobotOutputMgr start");
+        getInstance().setArduinoConnector(arduinoCon);
         new Thread(getInstance()).start();
-    }
+    }  
 
     @Override
     protected void initBus() {

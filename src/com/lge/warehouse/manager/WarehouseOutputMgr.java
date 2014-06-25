@@ -10,7 +10,6 @@ import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
 import com.lge.warehouse.common.app.WarehouseRunnable;
 import com.lge.warehouse.common.bus.EventMessage;
-import static com.lge.warehouse.manager.RobotOutputMgr.logger;
 import org.apache.log4j.Logger;
 
 /**
@@ -20,11 +19,10 @@ import org.apache.log4j.Logger;
 public class WarehouseOutputMgr extends WarehouseRunnable{
     private static WarehouseOutputMgr sInstance = null;
     static Logger logger = Logger.getLogger(WarehouseOutputMgr.class);
-     ArduinoWriter mArduinoWriter = new ArduinoWriter("tcp://localhost");
-    
+    ArduinoConnector mArduinoConForWarehouse = null;
+       
     private WarehouseOutputMgr() {
         super(WComponentType.WAREHOUSE_OUTPUT_MGR);
-         mArduinoWriter.setPortNum(506);
     }
     
     public static WarehouseOutputMgr getInstance() {
@@ -33,6 +31,10 @@ public class WarehouseOutputMgr extends WarehouseRunnable{
         }
         return sInstance;
     }
+    
+    protected void setArduinoConnector(ArduinoConnector arduinoCon) {
+        mArduinoConForWarehouse = arduinoCon;
+    }
 
     @Override
     protected void eventHandle(EventMessage event) {
@@ -40,31 +42,32 @@ public class WarehouseOutputMgr extends WarehouseRunnable{
 		case SYSTEM_READY:
                     break;
                 case INIT_WAREHOUSE:
-                    logger.info("INIT_WAREHOUSE");
-                    mArduinoWriter.writeData("I");
+                    logger.info("Call INIT_WAREHOUSE");
+                    mArduinoConForWarehouse.writeData("I");
                     break;
                 case REQUEST_LOAD_STATUS:
                     logger.info("REQUEST_LOAD_STATUS");
-                    mArduinoWriter.writeData("L");
+                    mArduinoConForWarehouse.writeData("L");
                     break;
                 case REQUST_POS_STATUS:
                     logger.info("REQUST_POS_STATUS");
-                    mArduinoWriter.writeData("P");
+                    mArduinoConForWarehouse.writeData("P");
                     break;    
                 case REQUEST_WAREHOUSE_RECOVERY:
                     logger.info("REQUEST_WAREHOUSE_RECOVERY");
-                    mArduinoWriter.writeData("R");
+                    mArduinoConForWarehouse.writeData("R");
                     break;    
 		default:
-			logger.info("unhandled event :"+event);
-			break;
+                    logger.info("unhandled event :"+event);
+                    break;
 		}
     }
-
-    public static void start() {
+    
+     public static void start(ArduinoConnector arduinoCon) {
         logger.info("WarehouseOutputMgr start");
+        getInstance().setArduinoConnector(arduinoCon);
         new Thread(getInstance()).start();
-    }
+    }  
 
     @Override
     protected void initBus() {

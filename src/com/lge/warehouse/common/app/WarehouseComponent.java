@@ -26,12 +26,18 @@ public abstract class WarehouseComponent implements MessageListener, MsgInterfac
 
 	public WarehouseComponent(WComponentType id) {
 		mId = id;
-		if (WarehouseContext.TEST_MODE){
+		
+		if((getId() == WComponentType.CUSTOMER_SERVICE_MANAGER)||
+				(getId() == WComponentType.PENDING_ORDER_MANAGER)||
+				(getId() == WComponentType.WAREHOUSE_SUPERVISOR) ||
+				((WarehouseContext.TEST_MODE==true)&&(getId() == WComponentType.WM_MSG_HANDLER))
+				){
 			addBus(WComponentType.SYSTEM);
-		}else {
-			if (!((id == WComponentType.SUPERVISOR_UI)||(id == WComponentType.CUSTOMER_INF))){
-				addBus(WComponentType.SYSTEM);
-			}
+		}else if((getId() == WComponentType.WM_MSG_HANDLER)||
+				(getId() == WComponentType.WAREHOUSE_MANAGER_CONTROLLER)||
+				(getId() == WComponentType.ROBOT_OUTPUT_MGR)||
+				(getId() == WComponentType.WAREHOUSE_OUTPUT_MGR)){
+			addBus(WComponentType.MANAGER_SYSTEM);
 		}
 		initBus();
 	}
@@ -67,7 +73,7 @@ public abstract class WarehouseComponent implements MessageListener, MsgInterfac
 	public void removeBus(WComponentType dest) {
 		P2PSender sender = mP2PSenderMap.remove(dest.name());
 		sender.stop();
-	
+
 		P2PReceiver receiver = mP2PReceiverMap.remove(dest.name());
 		receiver.stop();
 	}

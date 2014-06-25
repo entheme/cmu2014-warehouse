@@ -39,23 +39,28 @@ public class WahouseStateMachine implements Serializable{
 		robotAtX[3] = new RobotAtX(this,4);
 		aduinoHasError = new AdoinoErrorState(this);
 		
-		//SaveState = initState;
-		// If This Save state is not initstate mean Error recovery logic is run
+		SaveState = waitNewOrderState;
 		CurrentState = waitNewOrderState;
-		load();
-		if(SaveState != null)
-		{
-			setState(SaveState);
-		}
-		else
-		{
-			CurrentState = initState;
-		}
+		
+		//next is for loading warehouse recovery.
+		//load();// If This Save state is not initstate mean Error recovery logic is run
+		//if(SaveState != null)
+		//{
+		//	setState(SaveState);
+		//}
+		//else
+		//{
+		//	CurrentState = waitNewOrderState;
+		//}
 		
 	}
 	
 	public void Evt_initComplete() {CurrentState.Evt_initComplete();}
-	public void Evt_NewOrder(List<WMorderStatemachineState> path) {CurrentState.Evt_NewOrder(path);}
+	public void Evt_NewOrder(List<WMorderStatemachineState> path) 
+	{
+		CurrentState.flushPassNavigationPath();
+		CurrentState.Evt_NewOrder(path);
+	}
 	public void Evt_WareHouseSensorIsOn(int sensorNum) {CurrentState.Evt_WareHouseSensorIsOn(sensorNum);}
 	public void Evt_WareHouseButtonIsOn(int buttonNum) {CurrentState.Evt_WareHouseButtonIsOn(buttonNum);}
 	public void Evt_RobotErrorStateChange(int ErrorNum) {CurrentState.Evt_RobotErrorStateChange(ErrorNum);}
@@ -67,7 +72,6 @@ public class WahouseStateMachine implements Serializable{
 	public WMorderStatemachineState getRobotMoveToXst(int targetX) {return robotMoveToX[targetX];}
 	public WMorderStatemachineState getRobotAtXst(int targetX) {return robotAtX[targetX];	}
 	public WMorderStatemachineState getAduinoError() {return aduinoHasError;	}
-	
 	public WMorderStatemachineState getCurrentState() { return CurrentState;	}
 	public WMorderStatemachineState getLastState() {return SaveState;	}
 
@@ -76,7 +80,7 @@ public class WahouseStateMachine implements Serializable{
 		System.out.println("[StateMachine] StateChange " + CurrentState + "->" + state);
     	this.CurrentState = state;
     	this.SaveState = this.CurrentState; 
-    	save();
+    	//save();
     	//TODO This function need to say other process
     }
 	

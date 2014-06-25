@@ -33,13 +33,13 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 	protected WarehouseRunnable(WComponentType id) {
 		super(id);
 		mQueue = new ArrayBlockingQueue<EventMessage>(50);
-		
+
 	}
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		threadStart();
-		
+
 		while(!mExit) {
 			try {
 				EventMessage event = mQueue.take();
@@ -70,23 +70,31 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 	}
 	protected void threadStart(){
 		Thread.currentThread().setName(getId().name());
-		if(WarehouseContext.TEST_MODE)
-			sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
-		else{
-			if(!((getId()==WComponentType.CUSTOMER_INF)||(getId()==WComponentType.SUPERVISOR_UI))){
+		
+			if((getId() == WComponentType.CUSTOMER_SERVICE_MANAGER)||
+					(getId() == WComponentType.PENDING_ORDER_MANAGER)||
+					(getId() == WComponentType.WAREHOUSE_SUPERVISOR)||
+					((WarehouseContext.TEST_MODE==true)&&(getId() == WComponentType.WM_MSG_HANDLER))
+					){
 				sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
+			}else if((getId() == WComponentType.WM_MSG_HANDLER)||
+					(getId() == WComponentType.WAREHOUSE_MANAGER_CONTROLLER)||
+					(getId() == WComponentType.ROBOT_OUTPUT_MGR)||
+					(getId() == WComponentType.WAREHOUSE_OUTPUT_MGR)){
+				sendMsg(WComponentType.MANAGER_SYSTEM, EventMessageType.READY_TO_OPERATE, null);
 			}
-		}
+
+		
 		logger.info(getId()+" thread start");
 	}
 	protected void threadStop(){
 		logger.info(getId()+" thread end");
 	}
-	
+
 	protected abstract void initBus();
 
 	protected abstract void eventHandle(EventMessage event);
-	
+
 	@Override
 	public void onMessage(Message message) {
 		// TODO Auto-generated method stub

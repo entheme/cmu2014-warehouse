@@ -14,4 +14,7 @@ import com.lge.warehouse.util.WidgetCatalog;
  */
 public interface SupervisorUiUpdate {
     void updateCatalog(WidgetCatalog widgetCatalog);
+    void updateOrderStatus(String orderStatus);
+    void updateRobotStatus(String robotStatus);
+    void updateInvenetoryStatus(String inventoryStatus);
 }

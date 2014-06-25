@@ -39,6 +39,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
         jSpinnerWidgetQuantity = new javax.swing.JSpinner();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextAreaCartInfo = new javax.swing.JTextArea();
+        jButtonApplyToAll = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +77,13 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
         jTextAreaCartInfo.setRows(5);
         jScrollPane2.setViewportView(jTextAreaCartInfo);
 
+        jButtonApplyToAll.setText(" Apply to all");
+        jButtonApplyToAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonApplyToAllActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,7 +92,10 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonApplyToAll))
                     .addComponent(jButtonOrder)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -95,7 +106,9 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButtonApplyToAll))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -128,15 +141,23 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
     }//GEN-LAST:event_jSpinnerWidgetQuantityStateChanged
 
     private void jButtonOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOrderActionPerformed
-        //Init spinner
-        jSpinnerWidgetQuantity.setValue(new Integer(0));
         //Place Order
         mOrderSysUiController.requestPlaceOrder(OrderSysWidgetCart.getOrderFromCart());
+        //Init spinner
+        jSpinnerWidgetQuantity.setValue(new Integer(0));
         //Init Cart
         OrderSysWidgetCart.initWidgetCart();
         //Show Cart
         showCartInfo();
     }//GEN-LAST:event_jButtonOrderActionPerformed
+
+    private void jButtonApplyToAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonApplyToAllActionPerformed
+        int widgetQuantity = ((Integer)jSpinnerWidgetQuantity.getValue()).intValue();
+        for(int i=0;i<OrderSysWidgetCart.getWidgetCatlogSize();i++) {
+            OrderSysWidgetCart.setWidgetQuantity(i, widgetQuantity);
+        }
+        showCartInfo();
+    }//GEN-LAST:event_jButtonApplyToAllActionPerformed
     @Override
 	public void updateUi() {
 		// TODO Auto-generated method stub
@@ -189,6 +210,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonApplyToAll;
     private javax.swing.JButton jButtonOrder;
     private javax.swing.JList jListWidget;
     private javax.swing.JScrollPane jScrollPane1;

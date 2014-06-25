@@ -95,9 +95,23 @@ public class WarehouseProxyHandler {
 	}
 	public void updateWarehouseStatus(String warehouseName,
 			WarehouseStatus warehouseStatus) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub 
 		WarehouseProxy wp = mWarehouses.get(warehouseName);
 		wp.updateWarehouseStatus(warehouseStatus);
+	}
+	public WarehouseInventoryInfo getInventoryInfo() {
+		// TODO Auto-generated method stub
+		for(WarehouseProxy wp : mWarehouses.values()){
+			return wp.getInventoryInfo();
+		}
+		return null;
+	}
+	public WarehouseStatus getWarehouseStatus() {
+		// TODO Auto-generated method stub
+		for(WarehouseProxy wp : mWarehouses.values()){
+			return wp.getWarehouseStatus();
+		}
+		return null;
 	}
 	
 }

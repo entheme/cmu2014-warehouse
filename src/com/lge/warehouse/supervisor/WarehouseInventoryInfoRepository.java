@@ -24,9 +24,14 @@ class WarehouseInventoryInfoRepository {
 	public WarehouseInventoryInfoRepository(){
 		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_1, WidgetCatalogRepository.getInstance().getWidgetInfo(0), 100);
 		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(1), 100);
-		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(2), 100);
-		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 100);
-		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 100);
+		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(2), 100);
+		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 100);
+		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 100);
+//		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 100);
+//		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 100);
+	}
+	public void setInventoryInfo(WarehouseInventoryInfo inventoryInfo){
+		mInventoryInfo = inventoryInfo;
 	}
 	public int getInventoryCount(WidgetInfo wi){
 		int inventoryCnt = 0;
@@ -62,7 +67,13 @@ class WarehouseInventoryInfoRepository {
 			if(warehouseInventoryInfo.hasInventoryStation(inventoryName)){
 				List<QuantifiedWidget> qwList = warehouseInventoryInfo.getInventoryInfo(inventoryName);
 				for(QuantifiedWidget qw : qwList){
-					mInventoryInfo.fillInventoryWidget(inventoryName, qw.getWidget(), qw.getQuantity());
+					if(mInventoryInfo.hasInventory(inventoryName, qw.getWidget())){
+						mInventoryInfo.fillInventoryWidget(inventoryName, qw.getWidget(), qw.getQuantity());
+						logger.info("already existed widget, fillInventoryWidget ");
+					}else{
+						mInventoryInfo.addNewWidgetToInventory(inventoryName, qw.getWidget(), qw.getQuantity());
+						logger.info("new Widget, addNewWidgetToInventory");
+					}
 				}
 			}
 		}

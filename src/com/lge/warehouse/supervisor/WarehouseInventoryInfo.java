@@ -18,7 +18,7 @@ public class WarehouseInventoryInfo implements Serializable{
 	public WarehouseInventoryInfo(int warehouseId){
 		mWarehouseId = warehouseId;
 	}
-	void addNewWidgetToInventory(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
+	public void addNewWidgetToInventory(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
 		if(!mInventoryInfoList.containsKey(inventoryName)){
 			mInventoryInfoList.put(inventoryName, new HashMap<WidgetInfo,Integer>());
 		}
@@ -30,6 +30,13 @@ public class WarehouseInventoryInfo implements Serializable{
 		}
 		int prevCnt = mInventoryInfoList.get(inventoryName).get(widgetInfo);
 		mInventoryInfoList.get(inventoryName).put(widgetInfo,count+prevCnt);
+	}
+	public void reductInventoryWidget(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
+		if(!mInventoryInfoList.containsKey(inventoryName)){
+			mInventoryInfoList.put(inventoryName, new HashMap<WidgetInfo,Integer>());
+		}
+		int prevCnt = mInventoryInfoList.get(inventoryName).get(widgetInfo);
+		mInventoryInfoList.get(inventoryName).put(widgetInfo,prevCnt-count);
 	}
 	public boolean hasInventoryStation(InventoryName inventoryName){
 		return mInventoryInfoList.containsKey(inventoryName);
@@ -47,4 +54,22 @@ public class WarehouseInventoryInfo implements Serializable{
 	public int getWarehouseId(){
 		return mWarehouseId;
 	}
+
+	
+    @Override
+    public String toString() {
+        return "WarehouseInventoryInfo{" + "mInventoryInfoList=" + mInventoryInfoList + ", mWarehouseId=" + mWarehouseId + '}';
+    }
+	public boolean hasInventory(InventoryName inventoryName, WidgetInfo widget) {
+		// TODO Auto-generated method stub
+		if(mInventoryInfoList.containsKey(inventoryName)){
+			HashMap<WidgetInfo, Integer> widgetInfoMap = mInventoryInfoList.get(inventoryName);
+			for(WidgetInfo wi : widgetInfoMap.keySet()){
+				if(wi.equals(widget))
+					return true;
+			}
+		}
+		return false;
+	}
+        
 }

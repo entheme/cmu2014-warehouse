@@ -60,23 +60,26 @@ public enum WBus {
     P2P_WarehouseSupervisor_SYSTEM(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.SYSTEM ),
     P2P_SYSTEM_WarehouseSupervisor(WComponentType.SYSTEM, WComponentType.WAREHOUSE_SUPERVISOR),
     
+    P2P_WmMsgHandler_MANAGER_SYSTEM(WComponentType.WM_MSG_HANDLER, WComponentType.MANAGER_SYSTEM),
+    P2P_MANAGER_SYSTEM_WmMsgHandler(WComponentType.MANAGER_SYSTEM, WComponentType.WM_MSG_HANDLER),
+    
     P2P_WmMsgHandler_SYSTEM(WComponentType.WM_MSG_HANDLER, WComponentType.SYSTEM),
     P2P_SYSTEM_WmMsgHandler(WComponentType.SYSTEM, WComponentType.WM_MSG_HANDLER),
     
-    P2P_WarehouseManagerController_SYSTEM(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, WComponentType.SYSTEM),
-    P2P_SYSTEM_WarehouseManagerControlelr(WComponentType.SYSTEM, WComponentType.WAREHOUSE_MANAGER_CONTROLLER),
+    P2P_WarehouseManagerController_MANAGER_SYSTEM(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, WComponentType.MANAGER_SYSTEM),
+    P2P_MANAGER_SYSTEM_WarehouseManagerControlelr(WComponentType.MANAGER_SYSTEM, WComponentType.WAREHOUSE_MANAGER_CONTROLLER),
     
-    P2P_RobotOutputMgr_SYSTEM(WComponentType.ROBOT_OUTPUT_MGR, WComponentType.SYSTEM),
-    P2P_SYSTEM_RobotOutputMgr(WComponentType.SYSTEM, WComponentType.ROBOT_OUTPUT_MGR),
+    P2P_RobotOutputMgr_MANAGER_SYSTEM(WComponentType.ROBOT_OUTPUT_MGR, WComponentType.MANAGER_SYSTEM),
+    P2P_MANAGER_SYSTEM_RobotOutputMgr(WComponentType.MANAGER_SYSTEM, WComponentType.ROBOT_OUTPUT_MGR),
     
-    P2P_RobotInputMgr_SYSTEM(WComponentType.ROBOT_INPUT_MGR, WComponentType.SYSTEM),
-    P2P_SYSTEM_RobotInputMgr(WComponentType.SYSTEM, WComponentType.ROBOT_INPUT_MGR),
+    P2P_RobotInputMgr_MANAGER_SYSTEM(WComponentType.ROBOT_INPUT_MGR, WComponentType.MANAGER_SYSTEM),
+    P2P_MANAGER_SYSTEM_RobotInputMgr(WComponentType.MANAGER_SYSTEM, WComponentType.ROBOT_INPUT_MGR),
     
-    P2P_WarehouseOutputMgr_SYSTEM(WComponentType.WAREHOUSE_OUTPUT_MGR, WComponentType.SYSTEM),
-    P2P_SYSTEM_WarehouseOutputMgr(WComponentType.SYSTEM, WComponentType.WAREHOUSE_OUTPUT_MGR),
+    P2P_WarehouseOutputMgr_MANAGER_SYSTEM(WComponentType.WAREHOUSE_OUTPUT_MGR, WComponentType.MANAGER_SYSTEM),
+    P2P_MANAGER_SYSTEM_WarehouseOutputMgr(WComponentType.MANAGER_SYSTEM, WComponentType.WAREHOUSE_OUTPUT_MGR),
     
-    P2P_WarehouseInputMgr_SYSTEM(WComponentType.WAREHOUSE_INPUT_MGR, WComponentType.SYSTEM),
-    P2P_SYSTEM_WarehouseInputMgr(WComponentType.SYSTEM, WComponentType.WAREHOUSE_INPUT_MGR)
+    P2P_WarehouseInputMgr_MANAGER_SYSTEM(WComponentType.WAREHOUSE_INPUT_MGR, WComponentType.MANAGER_SYSTEM),
+    P2P_MANAGER_SYSTEM_WarehouseInputMgr(WComponentType.MANAGER_SYSTEM, WComponentType.WAREHOUSE_INPUT_MGR)
     
     ;
     

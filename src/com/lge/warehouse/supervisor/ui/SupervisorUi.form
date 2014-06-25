@@ -27,13 +27,21 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Component id="jComboBoxInventory" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jComboBoxWidget" min="-2" pref="96" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jSpinnerWidgetQuantity" min="-2" pref="67" max="-2" attributes="0"/>
-                      <EmptySpace pref="142" max="32767" attributes="0"/>
+                      <Component id="jComboBoxInventory" min="-2" pref="117" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jComboBoxWidget" min="-2" pref="111" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jSpinnerWidgetQuantity" min="-2" pref="91" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jButtonInventoryAdd" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jButtonAddTest" min="-2" pref="67" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jTextFieldNewWidget" min="-2" pref="115" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jTextFieldNewWidgetPrice" pref="71" max="32767" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jButtonAddWidget" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jTabbedPaneInfo" alignment="0" max="32767" attributes="0"/>
               </Group>
@@ -45,15 +53,19 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-              <Component id="jTabbedPaneInfo" min="-2" pref="246" max="-2" attributes="0"/>
+              <Component id="jTabbedPaneInfo" min="-2" pref="413" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jComboBoxInventory" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jComboBoxWidget" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jSpinnerWidgetQuantity" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonInventoryAdd" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAddTest" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldNewWidget" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jButtonAddWidget" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldNewWidgetPrice" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="17" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -82,6 +94,7 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextAreaOrder">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
@@ -104,6 +117,7 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextAreaInventory">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
@@ -126,6 +140,7 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextAreaRobot">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
               </Properties>
@@ -137,11 +152,10 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxInventory">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
+          <StringArray count="3">
             <StringItem index="0" value="Inventory1"/>
             <StringItem index="1" value="Inventory2"/>
             <StringItem index="2" value="Inventory3"/>
-            <StringItem index="3" value="Inventory4"/>
           </StringArray>
         </Property>
       </Properties>
@@ -149,7 +163,7 @@
     <Component class="javax.swing.JComboBox" name="jComboBoxWidget">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.DefaultComboBoxModel(){&#xa;    public int getSize() { return getCatalogSize(); }&#xa;    public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i);}&#xa;}" type="code"/>
+          <Connection code="new javax.swing.DefaultComboBoxModel(){&#xa;    public int getSize() { return getCatalogSize(); }&#xa;    public Object getElementAt(int i) { return mWidgetCatalog.getWidgetInfoAt(i).getName();}&#xa;}" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -162,6 +176,26 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonInventoryAddActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonAddTest">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Test"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddTestActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldNewWidget">
+    </Component>
+    <Component class="javax.swing.JButton" name="jButtonAddWidget">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Add a widget"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddWidgetActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldNewWidgetPrice">
     </Component>
   </SubComponents>
 </Form>
