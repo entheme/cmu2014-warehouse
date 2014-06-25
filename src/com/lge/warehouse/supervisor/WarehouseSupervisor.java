@@ -29,7 +29,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 	private OrderProvider mOrderProvider;
 
 	private WarehouseSupervisor() {
-		super(WComponentType.WAREHOUSE_SUPERVISOR);
+		super(WComponentType.WAREHOUSE_SUPERVISOR, false);
 		mWarehouseProxyHandler = new WarehouseProxyHandler(this,this);
 		mOrderProvider = new OrderProvider(this, mWarehouseProxyHandler);
 	}

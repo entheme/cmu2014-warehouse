@@ -25,7 +25,7 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 	private PlaceOrderHandler mPlaceOrderHandler;
 
 	private CustomerServiceManager() {
-		super(WComponentType.CUSTOMER_SERVICE_MANAGER);
+		super(WComponentType.CUSTOMER_SERVICE_MANAGER, false);
 		mPlaceOrderHandler = new PlaceOrderHandler(this);
 	}
 	public static CustomerServiceManager getInstance() {

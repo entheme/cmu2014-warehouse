@@ -15,7 +15,7 @@ public class SupervisorUIStub extends WarehouseRunnable {
 	private static SupervisorUIStub sInstance = null;
 	private OrderStatusInfo mOrderStatusInfo;
 	private SupervisorUIStub(){
-		super(WComponentType.SUPERVISOR_UI);
+		super(WComponentType.SUPERVISOR_UI, false);
 	}
 
 	public static SupervisorUIStub getInstance(){
@@ -25,7 +25,7 @@ public class SupervisorUIStub extends WarehouseRunnable {
 	}
 
 	protected SupervisorUIStub(WComponentType id) {
-		super(id);
+		super(id, false);
 		// TODO Auto-generated constructor stub
 	}
 

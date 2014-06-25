@@ -22,7 +22,7 @@ public class RobotOutputMgr extends WarehouseRunnable{
     ArduinoConnector mArduinoConForRobot = null;
     
     private RobotOutputMgr() {
-        super(WComponentType.ROBOT_OUTPUT_MGR);    
+        super(WComponentType.ROBOT_OUTPUT_MGR, false);    
     }
     
     protected void setArduinoConnector(ArduinoConnector arduinoCon) {

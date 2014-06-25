@@ -22,11 +22,11 @@ class WarehouseInventoryInfoRepository {
 	private static Logger logger = Logger.getLogger(WarehouseInventoryInfoRepository.class);
 	WarehouseInventoryInfo mInventoryInfo = new WarehouseInventoryInfo();
 	public WarehouseInventoryInfoRepository(){
-		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_1, WidgetCatalogRepository.getInstance().getWidgetInfo(0), 100);
-		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(1), 100);
-		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(2), 100);
-		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 100);
-		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 100);
+		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_1, WidgetCatalogRepository.getInstance().getWidgetInfo(0), 0);
+		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(1), 0);
+		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, WidgetCatalogRepository.getInstance().getWidgetInfo(2), 0);
+		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 0);
+		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 0);
 //		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(3), 100);
 //		mInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_4, WidgetCatalogRepository.getInstance().getWidgetInfo(4), 100);
 	}

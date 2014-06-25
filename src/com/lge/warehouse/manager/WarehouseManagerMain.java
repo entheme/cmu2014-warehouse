@@ -24,7 +24,7 @@ public class WarehouseManagerMain extends WarehouseRunnable{
 	private BlockingQueue<EventMessage> mQueue;
 	boolean mIsSystemReady;
 	public WarehouseManagerMain(){
-		super(WComponentType.MANAGER_SYSTEM);
+		super(WComponentType.MANAGER_SYSTEM, true);
 	}
 
 	@Override

@@ -202,6 +202,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
     private void requestCatalog() {
         OrderSysWidgetCart.setUiUpdateListener(this);
         mOrderSysUiController = new OrderSysUiController();
+        new Thread(mOrderSysUiController).start();
         mOrderSysUiController.requestWidgetCatalog();
     }
     
