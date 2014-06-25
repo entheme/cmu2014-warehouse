@@ -42,6 +42,7 @@ public class WarehouseInputMgr extends DeviceInputMgr {
                inventory station number 0 : shipping center
                inventory station number 1 ~ 3 : inventory station  
              */
+            logger.info("inputData: " + inputData +" parsedValue: " + value + " is received from warehouse");
             sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_LOAD_STATUS, value);
         }
         else if(inputData.startsWith("R") == true) {
@@ -49,6 +50,7 @@ public class WarehouseInputMgr extends DeviceInputMgr {
              /*Send processed robot's position to WAREHOUSE_MANAGER_CONTROLLER whenever the robot's position is changed
                To do : explain the value. 
              */
+             logger.info("inputData: " + inputData +" parsedValue: " + value + " is received from warehouse");
              sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.ROBOT_POSITION_STATUS, value);
         }
     }

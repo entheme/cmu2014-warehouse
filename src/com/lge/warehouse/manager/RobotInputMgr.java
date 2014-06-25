@@ -8,6 +8,7 @@ package com.lge.warehouse.manager;
 
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WComponentType;
+import static com.lge.warehouse.manager.WarehouseManagerController.logger;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,6 +37,7 @@ public class RobotInputMgr extends DeviceInputMgr {
         if(inputData.startsWith("E") == true) { 
              value  = inputData.substring(1);
             //Send processed robot's error information to WAREHOUSE_MANAGER_CONTROLLER
+            logger.info("inputData: " + inputData +" parsedValue: " + value + " is received from robot");
             sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.ROBOT_ERROR_STATUS, value);
         }
     }

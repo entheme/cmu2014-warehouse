@@ -94,15 +94,16 @@ public class WarehouseConClient {
             if(args.length > 0) {
                 w.connect(args[0], Integer.parseInt(args[1]));
             } else {
+                 //w.connect("127.0.0.1", 507);
                  w.connect("127.0.0.1", 550);
             }
 
-            //StringBuffer message = new StringBuffer();
-            //message.append("GET /Forum/ HTTP/1.1\r\n");
+            StringBuffer message = new StringBuffer();
+            message.append("E9\n");
             //message.append("Host: 0pen.us\r\n");
             //message.append("\r\n");
 
-          //  w.sendMessage(new String(message));
+            w.sendMessage(new String(message));
               
             while(true)
             {   

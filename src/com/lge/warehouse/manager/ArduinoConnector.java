@@ -69,12 +69,14 @@ public class ArduinoConnector {
         
         private synchronized void connectionLost() {
                 
-                if(isRun == false)
+                if(IsConnected() == false)
                     return;
                 
                 logger.debug("Client is disconnected");
                 
                 try {
+                    isRun = false;
+                                       
                     serverSocket.close();
                     clientSocket.close();
                     in.close();
@@ -84,7 +86,7 @@ public class ArduinoConnector {
                     clientSocket = null;
                     in = null;
                     out = null;
-                    isRun = false;
+ 
                 } catch (IOException ex) {
                     logger.info("connectionLost processing exception is happend");
                 }
@@ -94,7 +96,7 @@ public class ArduinoConnector {
  	{
 		ardData = null;
                          
-                if(isRun == false)
+                if(IsConnected() == false)
                 {
                     logger.debug("client was not connected!!");
                     return null;
@@ -133,7 +135,7 @@ public class ArduinoConnector {
                 }
 		
                 try {
-                        logger.debug("Write data: " + cmd + " to" + clientSocket.toString());
+                        logger.info("Write data: " + cmd + " to" + clientSocket.toString());
                         if(out != null)
                         {
                             out.write(cmd, 0, cmd.length());
