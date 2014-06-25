@@ -37,6 +37,7 @@ public class WarehouseProxy {
     WarehouseInventoryInfoRepository mInventoryRepository;
     List<Order> mCompletedOrderList = new ArrayList<Order>();
     Order mProgressOrder = null;
+    WarehouseStatus mWarehouseStatus = null;
 
     public WarehouseProxy(int id, MessageListener listener){
         mDest = WComponentType.WM_MSG_HANDLER.name()+id;
@@ -120,11 +121,20 @@ public class WarehouseProxy {
 //			prevCount -= qw.getQuantity();
 //			mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
 //		}
+		mWarehouseStatus = warehouseStatus;
 		mInventoryRepository.setInventoryInfo(warehouseStatus.getWarehouseInventoryInfo());
 		mInventoryRepository.dump();
 	}
 	public void sendWidgetCatalog() {
 		// TODO Auto-generated method stub
 		sendObj(EventMessageType.SEND_WDIGET_CATALOG_TO_WM_MSG_HANDLER, WidgetCatalogRepository.getInstance().getWidgetCatalog());
+	}
+	public WarehouseInventoryInfo getInventoryInfo() {
+		// TODO Auto-generated method stub
+		return mInventoryRepository.getWarehouseInventoryInfo();
+	}
+	public WarehouseStatus getWarehouseStatus() {
+		// TODO Auto-generated method stub
+		return mWarehouseStatus;
 	}
 }

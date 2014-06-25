@@ -70,6 +70,8 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo)event.getBody();
 				mWarehouseProxyHandler.fillInventoryWidget(warehouseInventoryInfo);
 				doNextFillOrder();
+				warehouseInventoryInfo = mWarehouseProxyHandler.getInventoryInfo(); 
+				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo);
 			}else{
 				handleBodyError(event);
 			}
@@ -90,6 +92,13 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			break;
 		case REQUEST_CATAGORY_FROM_SUPERVISOR_UI:
 			sendWidgetCatalog(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_CATAGORY_TO_SUPERVISOR_UI);
+			WarehouseInventoryInfo warehouseInventoryInfo = mWarehouseProxyHandler.getInventoryInfo(); 
+			sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo);
+			updateOrderStatus();
+			WarehouseStatus warehouseStatusToSupervisorUI = mWarehouseProxyHandler.getWarehouseStatus();
+			if(warehouseStatusToSupervisorUI != null){
+				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.UPDATE_WAREHOUSE_STATUS, warehouseStatusToSupervisorUI);
+			}
 			break;
 		case SEND_WIDGET_CATALOG_UPDATE:
 			if (event.getBody() instanceof NewWidgetInfo){
