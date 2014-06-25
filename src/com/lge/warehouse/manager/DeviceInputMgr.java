@@ -9,10 +9,8 @@ package com.lge.warehouse.manager;
 import com.lge.warehouse.common.app.EventMessageType;
 import com.lge.warehouse.common.app.WBus;
 import com.lge.warehouse.common.app.WComponentType;
-import com.lge.warehouse.common.app.WarehouseContext;
 import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.common.bus.p2p.P2PConnection;
-import com.lge.warehouse.common.bus.p2p.P2PReceiver;
 import com.lge.warehouse.common.bus.p2p.P2PSender;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -28,12 +26,16 @@ public abstract class DeviceInputMgr implements Runnable {
         private boolean mExit = false;
         private boolean mStopped = false;
         protected HashMap<String, P2PSender> mP2PSenderMap = new HashMap<String, P2PSender>();
-        ArdunioReader mArdunioReader = new ArdunioReader();
+        ArduinoConnector mArduinoCon = null;
         protected String mAlias = null;
         protected int mPortNum = 505;	
       
         protected DeviceInputMgr(WComponentType id) {
             mId = id;
+        }
+        
+        protected void setArduinoConnector(ArduinoConnector arduinoCon) {
+            mArduinoCon = arduinoCon;
         }
 
         @Override
@@ -44,10 +46,15 @@ public abstract class DeviceInputMgr implements Runnable {
                 threadStart();
 
                 String inputData = null;
-                mArdunioReader.setPortNum(mPortNum);
-                if(mArdunioReader.startServer() == true) {
+                mArduinoCon.setPortNum(mPortNum);
+                
+                logger.info("Call startServer");
+                if(mArduinoCon.startServer() == true) {
                     while(!mExit) {
-                        inputData = mArdunioReader.readData();
+                        if(mArduinoCon.IsConnected() == false)
+                            mArduinoCon.startServer();
+                        
+                        inputData = mArduinoCon.readData();
                         if(inputData != null) {
                             processingData(inputData);
                         }

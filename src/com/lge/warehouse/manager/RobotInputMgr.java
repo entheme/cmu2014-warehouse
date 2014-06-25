@@ -17,7 +17,6 @@ import org.apache.log4j.Logger;
 public class RobotInputMgr extends DeviceInputMgr {
     private static RobotInputMgr sInstance = null;
     static Logger logger = Logger.getLogger(RobotInputMgr.class);
-    ArdunioReader mArdunioReader = new ArdunioReader();
     
     private RobotInputMgr() {
         super(WComponentType.ROBOT_INPUT_MGR);
@@ -44,7 +43,7 @@ public class RobotInputMgr extends DeviceInputMgr {
     @Override
     protected void threadStart(){
             super.threadStart();
-            setPortNum(505);
+            setPortNum(550);
      }
     
     @Override
@@ -53,8 +52,9 @@ public class RobotInputMgr extends DeviceInputMgr {
         sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.COMPONENT_HELLO, test);
     }
     
-    public static void start() {
+    public static void start(ArduinoConnector arduinoCon) {
         logger.info("RobotInputMgr start");
+        getInstance().setArduinoConnector(arduinoCon);
         new Thread(getInstance()).start();
-    }
+    }  
 }

@@ -7,13 +7,7 @@
 package com.lge.warehouse.manager;
 
 import com.lge.warehouse.common.app.EventMessageType;
-import com.lge.warehouse.common.app.WBus;
 import com.lge.warehouse.common.app.WComponentType;
-import com.lge.warehouse.common.app.WarehouseRunnable;
-import com.lge.warehouse.common.bus.EventMessage;
-import com.lge.warehouse.common.bus.p2p.P2PConnection;
-import com.lge.warehouse.common.bus.p2p.P2PReceiver;
-import com.lge.warehouse.common.bus.p2p.P2PSender;
 import org.apache.log4j.Logger;
 
 /**
@@ -23,10 +17,9 @@ import org.apache.log4j.Logger;
 public class WarehouseInputMgr extends DeviceInputMgr {
     private static WarehouseInputMgr sInstance = null;
     static Logger logger = Logger.getLogger(WarehouseInputMgr.class);
-    ArdunioReader mArdunioReader = new ArdunioReader();
         
     private WarehouseInputMgr() {
-      super(WComponentType.WAREHOUSE_INPUT_MGR);
+        super(WComponentType.WAREHOUSE_INPUT_MGR);
     }
     
     public static WarehouseInputMgr getInstance() {
@@ -35,11 +28,12 @@ public class WarehouseInputMgr extends DeviceInputMgr {
         }
         return sInstance;
     }
-
+    
     @Override
     protected void processingData(String inputData) {
         String value = null;
-         
+        logger.info("WAREHOUSE_LOAD_STATUS :" + inputData);
+        
         if(inputData.startsWith("L") == true) { 
             value  = inputData.substring(1);
              /*Send processed warehouse's inventory complete information as inventory station number(0~3) to WAREHOUSE_MANAGER_CONTROLLER
@@ -70,8 +64,9 @@ public class WarehouseInputMgr extends DeviceInputMgr {
         sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.COMPONENT_HELLO, test);
     }
     
-    public static void start() {
+    public static void start(ArduinoConnector arduinoCon) {
         logger.info("WarehouseInputMgr start");
+        getInstance().setArduinoConnector(arduinoCon);
         new Thread(getInstance()).start();
     }  
 }

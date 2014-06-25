@@ -15,16 +15,18 @@ import org.apache.log4j.Logger;
 public class Manager {
     private static Manager sInstance = null;
     static Logger logger = Logger.getLogger(Manager.class);
-    
+    static ArduinoConnector mArduinoConForWarehouse = new ArduinoConnector();
+    static ArduinoConnector mArduinoConForRobot = new ArduinoConnector();
+     
     public static void initialize() {
         logger.info("Manager is initializing...");
         // TODO: Do initialization
         WmMsgHandler.start();
         WarehouseManagerController.start();
-        WarehouseInputMgr.start();
-        WarehouseOutputMgr.start();
-        RobotInputMgr.start();
-        RobotOutputMgr.start();
+        WarehouseInputMgr.start(mArduinoConForWarehouse);
+        WarehouseOutputMgr.start(mArduinoConForWarehouse);
+        RobotInputMgr.start(mArduinoConForRobot);
+        RobotOutputMgr.start(mArduinoConForRobot);
 
         logger.info("Manager has been initialized");
     }
