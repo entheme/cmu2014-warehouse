@@ -63,8 +63,6 @@ public abstract class DeviceInputMgr implements Runnable {
                         inputData = mArduinoCon.readData();
                         if(inputData != null) {
                             processingData(inputData);
-                        } else {
-                            connectionLost();
                         }
                     }
                 }

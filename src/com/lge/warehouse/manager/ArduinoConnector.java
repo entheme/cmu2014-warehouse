@@ -34,14 +34,12 @@ public class ArduinoConnector {
 		
 	}
 	
-        public void setPortNum(int portNum)
-        {
+        public void setPortNum(int portNum) {
             this.portNum = portNum;
         }
         
 	public boolean startServer() {
-		try
-		{
+		try {
                     serverSocket = new ServerSocket(portNum);
                     logger.info("Waiting for Arduino on port " + portNum + "." );
                     
@@ -54,9 +52,7 @@ public class ArduinoConnector {
                     out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
                     
                     isRun = true;
-                }
-		catch (IOException e)
-                {
+                } catch (IOException e) {
                     logger.info( "Could not instantiate socket on port: " + portNum );
                     return false;
                 }
@@ -89,63 +85,52 @@ public class ArduinoConnector {
                     out = null;
  
                 } catch (IOException ex) {
-                    logger.info("connectionLost processing exception is happend");
+                    logger.info("connectionLost processing exception is happend : " + ex);
                 }
         }
         
 	public String readData()
  	{
 		ardData = null;
-                         
-                if(IsConnected() == false)
-                {
+                             
+                if(IsConnected() == false) {
                     logger.debug("client was not connected!!");
                     return null;
                 }
                        
-		try
-                {
-                    if(in != null)
-                    {
+		try {
+                    if(in != null) {
                         ardData = in.readLine();
-                        if(ardData != null)
-                            logger.debug("data :" + ardData);
                     }
-                        
-	    	//System.out.println ("Data from Arduino: " + ardData);
-		} catch (IOException e) {
-			logger.debug("readLine failed::");
+                } catch (Exception ex) {
+                        logger.info(ex);
                         connectionLost();
                         return null;
-		}
-		
+                }
 		return ardData;
  	}
 	
         public boolean writeData(String cmd)
  	{             
-		if (cmd == null)
-		{
+		if (cmd == null) {
                     logger.debug("Invalid command for arduino..."+cmd);
                     return false;
 		}
 				
-                if(IsConnected() == false)
-                {
+                if(IsConnected() == false) {
                     logger.debug("client was not connected!!");
                     return false;
                 }
 		
                 try {
                         logger.info("Write data: " + cmd + " to" + clientSocket.toString());
-                        if(out != null)
-                        {
+                        if(out != null) {
                             out.write(cmd, 0, cmd.length());
                             out.flush();
                         }
-                        
-                } catch (IOException e) {
-                        e.printStackTrace();
+                } catch (Exception ex) {
+                        logger.info(ex);
+                        ex.printStackTrace();
                 }
 		return true;
  	}
