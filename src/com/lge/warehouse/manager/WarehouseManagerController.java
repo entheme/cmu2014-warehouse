@@ -198,9 +198,15 @@ public class WarehouseManagerController extends WarehouseRunnable {
                             handleBodyError(event);
 			} 
 			break;
+                case ROBOT_IS_CONNECTED:
+                        logger.info("ROBOT_IS_CONNECTED");
+                        break;
                 case ROBOT_IS_DISCONNECTED:
                         logger.info("ROBOT_IS_DISCONNECTED");
                         break;
+                case WAREHOUSE_IS_CONNECTED:
+                     logger.info("WAREHOUSE_IS_CONNECTED");
+                     break;
                 case WAREHOUSE_IS_DISCONNECTED:
                         logger.info("WAREHOUSE_IS_DISCONNECTED");
                         break;

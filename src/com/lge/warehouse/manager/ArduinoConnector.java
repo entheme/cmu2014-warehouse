@@ -56,7 +56,7 @@ public class ArduinoConnector {
                 }
 		catch (IOException e)
                 {
-                    logger.debug( "Could not instantiate socket on port: " + portNum );
+                    logger.info( "Could not instantiate socket on port: " + portNum );
                     return false;
                 }
 		
@@ -86,7 +86,7 @@ public class ArduinoConnector {
                     out = null;
                     isRun = false;
                 } catch (IOException ex) {
-                    logger.debug("connectionLost processing exception is happend");
+                    logger.info("connectionLost processing exception is happend");
                 }
         }
         

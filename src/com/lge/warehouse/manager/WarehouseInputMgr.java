@@ -54,6 +54,12 @@ public class WarehouseInputMgr extends DeviceInputMgr {
     }
  
     @Override
+    protected void connectionDone() {
+        logger.info("Warehouse is connected");
+        sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_IS_CONNECTED, null);
+    } 
+    
+    @Override
     protected void connectionLost() {
         logger.info("Warehouse is disconnected");
         sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.WAREHOUSE_IS_DISCONNECTED, null);

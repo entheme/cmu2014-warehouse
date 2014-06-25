@@ -50,9 +50,15 @@ public abstract class DeviceInputMgr implements Runnable {
                 
                 logger.info("Call startServer");
                 if(mArduinoCon.startServer() == true) {
+                    
+                    connectionDone();
+                    
                     while(!mExit) {
-                        if(mArduinoCon.IsConnected() == false)
-                            mArduinoCon.startServer();
+                        
+                        if(mArduinoCon.IsConnected() == false) {
+                            if(mArduinoCon.startServer() == true)
+                                connectionDone();
+                        }
                         
                         inputData = mArduinoCon.readData();
                         if(inputData != null) {
@@ -68,6 +74,7 @@ public abstract class DeviceInputMgr implements Runnable {
         }
     
         protected abstract void processingData(String inputData);
+        protected abstract void connectionDone();
         protected abstract void connectionLost();
         
         protected void setPortNum(int portNum) {
