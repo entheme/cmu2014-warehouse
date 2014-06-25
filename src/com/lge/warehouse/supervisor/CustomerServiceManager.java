@@ -26,7 +26,7 @@ import com.lge.warehouse.util.WidgetCatalog;
 public final class CustomerServiceManager extends WarehouseRunnable{
 	private static CustomerServiceManager sInstance;
 	static Logger logger = Logger.getLogger(CustomerServiceManager.class);
-	private static long sOrderCnt=0;
+	private static int sOrderCnt=0;
 	private CustomerServiceManager() {
 		super(WComponentType.CUSTOMER_SERVICE_MANAGER, false);
 	}
