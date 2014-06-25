@@ -202,7 +202,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
                         logger.info("ROBOT_IS_DISCONNECTED");
                         break;
                 case WAREHOUSE_IS_DISCONNECTED:
-                        logger.info("ROBOT_IS_DISCONNECTED");
+                        logger.info("WAREHOUSE_IS_DISCONNECTED");
                         break;
 		default:
 			logger.info("unhandled event :"+event);
