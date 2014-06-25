@@ -38,7 +38,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
     NavigationPathSelector PathSelector = new NavigationPathSelector(minventoryInfo);
 
     private WarehouseManagerController() {
-        super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
+        super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, false);
     }
 
     public static WarehouseManagerController getInstance() {

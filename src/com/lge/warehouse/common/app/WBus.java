@@ -60,11 +60,11 @@ public enum WBus {
     P2P_WarehouseSupervisor_SYSTEM(WComponentType.WAREHOUSE_SUPERVISOR, WComponentType.SYSTEM ),
     P2P_SYSTEM_WarehouseSupervisor(WComponentType.SYSTEM, WComponentType.WAREHOUSE_SUPERVISOR),
     
-    P2P_WmMsgHandler_MANAGER_SYSTEM(WComponentType.WM_MSG_HANDLER, WComponentType.MANAGER_SYSTEM),
-    P2P_MANAGER_SYSTEM_WmMsgHandler(WComponentType.MANAGER_SYSTEM, WComponentType.WM_MSG_HANDLER),
-    
     P2P_WmMsgHandler_SYSTEM(WComponentType.WM_MSG_HANDLER, WComponentType.SYSTEM),
     P2P_SYSTEM_WmMsgHandler(WComponentType.SYSTEM, WComponentType.WM_MSG_HANDLER),
+
+    P2P_WmMsgHandler_MANAGER_SYSTEM(WComponentType.WM_MSG_HANDLER, WComponentType.MANAGER_SYSTEM),
+    P2P_MANAGER_SYSTEM_WmMsgHandler(WComponentType.MANAGER_SYSTEM, WComponentType.WM_MSG_HANDLER),
     
     P2P_WarehouseManagerController_MANAGER_SYSTEM(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, WComponentType.MANAGER_SYSTEM),
     P2P_MANAGER_SYSTEM_WarehouseManagerControlelr(WComponentType.MANAGER_SYSTEM, WComponentType.WAREHOUSE_MANAGER_CONTROLLER),

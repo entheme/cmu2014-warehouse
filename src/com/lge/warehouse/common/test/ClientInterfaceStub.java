@@ -20,7 +20,7 @@ public class ClientInterfaceStub extends WarehouseRunnable{
 	private static ClientInterfaceStub sInstance = null;
 
 	private ClientInterfaceStub(){
-		super(WComponentType.CUSTOMER_INF);
+		super(WComponentType.CUSTOMER_INF, false);
 	}
 
 	public static ClientInterfaceStub getInstance() {

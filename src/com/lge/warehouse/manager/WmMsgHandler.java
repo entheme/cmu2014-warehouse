@@ -29,7 +29,7 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 	static Logger logger = Logger.getLogger(WmMsgHandler.class);
 
 	private WmMsgHandler() {
-		super(WComponentType.WM_MSG_HANDLER);
+		super(WComponentType.WM_MSG_HANDLER, false);
 	}
 
 	public static WmMsgHandler getInstance() {

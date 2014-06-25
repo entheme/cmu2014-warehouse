@@ -26,8 +26,9 @@ public class WarehouseMain extends WarehouseRunnable{
 	static HashMap<WComponentType, Boolean> mSystemReadyMap = new HashMap<WComponentType, Boolean>();
 	private BlockingQueue<EventMessage> mQueue;
 	boolean mIsSystemReady;
+	private HashMap<WComponentType, HeartBeatHandler> mHeartBeatHandlerMap = new HashMap<WComponentType, HeartBeatHandler>();
 	public WarehouseMain(){
-		super(WComponentType.SYSTEM);
+		super(WComponentType.SYSTEM, false);
 	}
 
 	@Override
@@ -39,6 +40,9 @@ public class WarehouseMain extends WarehouseRunnable{
 		readyForMonitor(WComponentType.CUSTOMER_SERVICE_MANAGER);
 		readyForMonitor(WComponentType.PENDING_ORDER_MANAGER);
 		readyForMonitor(WComponentType.WAREHOUSE_SUPERVISOR);
+		addBus(WComponentType.CUSTOMER_INF);
+		addBus(WComponentType.SUPERVISOR_UI);
+		addBus(WComponentType.MANAGER_SYSTEM);
 		//readyForMonitor(WComponentType.WM_MSG_HANDLER);
 		//readyForMonitor(WComponentType.WAREHOUSE_MANAGER_CONTROLLER);
 		//readyForMonitor(WComponentType.ROBOT_INPUT_MGR);
@@ -67,6 +71,16 @@ public class WarehouseMain extends WarehouseRunnable{
 			mIsSystemReady = true;
 			logger.info("All System Ready");
 			sendSystemReadyMsg();
+			break;
+		case WAREHOUSE_RUNNABLE_HEARTBEAT_MSG:
+			if(!mHeartBeatHandlerMap.containsKey(WComponentType.valueOf(event.getSrc()))){
+				mHeartBeatHandlerMap.put(WComponentType.valueOf(event.getSrc()), new HeartBeatHandler(this, WComponentType.valueOf(event.getSrc())));
+				mHeartBeatHandlerMap.get(WComponentType.valueOf(event.getSrc())).setHeartBeatReceived(true);
+				logger.info("Heartbeat start for "+event.getSrc());
+			}else {
+//				logger.info("Heartbeat reset "+true);
+				mHeartBeatHandlerMap.get(WComponentType.valueOf(event.getSrc())).setHeartBeatReceived(true);
+			}
 			break;
 		default:
 			logger.info("unhandled event :"+event);
@@ -113,5 +127,10 @@ public class WarehouseMain extends WarehouseRunnable{
 		
 		WarehouseMain system = initWarehouseSystem();
 		system.run();
+	}
+
+	public void removeHeartHandler(WComponentType target) {
+		// TODO Auto-generated method stub
+		mHeartBeatHandlerMap.remove(target);
 	}
 }

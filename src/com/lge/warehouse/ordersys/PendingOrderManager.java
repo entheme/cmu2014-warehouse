@@ -26,7 +26,7 @@ public final class PendingOrderManager extends WarehouseRunnable{
 	private P2PSender mSenderToSupervisor;
 	private PendingOrderHandler mPendingOrderHandler;
 	private PendingOrderManager(){
-		super(WComponentType.PENDING_ORDER_MANAGER);
+		super(WComponentType.PENDING_ORDER_MANAGER, false);
 		mPendingOrderHandler = new PendingOrderHandler(this);
 	}
 

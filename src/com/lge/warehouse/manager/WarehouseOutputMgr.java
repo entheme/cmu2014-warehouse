@@ -22,7 +22,7 @@ public class WarehouseOutputMgr extends WarehouseRunnable{
     ArduinoConnector mArduinoConForWarehouse = null;
        
     private WarehouseOutputMgr() {
-        super(WComponentType.WAREHOUSE_OUTPUT_MGR);
+        super(WComponentType.WAREHOUSE_OUTPUT_MGR, false);
     }
     
     public static WarehouseOutputMgr getInstance() {

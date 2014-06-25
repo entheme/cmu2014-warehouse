@@ -10,9 +10,15 @@ package com.lge.warehouse.common.app;
  *
  * @author seuki77
  */
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Level;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.ObjectMessage;
 
 import org.apache.log4j.Logger;
 
@@ -29,11 +35,13 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 	private boolean mExit = false;
 	private boolean mStopped = false;
 	static Logger logger = Logger.getLogger(WarehouseRunnable.class);
-
-	protected WarehouseRunnable(WComponentType id) {
+	private boolean mEnableHartBeat = false;
+	private Timer mHeartBeatTimer;
+	protected WarehouseRunnable(WComponentType id, boolean enableHeartBeat) {
 		super(id);
 		mQueue = new ArrayBlockingQueue<EventMessage>(50);
-
+		mEnableHartBeat = enableHeartBeat;
+		mHeartBeatTimer = new Timer();
 	}
 	@Override
 	public void run() {
@@ -46,7 +54,8 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 				logger.info("Received : "+event);
 				if(event.getType() == EventMessageType.COMPONENT_END)
 					break;
-				eventHandle(event);
+				if(!handleSendMsgOnContext(event))
+					eventHandle(event);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,7 +64,20 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 		threadStop();
 		mStopped = true;
 	}
-
+	protected final void sendMsgOnContext(EventMessage event){
+		postEvent(new EventMessage(getId().name(),getId().name(), EventMessageType.WAREHOUSE_RUNNABLE_SEND_ON_THREAD_CONTEXT, event));
+	}
+	private boolean handleSendMsgOnContext(EventMessage event){
+		if(event.getSrc().equals(getId().name())
+				&&(event.getDest().equals(getId().name())
+						&&event.getType()==EventMessageType.WAREHOUSE_RUNNABLE_SEND_ON_THREAD_CONTEXT)
+						){
+			logger.info("self message send : "+event.getBody());
+			sendObject((EventMessage)event.getBody());
+			return true;
+		}else
+			return false;
+	}
 	public void postEvent(EventMessage event) {
 		if(mQueue == null)
 			logger.info("check postEvent"+event);
@@ -70,21 +92,26 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 	}
 	protected void threadStart(){
 		Thread.currentThread().setName(getId().name());
-		
-			if((getId() == WComponentType.CUSTOMER_SERVICE_MANAGER)||
-					(getId() == WComponentType.PENDING_ORDER_MANAGER)||
-					(getId() == WComponentType.WAREHOUSE_SUPERVISOR)||
-					((WarehouseContext.TEST_MODE==true)&&(getId() == WComponentType.WM_MSG_HANDLER))
-					){
-				sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
-			}else if((getId() == WComponentType.WM_MSG_HANDLER)||
-					(getId() == WComponentType.WAREHOUSE_MANAGER_CONTROLLER)||
-					(getId() == WComponentType.ROBOT_OUTPUT_MGR)||
-					(getId() == WComponentType.WAREHOUSE_OUTPUT_MGR)){
-				sendMsg(WComponentType.MANAGER_SYSTEM, EventMessageType.READY_TO_OPERATE, null);
-			}
 
-		
+		if((getId() == WComponentType.CUSTOMER_SERVICE_MANAGER)||
+				(getId() == WComponentType.PENDING_ORDER_MANAGER)||
+				(getId() == WComponentType.WAREHOUSE_SUPERVISOR)||
+				((WarehouseContext.TEST_MODE==true)&&(getId() == WComponentType.WM_MSG_HANDLER))
+				){
+			sendMsg(WComponentType.SYSTEM, EventMessageType.READY_TO_OPERATE, null);
+		}else if((getId() == WComponentType.WM_MSG_HANDLER)||
+				(getId() == WComponentType.WAREHOUSE_MANAGER_CONTROLLER)||
+				(getId() == WComponentType.ROBOT_OUTPUT_MGR)||
+				(getId() == WComponentType.WAREHOUSE_OUTPUT_MGR)){
+			sendMsg(WComponentType.MANAGER_SYSTEM, EventMessageType.READY_TO_OPERATE, null);
+		}
+		if(mEnableHartBeat){
+			if(WarehouseContext.ENABLE_HEARTBEAT){
+				addBus(WComponentType.SYSTEM);
+				mHeartBeatTimer.schedule(new HeartBeatTask(), 1000, 3000);
+			}
+		}
+
 		logger.info(getId()+" thread start");
 	}
 	protected void threadStop(){
@@ -108,4 +135,13 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 		}
 	}
 	public abstract void ping();
+	private class HeartBeatTask extends TimerTask{
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			sendMsgOnContext(new EventMessage(getId().name(), WComponentType.SYSTEM.name(), EventMessageType.WAREHOUSE_RUNNABLE_HEARTBEAT_MSG, null));
+		}
+		
+	}
 }
