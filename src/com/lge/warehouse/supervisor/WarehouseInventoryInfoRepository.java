@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.lge.warehouse.common.app.WarehouseContext;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
@@ -53,9 +52,10 @@ class WarehouseInventoryInfoRepository {
 		}
 		return inventoryCnt;
 	}
-	public void dump() {
+	public void dump(String title) {
 		// TODO Auto-generated method stub
-		logger.info("WarehouseInventoryRepository dump");
+		logger.info(title);
+		logger.info("Repository status");
 		int inventoryCnt = 0;
 		for(InventoryName inventoryName : InventoryName.values()){
 			StringBuffer sb = new StringBuffer(inventoryName.name());
@@ -85,32 +85,15 @@ class WarehouseInventoryInfoRepository {
 			}
 		}
 	}
-	public void reduceInventoryInfo(WidgetInfo widget, int count) {
+	public void reduceInventoryInfo(WidgetInfo widgetInfo, int count) {
 		// TODO Auto-generated method stub
-		for(InventoryName inventoryName : InventoryName.values()){
-			if(mInventoryInfo.hasInventoryStation(inventoryName)){
-				for(QuantifiedWidget qw : mInventoryInfo.getInventoryInfo(inventoryName)){
-					if(qw.getWidget().equals(widget)){
-						if(qw.getQuantity()>count){
-							qw.setQuantity(count);
-						}else{
-							String errLog = "update count is bigger than stored count";
-							if(WarehouseContext.DEBUG_WITH_RUNTIME_EXCEPTION)
-								throw new RuntimeException(errLog);
-							else
-								logger.info(errLog);
-						}
-					}
-				}
-			}
-		}
+		mInventoryInfo.reduceInventoryWidget(widgetInfo, count);
 	}
 	public WarehouseInventoryInfo getWarehouseInventoryInfo() {
 		// TODO Auto-generated method stub
 		return mInventoryInfo;
 	}
-	
-	public boolean hasInventoryForOrder(Order order) {
+	public boolean hasEnoughInventory(Order order) {
 		// TODO Auto-generated method stub
 		return mInventoryInfo.hasInventory(order);
 	}

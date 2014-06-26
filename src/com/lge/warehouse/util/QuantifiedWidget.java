@@ -30,4 +30,30 @@ public class QuantifiedWidget implements Serializable{
     public String toString(){
     	return mWidget+" quantity : "+mQuantity+"EA";
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mWidget == null) ? 0 : mWidget.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		QuantifiedWidget other = (QuantifiedWidget) obj;
+		if (mWidget == null) {
+			if (other.mWidget != null)
+				return false;
+		} else if (!mWidget.equals(other.mWidget))
+			return false;
+		return true;
+	}
+    
 }

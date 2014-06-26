@@ -31,7 +31,7 @@ public class WarehouseInventoryInfo implements Serializable{
 		int prevCnt = mInventoryInfoList.get(inventoryName).get(widgetInfo);
 		mInventoryInfoList.get(inventoryName).put(widgetInfo,count+prevCnt);
 	}
-	public void reductInventoryWidget(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
+	public void reduceInventoryWidget(InventoryName inventoryName, WidgetInfo widgetInfo, int count){
 		if(!mInventoryInfoList.containsKey(inventoryName)){
 			mInventoryInfoList.put(inventoryName, new HashMap<WidgetInfo,Integer>());
 		}
@@ -68,7 +68,7 @@ public class WarehouseInventoryInfo implements Serializable{
 				if(hasInventoryStation(inventoryName)){
 					for(QuantifiedWidget inventoryItem : getInventoryInfo(inventoryName)){
 						if(orderItem.getWidget().equals(inventoryItem.getWidget())){
-							if(orderItem.getQuantity()>=inventoryItem.getQuantity()){
+							if(orderItem.getQuantity()>inventoryItem.getQuantity()){
 								return false;
 							}
 						}

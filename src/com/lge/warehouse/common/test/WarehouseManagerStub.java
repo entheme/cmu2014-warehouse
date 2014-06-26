@@ -95,13 +95,13 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 			if(event.getBody() instanceof Order){
 				//For Test [START]
 				Order order = (Order)event.getBody();
-				logger.info("FILL_ORDER order id = "+order.getOrderId());
+				//logger.info("FILL_ORDER order id = "+order.getOrderId());
 				for(QuantifiedWidget qw : order.getItemList()){
 					logger.info(qw.getWidget()+" : "+qw.getQuantity());
 				}
 				WarehouseStatus warehouseStatus = new WarehouseStatus();
 				List<QuantifiedWidget> inventoryListOnBot = new ArrayList<QuantifiedWidget>();
-				logger.info("WAREHOUSE_STATUS_INFO");
+				//logger.info("WAREHOUSE_STATUS_INFO");
 				for(InventoryName inventoryName : InventoryName.values()){
 					if(inventoryInfo.hasInventoryStation(inventoryName))
 						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
@@ -113,51 +113,13 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
 				sendWarehouseStatus(warehouseStatus);
 				
-				
-				
-//				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_1, widgetCatalog.getWidgetInfoAt(0), 10);
-//				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(0), 10));
-//				warehouseStatus.addVisitedStationListOfBot("1");
-//				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
-//				warehouseStatus.setLocationOfBot("1");
-//				warehouseStatus.setNextStop("Inventory status 2");
-//				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
-//				logger.info("WAREHOUSE_STATUS_INFO");
-//				for(InventoryName inventoryName : InventoryName.values()){
-//					if(inventoryInfo.hasInventoryStation(inventoryName))
-//						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
-//				}
-//				sendWarehouseStatus(warehouseStatus);
+				sleep(5);
 				testFillOrder(InventoryName.INVENTORY_1, order, inventoryListOnBot, warehouseStatus);
-				
-//				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_2, widgetCatalog.getWidgetInfoAt(1), 10);
-//				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(1), 10));
-//				warehouseStatus.addVisitedStationListOfBot("2");
-//				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
-//				warehouseStatus.setLocationOfBot("2");
-//				warehouseStatus.setNextStop("Inventory status 3");
-//				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
-//				logger.info("WAREHOUSE_STATUS_INFO");
-//				for(InventoryName inventoryName : InventoryName.values()){
-//					if(inventoryInfo.hasInventoryStation(inventoryName))
-//						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
-//				}
-//				sendWarehouseStatus(warehouseStatus);
+
+				sleep(5);
 				testFillOrder(InventoryName.INVENTORY_2, order, inventoryListOnBot, warehouseStatus);
 				
-//				inventoryInfo.reductInventoryWidget(InventoryName.INVENTORY_3, widgetCatalog.getWidgetInfoAt(3), 10);
-//				inventoryListOnBot.add(new QuantifiedWidget(widgetCatalog.getWidgetInfoAt(3), 10));
-//				warehouseStatus.addVisitedStationListOfBot("3");
-//				warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
-//				warehouseStatus.setLocationOfBot("3");
-//				warehouseStatus.setNextStop("Inventory status 4");
-//				warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
-//				logger.info("WAREHOUSE_STATUS_INFO");
-//				for(InventoryName inventoryName : InventoryName.values()){
-//					if(inventoryInfo.hasInventoryStation(inventoryName))
-//						logger.info(inventoryInfo.getInventoryInfo(inventoryName));
-//				}
-//				sendWarehouseStatus(warehouseStatus);
+				sleep(5);
 				testFillOrder(InventoryName.INVENTORY_3, order, inventoryListOnBot, warehouseStatus);
 				
 				sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.FINISH_FILL_ORDER, order);
@@ -167,10 +129,20 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 			break;
 		}
 	}
+	private void sleep(int i) {
+		// TODO Auto-generated method stub
+		try {
+			Thread.sleep(i*1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private void testFillOrder(InventoryName inventoryName, Order order, List<QuantifiedWidget> inventoryListOnBot, WarehouseStatus warehouseStatus){
 		for(QuantifiedWidget quantifiedWidget : order.getItemList()){
 			if(inventoryInfo.hasInventory(inventoryName, quantifiedWidget.getWidget())){
-				inventoryInfo.reductInventoryWidget(inventoryName, quantifiedWidget.getWidget(), quantifiedWidget.getQuantity());
+				inventoryInfo.reduceInventoryWidget(inventoryName, quantifiedWidget.getWidget(), quantifiedWidget.getQuantity());
 				inventoryListOnBot.add(new QuantifiedWidget(quantifiedWidget.getWidget(), quantifiedWidget.getQuantity()));
 			}
 		}

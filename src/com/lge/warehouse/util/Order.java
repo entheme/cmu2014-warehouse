@@ -26,7 +26,7 @@ public class Order implements Serializable{
     private int mOrderId = -1;
     private Status mStatus;
     private List<QuantifiedWidget> mItemList = new ArrayList<QuantifiedWidget>();
-    
+    private List<QuantifiedWidget> mLoadedItemList = null;
     public void addItem(WidgetInfo w, int count){
         mItemList.add(new QuantifiedWidget(w,count));
     }
@@ -42,13 +42,13 @@ public class Order implements Serializable{
     public int getItemCnt(){
         return mItemList.size();
     }
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((mItemList == null) ? 0 : mItemList.hashCode());
-		result = prime * result + (int) (mOrderId ^ (mOrderId >>> 32));
+		result = prime * result + mOrderId;
 		return result;
 	}
 	@Override
@@ -60,15 +60,10 @@ public class Order implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		if (mItemList == null) {
-			if (other.mItemList != null)
-				return false;
-		}
 		if (mOrderId != other.mOrderId)
 			return false;
 		return true;
 	}
-	
 	public void setOrderStatus(Status status) {
 		// TODO Auto-generated method stub
 		mStatus = status; 
@@ -95,4 +90,14 @@ public class Order implements Serializable{
 			return o1.getOrderId() - o2.getOrderId();
 		}
     }
+	public void setLoadedItem(List<QuantifiedWidget> inventoryListOfBot) {
+		// TODO Auto-generated method stub
+		mLoadedItemList = inventoryListOfBot;
+	}
+	public List<QuantifiedWidget> getLoadedItem(){
+		if(mLoadedItemList == null)
+			return new ArrayList<QuantifiedWidget>();
+		else
+			return mLoadedItemList;
+	}
 }

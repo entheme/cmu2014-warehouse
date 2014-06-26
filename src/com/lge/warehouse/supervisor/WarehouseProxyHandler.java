@@ -47,13 +47,7 @@ public class WarehouseProxyHandler {
 			wp.sendWidgetCatalog();
 		}
 	}
-    public boolean hasInventory(Order order){
-    	for(WarehouseProxy wp : mWarehouses.values()){
-    		if(wp.hasInventory(order))
-    			return true;
-    	}
-        return false;
-    }
+    
 	public void fillInventoryWidget(WarehouseInventoryInfo warehouseInventoryInfo) {
 		// TODO Auto-generated method stub
 		WarehouseProxy wp = mWarehouses.get(WComponentType.WM_MSG_HANDLER.name()+warehouseInventoryInfo.getWarehouseId());
@@ -62,8 +56,7 @@ public class WarehouseProxyHandler {
 	public boolean requestFillOrder(Order order) {
 		// TODO Auto-generated method stub
 		for(WarehouseProxy wp : mWarehouses.values()){
-    		if(wp.hasInventory(order)){
-    			order.setOrderStatus(Order.Status.ORDER_IN_PROGRESS);
+    		if(wp.hasEnoughInventory(order)){
     			wp.handleOrder(order);
     			return true;
     		}
@@ -75,24 +68,7 @@ public class WarehouseProxyHandler {
 		WarehouseProxy wp = mWarehouses.get(warehouseName);
 		wp.finishFillOrder(order);
 	}
-	public List<Order> getCompletedOrderList() {
-		// TODO Auto-generated method stub
-		List<Order> completedOrderList = new ArrayList<Order>();
-		for(WarehouseProxy wp : mWarehouses.values()){
-			completedOrderList.addAll(wp.getCompletedOrderList());
-		}
-		return completedOrderList;
-	}
-	public List<Order> getInProgressOrderList() {
-		// TODO Auto-generated method stub
-		List<Order> inProgressOrderList = new ArrayList<Order>();
-		for(WarehouseProxy wp : mWarehouses.values()){
-			Order order = wp.getInProgressOrderList();
-			if(order != null)
-				inProgressOrderList.add(order);
-		}
-		return inProgressOrderList;
-	}
+	
 	public void updateWarehouseStatus(String warehouseName,
 			WarehouseStatus warehouseStatus) {
 		// TODO Auto-generated method stub 

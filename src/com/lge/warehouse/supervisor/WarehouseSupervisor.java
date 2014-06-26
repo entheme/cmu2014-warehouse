@@ -15,6 +15,7 @@ import com.lge.warehouse.common.bus.EventMessage;
 import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.OrderStatusInfo;
+import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
 
@@ -26,12 +27,10 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 	private static WarehouseSupervisor sInstance = null;
 	static Logger logger = Logger.getLogger(WarehouseProxyHandler.class);
 	private WarehouseProxyHandler mWarehouseProxyHandler;
-	private OrderProvider mOrderProvider;
 
 	private WarehouseSupervisor() {
 		super(WComponentType.WAREHOUSE_SUPERVISOR, false);
 		mWarehouseProxyHandler = new WarehouseProxyHandler(this,this);
-		mOrderProvider = new OrderProvider(this, mWarehouseProxyHandler);
 	}
 
 	public static WarehouseSupervisor getInstance() {
@@ -56,12 +55,14 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		case NEW_ORDER:	//from BackOrderManager or CustomerServiceManager
 			if (event.getBody() instanceof Order){
 				Order order = (Order)event.getBody();
-				if( (!mWarehouseProxyHandler.isBusy()) && (OrderQueue.getInstance().getSize()==0)){
-					logger.info("warehouse isBusy = "+mWarehouseProxyHandler.isBusy()+"orderqueue size = "+OrderQueue.getInstance().getSize());
+				if( (!mWarehouseProxyHandler.isBusy()) && (OrderStorage.getInstance().getSize()==0)){
+					logger.info("requestFillOrder");
+//					for(QuantifiedWidget qw : order.getItemList())
+//						WarehouseInventoryInfoRepository.getInstance().reduceInventoryInfo(qw.getWidget(), qw.getQuantity());
 					mWarehouseProxyHandler.requestFillOrder(order);
 				}else{
-					logger.info("Robot is currenty filling order, put the order to PendingOrder Queue");
-					mOrderProvider.pushPendingOrder(order);
+					logger.info("Robot stats = "+mWarehouseProxyHandler.isBusy()+", order queue size = "+OrderStorage.getInstance().getSize());
+					OrderStorage.getInstance().pushPendingOrder(order);
 				}
 				updateOrderStatus();
 			} else{
@@ -117,13 +118,13 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		case RESPONSE_ORDER_STATUS:
 			if(event.getBody() instanceof OrderStatusInfo){
 				OrderStatusInfo orderStatusInfo = (OrderStatusInfo) event.getBody();
-				for(Order order : mOrderProvider.getPendingOrderList()){
+				for(Order order : OrderStorage.getInstance().getPendingOrderList()){
 					orderStatusInfo.addPendingOrder(order);
 				}
-				for(Order order : mWarehouseProxyHandler.getCompletedOrderList()){
+				for(Order order : OrderStorage.getInstance().getCompletedOrderList()){
 					orderStatusInfo.addCompleteOrder(order);
 				}
-				for(Order order : mWarehouseProxyHandler.getInProgressOrderList()){
+				for(Order order : OrderStorage.getInstance().getInProgressOrderList()){
 					orderStatusInfo.addInProgressOrder(order);
 				}
 				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_ORDER_STATUS, orderStatusInfo);
@@ -161,13 +162,15 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_ORDER_STATUS, null);
 	}
 	private void doNextFillOrder(){
-		Order order = mOrderProvider.getOrder();
+		Order order = OrderProvider.getInstance().getOrder();
 		if(order == null){
 			logger.info("No Pending Order check BackOrder Queue");
 			sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_BACK_ORDER, null);
 		}else {
 			logger.info("pending order is ready, request filling order to WmMsgHandler");
 			//sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FILL_ORDER, order);
+//			for(QuantifiedWidget qw : order.getItemList())
+//				WarehouseInventoryInfoRepository.getInstance().reduceInventoryInfo(qw.getWidget(), qw.getQuantity());
 			mWarehouseProxyHandler.requestFillOrder(order);
 		}
 	}

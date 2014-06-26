@@ -14,11 +14,7 @@ import org.apache.log4j.Logger;
 import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.WidgetCatalog;
 
-/**
- *
- * @author kihyung2.lee
- */
-class WidgetCatalogRepository {
+public class WidgetCatalogRepository {
     private static WidgetCatalogRepository sInstance = new WidgetCatalogRepository();
     private List<WidgetInfo> mWidgetInfoList = new ArrayList<WidgetInfo>();
     static Logger logger = Logger.getLogger(WidgetCatalogRepository.class);

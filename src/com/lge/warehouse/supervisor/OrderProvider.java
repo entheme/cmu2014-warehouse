@@ -1,35 +1,37 @@
 package com.lge.warehouse.supervisor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.lge.warehouse.common.app.MsgInterface;
 import com.lge.warehouse.util.Order;
+import com.lge.warehouse.util.QuantifiedWidget;
 
 public class OrderProvider {
+	private static OrderProvider sInstance;
 	static Logger logger = Logger.getLogger(OrderProvider.class);
-	private MsgInterface mMsgInf;
-	WarehouseProxyHandler mWarehouseProxyHandler;
-	public OrderProvider(MsgInterface msgInf,WarehouseProxyHandler warehouseProxyHandler ){
-		mMsgInf = msgInf;
-		mWarehouseProxyHandler = warehouseProxyHandler;
+	
+	private OrderProvider(){
 	}
-	public void pushPendingOrder(Order order) {
-		// TODO Auto-generated method stub
-		OrderQueue.getInstance().put(order);
+	public static OrderProvider getInstance(){
+		if(sInstance == null)
+			sInstance = new OrderProvider();
+		return sInstance;
 	}
+	
 	public Order getOrder(){
-		for(Order order : OrderQueue.getInstance().getPendingOrderList()){
-			if(mWarehouseProxyHandler.hasInventory(order)){
-				OrderQueue.getInstance().remove(order);
+		for(Order order : OrderStorage.getInstance().getPendingOrderList()){
+			if(WarehouseInventoryInfoRepository.getInstance().hasEnoughInventory(order)){
+				OrderStorage.getInstance().remove(order);
 				return order;
 			}
 		}
 		return null;
 	}
-	public List<Order> getPendingOrderList() {
-		// TODO Auto-generated method stub
-		return OrderQueue.getInstance().getPendingOrderList();
-	}
+	
+	
+	
 }

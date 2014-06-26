@@ -46,11 +46,15 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 		while(!mExit) {
 			try {
 				EventMessage event = mQueue.take();
-				logger.info("Received : "+event);
-				if(event.getType() == EventMessageType.COMPONENT_END)
-					break;
 				if(!handleSendMsgOnContext(event))
+				{	
+					if(event.getType() != EventMessageType.WAREHOUSE_RUNNABLE_HEARTBEAT_MSG)
+						logger.info("Received : "+event);
+					if(event.getType() == EventMessageType.COMPONENT_END)
+						break;
+
 					eventHandle(event);
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -66,8 +70,8 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 		if(event.getSrc().equals(getId().name())
 				&&(event.getDest().equals(getId().name())
 						&&event.getType()==EventMessageType.WAREHOUSE_RUNNABLE_SEND_ON_THREAD_CONTEXT)
-						){
-			logger.info("self message send : "+event.getBody());
+				){
+			//logger.info("self message send : "+event.getBody());
 			sendObject((EventMessage)event.getBody());
 			return true;
 		}else
@@ -137,6 +141,6 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 			// TODO Auto-generated method stub
 			sendMsgOnContext(new EventMessage(getId().name(), WComponentType.SYSTEM.name(), EventMessageType.WAREHOUSE_RUNNABLE_HEARTBEAT_MSG, null));
 		}
-		
+
 	}
 }

@@ -34,8 +34,7 @@ public class WarehouseProxy {
     String mDest;
     String mSrc;
     P2PSender mSender;
-    List<Order> mCompletedOrderList = new ArrayList<Order>();
-    Order mProgressOrder = null;
+    
     WarehouseStatus mWarehouseStatus = null;
 
     public WarehouseProxy(int id, MessageListener listener){
@@ -65,38 +64,21 @@ public class WarehouseProxy {
     	mSender.sendObject(new EventMessage(mSrc, mDest, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo));
     	
     }
-    public boolean hasInventory(Order order){
-    	logger.info("hasInventory");
-    	WarehouseInventoryInfoRepository.getInstance().dump();
-    	if(mProgressOrder != null) 
-    		return false;
-    	for(QuantifiedWidget qw : order.getItemList()){
-    		if(WarehouseInventoryInfoRepository.getInstance().getInventoryCount(qw.getWidget())<qw.getQuantity()){
-    			return false;
-    		}
-    	}
-    	return true;
-    }
+    
 	public void handleOrder(Order order) {
 		// TODO Auto-generated method stub
-		mProgressOrder = order;
+		OrderStorage.getInstance().setInProgressOrder(this, order);
 		sendObj(EventMessageType.FILL_ORDER, order);
 	}
 	public void finishFillOrder(Order order) {
 		// TODO Auto-generated method stub
-		if(order.equals(mProgressOrder)){
+		if(order.equals(OrderStorage.getInstance().getInProgressOrder(this))){
 			logger.info("finish fill order, orderId = "+order.getOrderId());
-			mCompletedOrderList.add(order);
-			mProgressOrder = null;
-//			for(QuantifiedWidget qw : order.getItemList()){
-//				int prevCount = mInventoryRepository.getInventoryCount(qw.getWidget());
-//				prevCount -= qw.getQuantity();
-//				mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
-//			}
+			OrderStorage.getInstance().setCompleteOrder(this, order);
+
 			order.setOrderStatus(Order.Status.ORDER_COMPLETE);
-			WarehouseInventoryInfoRepository.getInstance().dump();
 		}else{
-			logger.info("received order = "+order+", stored order"+mProgressOrder);
+			logger.info("received order = "+order+", stored order"+OrderStorage.getInstance().getInProgressOrder(this));
 			String errorLog = "Completed order is not matching progress order";
 			if(WarehouseContext.DEBUG_WITH_RUNTIME_EXCEPTION)
 				throw new RuntimeException(errorLog);
@@ -104,25 +86,12 @@ public class WarehouseProxy {
 				logger.info(errorLog);
 		}
 	}
-	public List<Order> getCompletedOrderList() {
-		// TODO Auto-generated method stub
-		return mCompletedOrderList;
-	}
-	public Order getInProgressOrderList() {
-		// TODO Auto-generated method stub
-		return mProgressOrder;
-	}
+	
 	public void updateWarehouseStatus(WarehouseStatus warehouseStatus) {
 		// TODO Auto-generated method stub
-//		List<QuantifiedWidget> list = warehouseStatus.getInventoryListOfBot();
-//		for(QuantifiedWidget qw : list){
-//			int prevCount = mInventoryRepository.getInventoryCount(qw.getWidget());
-//			prevCount -= qw.getQuantity();
-//			mInventoryRepository.reduceInventoryInfo(qw.getWidget(),prevCount);
-//		}
 		mWarehouseStatus = warehouseStatus;
+		OrderStorage.getInstance().updateInProgressOrder(this, warehouseStatus.getInventoryListOfBot());
 		WarehouseInventoryInfoRepository.getInstance().setInventoryInfo(warehouseStatus.getWarehouseInventoryInfo());
-		WarehouseInventoryInfoRepository.getInstance().dump();
 	}
 	public void sendWidgetCatalog() {
 		// TODO Auto-generated method stub
@@ -138,6 +107,10 @@ public class WarehouseProxy {
 	}
 	public boolean isBusy() {
 		// TODO Auto-generated method stub
-		return (mProgressOrder != null);
+		return (OrderStorage.getInstance().getInProgressOrder(this) != null);
+	}
+	public boolean hasEnoughInventory(Order order) {
+		// TODO Auto-generated method stub
+		return WarehouseInventoryInfoRepository.getInstance().hasEnoughInventory(order);
 	}
 }
