@@ -73,7 +73,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			if (event.getBody() instanceof WarehouseInventoryInfo){
 				WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo)event.getBody();
 				mWarehouseProxyHandler.fillInventoryWidget(warehouseInventoryInfo);
-				sendWarehouseInventoryInfo();
+				sendWarehouseInventoryInfoToSupervisorUI();
 				doNextFillOrder();
 			}else{
 				handleBodyError(event);
@@ -89,7 +89,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				handleBodyError(event);
 			}
 			updateOrderStatus();
-			sendWarehouseInventoryInfo();
+			sendWarehouseInventoryInfoToSupervisorUI();
 			break;
 		case REQUEST_CATAGORY_FROM_SUPERVISOR_UI:
 			sendWidgetCatalog(WComponentType.SUPERVISOR_UI, EventMessageType.RESPONSE_CATAGORY_TO_SUPERVISOR_UI);
@@ -135,8 +135,10 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		case UPDATE_WAREHOUSE_STATUS:
 			if(event.getBody() instanceof WarehouseStatus){
 				WarehouseStatus warehouseStatus = (WarehouseStatus)event.getBody();
+				printWarehouseStatus(warehouseStatus);
 				mWarehouseProxyHandler.updateWarehouseStatus(event.getSrc(), warehouseStatus);
 				sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.UPDATE_WAREHOUSE_STATUS, warehouseStatus);
+				sendWarehouseInventoryInfoToSupervisorUI();
 			}else {
 				handleBodyError(event);
 			}
@@ -147,7 +149,14 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 			break;
 		}
 	}
-	private void sendWarehouseInventoryInfo(){
+	private void printWarehouseStatus(WarehouseStatus warehouseStatus) {
+		// TODO Auto-generated method stub
+		WarehouseInventoryInfo warehouseInventoryInfo = warehouseStatus.getWarehouseInventoryInfo();
+		logger.info("printWarehouseStatus");
+		logger.info(warehouseInventoryInfo);
+	}
+
+	private void sendWarehouseInventoryInfoToSupervisorUI(){
 		WarehouseInventoryInfo warehouseInventoryInfo = mWarehouseProxyHandler.getInventoryInfo(); 
 		sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo);
 
@@ -162,7 +171,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_ORDER_STATUS, null);
 	}
 	private void doNextFillOrder(){
-		if( (!mWarehouseProxyHandler.isBusy()) && (OrderStorage.getInstance().getSize()==0)){
+		if( (!mWarehouseProxyHandler.isBusy()) && (OrderStorage.getInstance().getSize()!=0)){
 			Order order = OrderProvider.getInstance().getOrder();
 			if(order == null){
 				logger.info("No Pending Order check BackOrder Queue");
@@ -174,6 +183,12 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				//				WarehouseInventoryInfoRepository.getInstance().reduceInventoryInfo(qw.getWidget(), qw.getQuantity());
 				mWarehouseProxyHandler.requestFillOrder(order);
 			}
+		}else if( (!mWarehouseProxyHandler.isBusy()) && (OrderStorage.getInstance().getSize()==0)){
+			logger.info("warehouse busy = "+mWarehouseProxyHandler.isBusy()+" pendingorder size = "+OrderStorage.getInstance().getSize());
+			logger.info("No Pending Order check BackOrder Queue");
+			sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_BACK_ORDER, null);
+		}else{
+			logger.info("warehouse busy = "+mWarehouseProxyHandler.isBusy()+" pendingorder size = "+OrderStorage.getInstance().getSize());
 		}
 	}
 	public static void start() {

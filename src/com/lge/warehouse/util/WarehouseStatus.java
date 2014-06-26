@@ -21,8 +21,25 @@ public class WarehouseStatus implements Serializable{
     private List<String> mVisitedStationList = new ArrayList<String>();
     private String mNextStop;
     WarehouseInventoryInfo mInventoryInfo;
+    private WarehouseConnectionStatus mWarehouseStatus;
+    private RobotConnectionStatus mRobotStatus;
+    public WarehouseConnectionStatus getWarehouseStatus() {
+		return mWarehouseStatus;
+	}
 
-    public WarehouseStatus(){}
+	public void setWarehouseStatus(WarehouseConnectionStatus mWarehouseStatus) {
+		this.mWarehouseStatus = mWarehouseStatus;
+	}
+
+	public RobotConnectionStatus getRobotStatus() {
+		return mRobotStatus;
+	}
+
+	public void setRobotStatus(RobotConnectionStatus mRobotStatus) {
+		this.mRobotStatus = mRobotStatus;
+	}
+
+	public WarehouseStatus(){}
 	
     public void setLocationOfBot(String locationOfBot){
         mLocationOfBot = locationOfBot;

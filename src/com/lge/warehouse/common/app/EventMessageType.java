@@ -17,6 +17,7 @@ public enum EventMessageType {
     WAREHOUSE_ADD_REQUEST,
     WAREHOUSE_ADD_ACCEPT,
     
+    SYSTEM_STATUS_REPORT,
     
     PLACE_ORDER,            //Customer interface ->CustomerServiceManager for placing order
     REQUEST_BACK_ORDER,		//WarehouseSupervisor ->BackorderManager to check backorder
