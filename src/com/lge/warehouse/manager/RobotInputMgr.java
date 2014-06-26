@@ -43,7 +43,11 @@ public class RobotInputMgr extends DeviceInputMgr {
             //Send processed robot's error information to WAREHOUSE_MANAGER_CONTROLLER
             logger.info("inputData: " + inputData +" parsedValue: " + value + " is received from robot");
             sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.ROBOT_ERROR_STATUS, value);
-        }
+        } else if(inputData.startsWith("A") == true) { 
+            //Now, robot is arrived at some inventory station. Now, robot can receive the message such as moving.
+            logger.info("inputData: " + inputData + " is received from robot(Now, robot is ready to recive message)");
+            sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.ROBOT_IS_ARRIVE, null);
+        } 
     }
     
     @Override

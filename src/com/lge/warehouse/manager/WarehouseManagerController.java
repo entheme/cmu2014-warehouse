@@ -250,6 +250,10 @@ public class WarehouseManagerController extends WarehouseRunnable {
         case ROBOT_IS_DISCONNECTED:
         	logger.info("ROBOT_IS_DISCONNECTED");
         	break;
+        case ROBOT_IS_ARRIVE:
+                //Now, robot is arrived at some inventory station. Now, robot can receive the message such as moving.
+                logger.info("ROBOT_IS_ARRIVE");
+                break;
         case WAREHOUSE_IS_CONNECTED:
 			 logger.info("WAREHOUSE_IS_CONNECTED");
 			 break;

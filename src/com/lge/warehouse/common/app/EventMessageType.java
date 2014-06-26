@@ -61,6 +61,7 @@ public enum EventMessageType {
     ROBOT_ERROR_STATUS, //RobotInputMgr -> WarehouseMangerController
     ROBOT_IS_CONNECTED, //RobotInputMgr -> WarehouseMangerController -> WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
     ROBOT_IS_DISCONNECTED, //RobotInputMgr -> WarehouseMangerController -> WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
+    ROBOT_IS_ARRIVE, //RobotInputMgr -> WarehouseMangerController 
     REQUEST_ROBOT_RECOVERY, //WarehouseMangerController -> RobotOutputMgr
     INIT_WAREHOUSE, //WarehouseMangerController -> WarehouseOutputMgr
     REQUEST_LOAD_STATUS, //WarehouseMangerController -> WarehouseOutputMgr
