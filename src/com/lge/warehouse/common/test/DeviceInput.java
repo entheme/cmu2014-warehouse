@@ -50,9 +50,8 @@ public class DeviceInput implements Runnable  {
                    if(mArduinoCon.IsConnected() == false)
                        mArduinoCon.startServer();
                    inputData = mArduinoCon.readData();
-                   if(inputData != null) {
-                       System.out.println(inputData);
-                   }
+                   if(inputData != null && (inputData.startsWith("L") || inputData.startsWith("P") || inputData.startsWith("E") || inputData.startsWith("A")))
+                        System.out.println("\nReceived message: " + inputData);
                }
            }
         }

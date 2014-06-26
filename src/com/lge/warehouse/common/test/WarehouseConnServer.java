@@ -15,12 +15,13 @@ import java.util.logging.Logger;
  * @author jaehak.lee
  */
 public class WarehouseConnServer {
-        static ArduinoConnector mArduinoConForRobot = new ArduinoConnector();	
+        static ArduinoConnector mArduinoCon = new ArduinoConnector();	
     
         public static final void main(String[] args){
 		 
-            DeviceInput.start(mArduinoConForRobot, 550);
-            DeviceOutput.start(mArduinoConForRobot);
+            DeviceInput.start(mArduinoCon, 550); //for robot
+            //DeviceInput.start(mArduinoCon, 507); //for warehouse
+            DeviceOutput.start(mArduinoCon);
             
             while(true)
             {

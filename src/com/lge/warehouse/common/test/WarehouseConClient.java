@@ -16,6 +16,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,8 +30,8 @@ public class WarehouseConClient {
         private Socket socket;
         private BufferedWriter bos;
 	private BufferedReader bis;
-	
-
+	public String mStr = null;
+        
 	/** Creates a new instance of Worker */
 	public WarehouseConClient() {
 		socket = null;
@@ -62,6 +64,7 @@ public class WarehouseConClient {
             try {
                 bos.write(message);
                 bos.flush();
+                System.out.println("sendMessage: " + message);
             } catch (IOException ex) {
                 Logger.getLogger(WarehouseConClient.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -71,7 +74,8 @@ public class WarehouseConClient {
             try {  
                  char[] chars = new char[4096];
                  bis.read(chars);
-                 System.out.println(String.valueOf(chars));  
+                 mStr = String.valueOf(chars);
+                 System.out.println("ReceiveMssage: " + mStr);  
             } catch (IOException ex) {
                 Logger.getLogger(WarehouseConClient.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("exeception...");
@@ -87,27 +91,43 @@ public class WarehouseConClient {
             }
 	}
         
+        public void getCommand() {
+            InputStreamReader isr = new InputStreamReader(System.in);
+            try {
+                BufferedReader br = new BufferedReader(isr);
+                System.out.print("\nInsert command: "); 
+                mStr = br.readLine();
+            } catch (IOException ex) {
+                java.util.logging.Logger.getLogger(DeviceOutput.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+                 
       public static final void main(String[] args){
             
             WarehouseConClient w = new WarehouseConClient();
+         
+            //Note: Whne you use this client sample program, you must comment out following code!!!!
+            //"clientSocket.setSoTimeout(7000);" in ArduinoConnector.java in com.lge.warehouse.manager. 
             
+            //int portNum = 507; //warehouse
+            int portNum = 550; //robot
+          
             if(args.length > 0) {
                 w.connect(args[0], Integer.parseInt(args[1]));
             } else {
-                 //w.connect("127.0.0.1", 507);
-                 w.connect("127.0.0.1", 550);
+                 //w.connect("128.237.235.111", portNum);
+                 w.connect("127.0.0.1", portNum);
             }
-
-            StringBuffer message = new StringBuffer();
-            message.append("E9\n");
-            //message.append("Host: 0pen.us\r\n");
-            //message.append("\r\n");
-
-            w.sendMessage(new String(message));
-              
-            while(true)
-            {   
-                w.receiveMessage();
+            
+            while(true) {
+                if(portNum == 550) { //robot
+                    w.receiveMessage();
+                    if(w.mStr.startsWith("M") == true)
+                        w.sendMessage("A\n");
+                } else if(portNum == 507) { //warehouse
+                    w.getCommand();
+                    w.sendMessage(w.mStr+"\n");
+                }
             }
-      }
+        }
 }
