@@ -16,6 +16,9 @@ import com.lge.warehouse.common.test.WarehouseTestSystem;
 import com.lge.warehouse.manager.Manager;
 import com.lge.warehouse.supervisor.OrderingSystem;
 import com.lge.warehouse.supervisor.Supervisor;
+import com.lge.warehouse.util.CustomerStatus;
+import com.lge.warehouse.util.SystemEvent;
+import com.lge.warehouse.util.WarehouseInfo;
 
 /**
  *
@@ -27,6 +30,8 @@ public class WarehouseMain extends WarehouseRunnable implements ISystemStatusRep
 	private BlockingQueue<EventMessage> mQueue;
 	boolean mIsSystemReady;
 	private HashMap<WComponentType, HeartBeatHandler> mHeartBeatHandlerMap = new HashMap<WComponentType, HeartBeatHandler>();
+	private CustomerStatus mCustomerStatus = CustomerStatus.OFF;
+	private WarehouseInfo mWarehouseStatus = WarehouseInfo.OFF;
 	public WarehouseMain(){
 		super(WComponentType.SYSTEM, false);
 	}
@@ -76,7 +81,13 @@ public class WarehouseMain extends WarehouseRunnable implements ISystemStatusRep
 			if(!mHeartBeatHandlerMap.containsKey(WComponentType.valueOf(event.getSrc()))){
 				mHeartBeatHandlerMap.put(WComponentType.valueOf(event.getSrc()), new HeartBeatHandler(this, WComponentType.valueOf(event.getSrc())));
 				mHeartBeatHandlerMap.get(WComponentType.valueOf(event.getSrc())).setHeartBeatReceived(true);
-				//reportStatus("Heartbeat start for "+event.getSrc());
+				if(WComponentType.CUSTOMER_INF.name().equals(event.getSrc())){
+					mCustomerStatus = CustomerStatus.ON;
+				}else if(WComponentType.MANAGER_SYSTEM.name().equals(event.getSrc())){
+					mWarehouseStatus = WarehouseInfo.ON;
+				}
+				updateInfo();
+				reportStatus(event.getSrc()+" connected");
 				
 			}else {
 //				logger.info("Heartbeat reset "+true);
@@ -88,6 +99,12 @@ public class WarehouseMain extends WarehouseRunnable implements ISystemStatusRep
 			break;
 		}
 	}
+	public void setWarehouseStatus(WarehouseInfo status){
+		mWarehouseStatus = status;
+	}
+	public void setCustomerStatus(CustomerStatus status){
+		mCustomerStatus = status;
+	}
 	private void sendSystemReadyMsg(){
 		for(WComponentType component : mSystemReadyMap.keySet()){
 			sendMsg(component, EventMessageType.SYSTEM_READY, null);
@@ -98,7 +115,7 @@ public class WarehouseMain extends WarehouseRunnable implements ISystemStatusRep
 	 */
 	@Override
 	public void reportStatus(String status){
-		sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.SYSTEM_STATUS_REPORT, status);
+		logger.info(status);
 	}
 	@Override
 	protected void threadStart(){
@@ -139,5 +156,12 @@ public class WarehouseMain extends WarehouseRunnable implements ISystemStatusRep
 	public void removeHeartHandler(WComponentType target) {
 		// TODO Auto-generated method stub
 		mHeartBeatHandlerMap.remove(target);
+	}
+
+	public void updateInfo() {
+		// TODO Auto-generated method stub
+		if(mHeartBeatHandlerMap.containsKey(WComponentType.SUPERVISOR_UI)){
+			sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.SYSTEM_STATUS_REPORT, new SystemEvent(mCustomerStatus, mWarehouseStatus));
+		}
 	}
 }
