@@ -56,6 +56,7 @@ public abstract class DeviceInputMgr implements Runnable {
                     while(!mExit) {
                         
                         if(mArduinoCon.IsConnected() == false) {
+                            connectionLost();
                             if(mArduinoCon.startServer() == true)
                                 connectionDone();
                         }
