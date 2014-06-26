@@ -21,7 +21,7 @@ import com.lge.warehouse.supervisor.Supervisor;
  *
  * @author seuki77
  */
-public class WarehouseMain extends WarehouseRunnable{
+public class WarehouseMain extends WarehouseRunnable implements ISystemStatusReport{
 	WComponentType mId = WComponentType.SYSTEM;
 	static HashMap<WComponentType, Boolean> mSystemReadyMap = new HashMap<WComponentType, Boolean>();
 	private BlockingQueue<EventMessage> mQueue;
@@ -76,7 +76,8 @@ public class WarehouseMain extends WarehouseRunnable{
 			if(!mHeartBeatHandlerMap.containsKey(WComponentType.valueOf(event.getSrc()))){
 				mHeartBeatHandlerMap.put(WComponentType.valueOf(event.getSrc()), new HeartBeatHandler(this, WComponentType.valueOf(event.getSrc())));
 				mHeartBeatHandlerMap.get(WComponentType.valueOf(event.getSrc())).setHeartBeatReceived(true);
-				logger.info("Heartbeat start for "+event.getSrc());
+				//reportStatus("Heartbeat start for "+event.getSrc());
+				
 			}else {
 //				logger.info("Heartbeat reset "+true);
 				mHeartBeatHandlerMap.get(WComponentType.valueOf(event.getSrc())).setHeartBeatReceived(true);
@@ -92,7 +93,13 @@ public class WarehouseMain extends WarehouseRunnable{
 			sendMsg(component, EventMessageType.SYSTEM_READY, null);
 		}
 	}
-
+	/* (non-Javadoc)
+	 * @see com.lge.warehouse.common.app.ISystemStatusReport#reportStatus(java.lang.String)
+	 */
+	@Override
+	public void reportStatus(String status){
+		sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.SYSTEM_STATUS_REPORT, status);
+	}
 	@Override
 	protected void threadStart(){
 		logger.info(Thread.currentThread().getName()+" start");

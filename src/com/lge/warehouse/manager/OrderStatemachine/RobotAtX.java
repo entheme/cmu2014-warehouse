@@ -57,6 +57,8 @@ public class RobotAtX extends WMorderStatemachineState implements Serializable{
 			if(iButtonNum == 4)
 			{
 				System.out.println(toString() + "Order complete...");
+				warehousestatemachine.getWaitNewOrderState().setPassedNavigationPath(passedNavigationPath);
+				warehousestatemachine.getWaitNewOrderState().PathClearAndSetnextPath(navigationPath);
 				warehousestatemachine.setState(warehousestatemachine.getWaitNewOrderState());
 				returnval = CmdToOther.ORDER_COMPLETE;
 			}

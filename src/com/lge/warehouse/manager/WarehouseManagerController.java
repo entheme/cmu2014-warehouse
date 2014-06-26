@@ -22,6 +22,8 @@ import com.lge.warehouse.manager.OrderStatemachine.WMorderStatemachineState;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
+import com.lge.warehouse.util.RobotConnectionStatus;
+import com.lge.warehouse.util.WarehouseConnectionStatus;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 
@@ -35,6 +37,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
     WarehouseInventoryInfo minventoryInfo;
     WarehouseStatus warehouseStatus = new WarehouseStatus();
     Order Handlingorder = new Order();
+    private WarehouseConnectionStatus mWarehouseStatus;
+    private RobotConnectionStatus mRobotStatus;
     
     WahouseStateMachine warehouseStatemachine = new WahouseStateMachine();
     NavigationPathSelector PathSelector = new NavigationPathSelector(minventoryInfo);
@@ -44,16 +48,17 @@ public class WarehouseManagerController extends WarehouseRunnable {
     
     private WarehouseManagerController() {
         super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, false);
+        WarehouseInputMgr.start(mArduinoConForWarehouse);
+        WarehouseOutputMgr.start(mArduinoConForWarehouse);
+        RobotInputMgr.start(mArduinoConForRobot);
+        RobotOutputMgr.start(mArduinoConForRobot);
+        mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_OFF;
+        mRobotStatus = RobotConnectionStatus.CONNECTION_OFF;
     }
 
     public static WarehouseManagerController getInstance() {
         if (sInstance == null) {
             sInstance = new WarehouseManagerController();
-            
-            WarehouseInputMgr.start(mArduinoConForWarehouse);
-            WarehouseOutputMgr.start(mArduinoConForWarehouse);
-            RobotInputMgr.start(mArduinoConForRobot);
-            RobotOutputMgr.start(mArduinoConForRobot);
         }
         return sInstance;
     }
@@ -100,8 +105,10 @@ public class WarehouseManagerController extends WarehouseRunnable {
 		
 		warehouseStatus.setNextStop(StringFormat);
 		warehouseStatus.setWarehouseInventoryInfo(minventoryInfo);
-		
-		//sendWarehouseStatus(warehouseStatus);
+		warehouseStatus.setRobotStatus(mRobotStatus);
+		warehouseStatus.setWarehouseStatus(mWarehouseStatus);
+				
+		sendWarehouseStatus(warehouseStatus);
 		
     }
     
@@ -209,14 +216,23 @@ public class WarehouseManagerController extends WarehouseRunnable {
                 }
                 else
                 {
-                	/*
+                	
                 	int StationNum = 0;
                 	RobotAtX forInventoryUpdate;
                 	List<QuantifiedWidget> QuantifiListAtBot = new ArrayList<QuantifiedWidget>();
                 	
-                	if(warehouseStatemachine.getCurrentState() instanceof RobotAtX)
-                	{
-                		forInventoryUpdate = (RobotAtX)warehouseStatemachine.getCurrentState();
+                	List<WMorderStatemachineState> stateMachineList = new ArrayList<WMorderStatemachineState>();
+                	
+                	List<WMorderStatemachineState> stateMachineList2 = warehouseStatemachine.getCurrentState().getPassedNavigationPath();
+                	
+              
+                	stateMachineList.add(stateMachineList2.get(stateMachineList2.size()-1));
+            		
+                	Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(value);
+                	
+                	if(Cmd == CmdToOther.ROBOT_MOVE_TONEXT || Cmd == CmdToOther.ORDER_COMPLETE)
+                 	{
+                		forInventoryUpdate = (RobotAtX)stateMachineList.get(0);
                 		
                 		StationNum = forInventoryUpdate.getID() - 1;
                 		
@@ -224,65 +240,14 @@ public class WarehouseManagerController extends WarehouseRunnable {
             			{
                 			QuantifiListAtBot.add(qw);
             			}
-                	}
-                	*/
-                	
-                	Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(value);
-                	
-                	/*
-                	// This mean Loading is complete at inventory..
-                	if(Cmd == CmdToOther.ROBOT_MOVE_TONEXT || Cmd == CmdToOther.ORDER_COMPLETE)
-                 	{
-                		InventoryName QuantiDeaceareInventory = InventoryName.fromInteger(StationNum);
-                		if(minventoryInfo.hasInventoryStation(QuantiDeaceareInventory))
-                		{
-                			
-                			for(QuantifiedWidget qw : QuantifiListAtBot)
-                			{
-                				minventoryInfo.reduceInventoryWidget(QuantiDeaceareInventory, qw, qw.getQuantity());
-                			}
-                			
-                			
+                		
+                		for(QuantifiedWidget qw : QuantifiListAtBot){
+                			minventoryInfo.reduceInventoryWidget(InventoryName.fromInteger(StationNum), qw.getWidget(), qw.getQuantity());
                 		}
-                		
-                		
-                		
-                		
-                		
-                		//start decrease Inventory list!!
-                		for(InventoryName inventoryName : InventoryName.values())//for all inventory type..
-                		{
-                			if(minventoryInfo.hasInventoryStation(inventoryName)) // If my warehouse has that inventory type..
-                			{
-                				for(QuantifiedWidget qwInven : minventoryInfo.getInventoryInfo(inventoryName)) //for each widget in Inventory.
-                				{
-                					
-                					for(QuantifiedWidget qw : QuantifiListAtBot)
-                        			{
-                						if(qw.equals(qwInven.getWidget())) // find same widget!!!
-                						{
-                							// minus quanti..
-                							
-                							
-                						}
-                        			}
-                					
-                					
-               						 
-                					
-                					
-                				}
-                			}
-                		}
-                		
                  	}
                 	
                 	
-                	
-                	
-                	
-                	*/
-                	
+                	                	
                 }
                 
                 HandleStateMachineCmd(Cmd);
@@ -317,18 +282,25 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			break;
         case ROBOT_IS_CONNECTED:
         	logger.info("ROBOT_IS_CONNECTED");
+        	mRobotStatus = RobotConnectionStatus.CONNECTION_ON;
+        	SendWarehouseStatus();
         	break;
+        	
         case ROBOT_IS_DISCONNECTED:
         	logger.info("ROBOT_IS_DISCONNECTED");
+        	mRobotStatus = RobotConnectionStatus.CONNECTION_OFF;
+        	SendWarehouseStatus();
         	break;
+        	
         case ROBOT_IS_ARRIVE:
                 //Now, robot is arrived at some inventory station. Now, robot can receive the message such as moving.
                 logger.info("ROBOT_IS_ARRIVE");
                 
                 Cmd = warehouseStatemachine.Evt_ReadyTogo();
                 HandleStateMachineCmd(Cmd);
-                
+
                 break;
+                
         case WAREHOUSE_IS_CONNECTED:
 			 logger.info("WAREHOUSE_IS_CONNECTED");
 			 
@@ -343,10 +315,23 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			 
 			 sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS,null);
 			 sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS,null);
-			 
+			 mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_ON;
+			 SendWarehouseStatus();
 			 break;
+			 
         case WAREHOUSE_IS_DISCONNECTED:
 			logger.info("WAREHOUSE_IS_DISCONNECTED");
+			mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_OFF;
+			SendWarehouseStatus();
+	        
+			break;
+        case FILL_INVENTORY_WIDGET:
+        	if(event.getBody() instanceof WarehouseInventoryInfo){
+				WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo) event.getBody();
+				minventoryInfo.fillInventoryInfo(warehouseInventoryInfo);
+			}else{
+				handleBodyError(event);
+			}
 			break;
 		default:
 			logger.info("unhandled event :"+event);

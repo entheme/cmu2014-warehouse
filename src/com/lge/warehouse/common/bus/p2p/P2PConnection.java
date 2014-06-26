@@ -55,8 +55,8 @@ public final class P2PConnection{
 				Properties props = new Properties();
 				props.setProperty(Context.INITIAL_CONTEXT_FACTORY,"org.apache.activemq.jndi.ActiveMQInitialContextFactory");
 
-				props.setProperty(Context.PROVIDER_URL,"tcp://localhost:61616");
-				//props.setProperty(Context.PROVIDER_URL,"tcp://128.237.244.107:61616");
+				//props.setProperty(Context.PROVIDER_URL,"tcp://localhost:61616");
+				props.setProperty(Context.PROVIDER_URL,"tcp://128.237.244.107:61616");
 				
 				mContext = new InitialContext(props);
 				mFactory = (QueueConnectionFactory) mContext

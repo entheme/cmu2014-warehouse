@@ -67,6 +67,9 @@ public class OrderStorage {
 		if(mInProgressOrderMap.containsKey(warehouseProxy)){
 			if(mInProgressOrderMap.get(warehouseProxy).equals(order)){
 				mInProgressOrderMap.remove(warehouseProxy);
+				if(mInProgressOrderMap.containsKey(warehouseProxy)){
+					logger.info("InProgressOrderMap remove, but remain");
+				}
 				order.setOrderStatus(Order.Status.ORDER_COMPLETE);
 				mCompletedOrderList.add(order);
 			}

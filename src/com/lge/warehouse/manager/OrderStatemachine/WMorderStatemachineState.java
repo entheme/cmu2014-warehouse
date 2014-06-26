@@ -65,7 +65,7 @@ public abstract class WMorderStatemachineState implements Serializable{
 	
 	public void PathClearAndSetnextPath(List<WMorderStatemachineState> newPath)
 	{
-		if(newPath.size() <= 1)
+		if(newPath.size() == 0)
 		{
 			System.out.println("[WMorderStatemachineState] final path");
 			return;
