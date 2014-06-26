@@ -424,7 +424,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         
         //System.out.println("quantity = " + quantity);
         //System.out.println(InventoryName.fromInteger(inventoryID));
-        //if(warehouseInventoryInfo.)
+        if(!mInventoryInfo.isWidgetAddable(InventoryName.fromInteger(inventoryID), widgetInfo))
+            return;
         
         warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.fromInteger(inventoryID), widgetInfo, quantity);
         mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
@@ -465,6 +466,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         System.out.println("Widget Name = " + jTextFieldNewWidget.getText() + ", price = " + price);
         // Request to add new widget
         mSupervisorUiController.requestAddNewWidgetItem(jTextFieldNewWidget.getText(), price);
+        
         
         // Update ui
         updateWidgetManagementUi();
@@ -658,6 +660,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private SupervisorUiController mSupervisorUiController;
     private WidgetCatalog mWidgetCatalog;
     private OrderStatusInfo mOrderStatus;
+    private WarehouseInventoryInfo mInventoryInfo;
 
     @Override
     public void updateCatalog(WidgetCatalog widgetCatalog) {
@@ -685,9 +688,10 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     }
 
     @Override
-    public void updateInvenetoryStatus(String inventoryStatus) {
+    public void updateInvenetoryStatus(WarehouseInventoryInfo inventoryInfo) {
         //jTextAreaInventory.setText(inventoryStatus);
-        jTextAreaInventoryStatus.setText(inventoryStatus);
+        mInventoryInfo = inventoryInfo;
+        jTextAreaInventoryStatus.setText(mInventoryInfo.toString());
     }
     
     
