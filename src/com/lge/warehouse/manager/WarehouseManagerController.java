@@ -39,6 +39,9 @@ public class WarehouseManagerController extends WarehouseRunnable {
     WahouseStateMachine warehouseStatemachine = new WahouseStateMachine();
     NavigationPathSelector PathSelector = new NavigationPathSelector(minventoryInfo);
 
+    static ArduinoConnector mArduinoConForWarehouse = new ArduinoConnector();
+    static ArduinoConnector mArduinoConForRobot = new ArduinoConnector();
+    
     private WarehouseManagerController() {
         super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, false);
     }
@@ -46,6 +49,11 @@ public class WarehouseManagerController extends WarehouseRunnable {
     public static WarehouseManagerController getInstance() {
         if (sInstance == null) {
             sInstance = new WarehouseManagerController();
+            
+            WarehouseInputMgr.start(mArduinoConForWarehouse);
+            WarehouseOutputMgr.start(mArduinoConForWarehouse);
+            RobotInputMgr.start(mArduinoConForRobot);
+            RobotOutputMgr.start(mArduinoConForRobot);
         }
         return sInstance;
     }
@@ -93,7 +101,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 		warehouseStatus.setNextStop(StringFormat);
 		warehouseStatus.setWarehouseInventoryInfo(minventoryInfo);
 		
-		sendWarehouseStatus(warehouseStatus);
+		//sendWarehouseStatus(warehouseStatus);
 		
     }
     
@@ -165,28 +173,6 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				HandleStateMachineCmd(Cmd);
 				*/
 				
-				/*
-				try {
-					//To Do: deliver the order to Navigator instead of thread sleep
-        	                                    //Follwing code is just for test.
-                                //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.INIT_WAREHOUSE, null);
-                                //sendMsg(WComponentType.ROBOT_OUTPUT_MGR, EventMessageType.MOVE_NEXT_INV, null);
-              
-                                Thread.sleep(5000);
-                                
-                                //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS, null);
-                                //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS, null);
-                                //sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_WAREHOUSE_RECOVERY, null);
-
-	                                    
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				*/
-                //Send processed order's information to WM_MSG_HANDLER
-				//sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FINISH_FILL_ORDER, order);
-				//For Test [END]
 			}else {
                                 handleBodyError(event);
 			}
@@ -220,12 +206,85 @@ public class WarehouseManagerController extends WarehouseRunnable {
                 if(value == 0)
                 {
                 	//do nothing.
-                	//Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(4);
                 }
                 else
                 {
+                	/*
+                	int StationNum = 0;
+                	RobotAtX forInventoryUpdate;
+                	List<QuantifiedWidget> QuantifiListAtBot = new ArrayList<QuantifiedWidget>();
+                	
+                	if(warehouseStatemachine.getCurrentState() instanceof RobotAtX)
+                	{
+                		forInventoryUpdate = (RobotAtX)warehouseStatemachine.getCurrentState();
+                		
+                		StationNum = forInventoryUpdate.getID() - 1;
+                		
+                		for(QuantifiedWidget qw : forInventoryUpdate.getQwOrderList())
+            			{
+                			QuantifiListAtBot.add(qw);
+            			}
+                	}
+                	*/
+                	
                 	Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(value);
+                	
+                	/*
+                	// This mean Loading is complete at inventory..
+                	if(Cmd == CmdToOther.ROBOT_MOVE_TONEXT || Cmd == CmdToOther.ORDER_COMPLETE)
+                 	{
+                		InventoryName QuantiDeaceareInventory = InventoryName.fromInteger(StationNum);
+                		if(minventoryInfo.hasInventoryStation(QuantiDeaceareInventory))
+                		{
+                			
+                			for(QuantifiedWidget qw : QuantifiListAtBot)
+                			{
+                				minventoryInfo.reduceInventoryWidget(QuantiDeaceareInventory, qw, qw.getQuantity());
+                			}
+                			
+                			
+                		}
+                		
+                		
+                		
+                		
+                		
+                		//start decrease Inventory list!!
+                		for(InventoryName inventoryName : InventoryName.values())//for all inventory type..
+                		{
+                			if(minventoryInfo.hasInventoryStation(inventoryName)) // If my warehouse has that inventory type..
+                			{
+                				for(QuantifiedWidget qwInven : minventoryInfo.getInventoryInfo(inventoryName)) //for each widget in Inventory.
+                				{
+                					
+                					for(QuantifiedWidget qw : QuantifiListAtBot)
+                        			{
+                						if(qw.equals(qwInven.getWidget())) // find same widget!!!
+                						{
+                							// minus quanti..
+                							
+                							
+                						}
+                        			}
+                					
+                					
+               						 
+                					
+                					
+                				}
+                			}
+                		}
+                		
+                 	}
+                	
+                	
+                	
+                	
+                	
+                	*/
+                	
                 }
+                
                 HandleStateMachineCmd(Cmd);
             }
             else 
@@ -272,6 +331,19 @@ public class WarehouseManagerController extends WarehouseRunnable {
                 break;
         case WAREHOUSE_IS_CONNECTED:
 			 logger.info("WAREHOUSE_IS_CONNECTED");
+			 
+			 /*
+			 try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			 */
+			 
+			 sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS,null);
+			 sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS,null);
+			 
 			 break;
         case WAREHOUSE_IS_DISCONNECTED:
 			logger.info("WAREHOUSE_IS_DISCONNECTED");
