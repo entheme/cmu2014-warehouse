@@ -57,8 +57,8 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 				Order order = (Order)event.getBody();
 				if( (!mWarehouseProxyHandler.isBusy()) && (OrderStorage.getInstance().getSize()==0)){
 					logger.info("requestFillOrder");
-//					for(QuantifiedWidget qw : order.getItemList())
-//						WarehouseInventoryInfoRepository.getInstance().reduceInventoryInfo(qw.getWidget(), qw.getQuantity());
+					//					for(QuantifiedWidget qw : order.getItemList())
+					//						WarehouseInventoryInfoRepository.getInstance().reduceInventoryInfo(qw.getWidget(), qw.getQuantity());
 					mWarehouseProxyHandler.requestFillOrder(order);
 				}else{
 					logger.info("Robot stats = "+mWarehouseProxyHandler.isBusy()+", order queue size = "+OrderStorage.getInstance().getSize());
@@ -150,7 +150,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 	private void sendWarehouseInventoryInfo(){
 		WarehouseInventoryInfo warehouseInventoryInfo = mWarehouseProxyHandler.getInventoryInfo(); 
 		sendMsg(WComponentType.SUPERVISOR_UI, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo);
-		
+
 	}
 	private void sendWidgetCatalog(WComponentType dest, EventMessageType message) {
 		WidgetCatalog widgetCatalog = WidgetCatalogRepository.getInstance().getWidgetCatalog();
@@ -162,16 +162,18 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_ORDER_STATUS, null);
 	}
 	private void doNextFillOrder(){
-		Order order = OrderProvider.getInstance().getOrder();
-		if(order == null){
-			logger.info("No Pending Order check BackOrder Queue");
-			sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_BACK_ORDER, null);
-		}else {
-			logger.info("pending order is ready, request filling order to WmMsgHandler");
-			//sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FILL_ORDER, order);
-//			for(QuantifiedWidget qw : order.getItemList())
-//				WarehouseInventoryInfoRepository.getInstance().reduceInventoryInfo(qw.getWidget(), qw.getQuantity());
-			mWarehouseProxyHandler.requestFillOrder(order);
+		if( (!mWarehouseProxyHandler.isBusy()) && (OrderStorage.getInstance().getSize()==0)){
+			Order order = OrderProvider.getInstance().getOrder();
+			if(order == null){
+				logger.info("No Pending Order check BackOrder Queue");
+				sendMsg(WComponentType.BACKORDER_MANAGER, EventMessageType.REQUEST_BACK_ORDER, null);
+			}else {
+				logger.info("pending order is ready, request filling order to WmMsgHandler");
+				//sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FILL_ORDER, order);
+				//			for(QuantifiedWidget qw : order.getItemList())
+				//				WarehouseInventoryInfoRepository.getInstance().reduceInventoryInfo(qw.getWidget(), qw.getQuantity());
+				mWarehouseProxyHandler.requestFillOrder(order);
+			}
 		}
 	}
 	public static void start() {

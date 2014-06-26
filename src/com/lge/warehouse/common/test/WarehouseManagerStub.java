@@ -63,13 +63,19 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 			setAlias(getId().name()+id);
 			handleAddAccept(id);
 			break;
+		case FILL_INVENTORY_WIDGET:
+			if(event.getBody() instanceof WarehouseInventoryInfo){
+				WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo) event.getBody();
+				inventoryInfo.fillInventoryInfo(warehouseInventoryInfo);
+			}else{
+				handleBodyError(event);
+			}
+			break;
 		case WAREHOUSE_INVENTORY_INFO:
 			if(event.getBody() instanceof WarehouseInventoryInfo){
 				inventoryInfo = (WarehouseInventoryInfo)event.getBody();
-				logger.info("WAREHOUSE_INVENTORY_INFO: WarehouseId =" + inventoryInfo.getWarehouseId());
 				for(InventoryName inventoryName : InventoryName.values()){
 					//Note: Now, The InventoryName means the name of inventory stataion.
-					logger.info("WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
 					if(inventoryInfo.hasInventoryStation(inventoryName)){
 						for(QuantifiedWidget qw : inventoryInfo.getInventoryInfo(inventoryName)){
 							logger.info(qw.getWidget()+" : "+qw.getQuantity());
@@ -85,7 +91,6 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 		case SEND_WDIGET_CATALOG_TO_WM_MSG_HANDLER:
 			if(event.getBody() instanceof WidgetCatalog){
 				widgetCatalog = (WidgetCatalog)event.getBody();
-				logger.info("WidgetCatalog received");
 				//To be implemented
 			}
 			break;
@@ -142,6 +147,7 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 	private void testFillOrder(InventoryName inventoryName, Order order, List<QuantifiedWidget> inventoryListOnBot, WarehouseStatus warehouseStatus){
 		for(QuantifiedWidget quantifiedWidget : order.getItemList()){
 			if(inventoryInfo.hasInventory(inventoryName, quantifiedWidget.getWidget())){
+				logger.info("testFillOrder "+inventoryName.name()+"widget="+quantifiedWidget.getWidget()+" -"+quantifiedWidget.getQuantity());
 				inventoryInfo.reduceInventoryWidget(inventoryName, quantifiedWidget.getWidget(), quantifiedWidget.getQuantity());
 				inventoryListOnBot.add(new QuantifiedWidget(quantifiedWidget.getWidget(), quantifiedWidget.getQuantity()));
 			}
@@ -151,7 +157,7 @@ public class WarehouseManagerStub extends WarehouseRunnable{
 		warehouseStatus.setLocationOfBot(inventoryName.name());
 		warehouseStatus.setNextStop(InventoryName.fromInteger(InventoryName.fromInventoryName(inventoryName)+1).name());
 		warehouseStatus.setWarehouseInventoryInfo(inventoryInfo);
-		logger.info("WAREHOUSE_STATUS_INFO");
+		logger.info("after testFillOrder UPDATE_WAREHOUSE_STATUS");
 		for(InventoryName name : InventoryName.values()){
 			if(inventoryInfo.hasInventoryStation(name))
 				logger.info(inventoryInfo.getInventoryInfo(name));

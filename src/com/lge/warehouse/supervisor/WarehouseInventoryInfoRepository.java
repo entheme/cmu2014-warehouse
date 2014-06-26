@@ -70,20 +70,21 @@ class WarehouseInventoryInfoRepository {
 	public void fillInventoryWidget(
 			WarehouseInventoryInfo warehouseInventoryInfo) {
 		// TODO Auto-generated method stub
-		for(InventoryName inventoryName : InventoryName.values()){
-			if(warehouseInventoryInfo.hasInventoryStation(inventoryName)){
-				List<QuantifiedWidget> qwList = warehouseInventoryInfo.getInventoryInfo(inventoryName);
-				for(QuantifiedWidget qw : qwList){
-					if(mInventoryInfo.hasInventory(inventoryName, qw.getWidget())){
-						mInventoryInfo.fillInventoryWidget(inventoryName, qw.getWidget(), qw.getQuantity());
-						logger.info("already existed widget, fillInventoryWidget ");
-					}else{
-						mInventoryInfo.addNewWidgetToInventory(inventoryName, qw.getWidget(), qw.getQuantity());
-						logger.info("new Widget, addNewWidgetToInventory");
-					}
-				}
-			}
-		}
+//		for(InventoryName inventoryName : InventoryName.values()){
+//			if(warehouseInventoryInfo.hasInventoryStation(inventoryName)){
+//				List<QuantifiedWidget> qwList = warehouseInventoryInfo.getInventoryInfo(inventoryName);
+//				for(QuantifiedWidget qw : qwList){
+//					if(mInventoryInfo.hasInventory(inventoryName, qw.getWidget())){
+//						mInventoryInfo.fillInventoryWidget(inventoryName, qw.getWidget(), qw.getQuantity());
+//						logger.info("already existed widget, fillInventoryWidget ");
+//					}else{
+//						mInventoryInfo.addNewWidgetToInventory(inventoryName, qw.getWidget(), qw.getQuantity());
+//						logger.info("new Widget, addNewWidgetToInventory");
+//					}
+//				}
+//			}
+//		}
+		mInventoryInfo.fillInventoryInfo(warehouseInventoryInfo);
 	}
 	public void reduceInventoryInfo(WidgetInfo widgetInfo, int count) {
 		// TODO Auto-generated method stub

@@ -77,10 +77,6 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 		sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.RESPONSE_ORDER_STATUS,orderStatusInfo);
 	}
 	public void handleBackOrder(Order order){
-		List<QuantifiedWidget> list = order.getItemList();
-		for(QuantifiedWidget qw : list){
-			logger.info(qw.getWidget()+" : cnt("+qw.getQuantity()+")");
-		}
 		BackOrderQueue.getInstance().putOrder(order);
 	}
 	@Override
@@ -110,7 +106,10 @@ public final class CustomerServiceManager extends WarehouseRunnable{
 			}
 			for(Order progressOrder : OrderStorage.getInstance().getInProgressOrderList()){
 				for(QuantifiedWidget qw : progressOrder.getItemList()){
-					warehouseInventoryInfo.reduceInventoryWidget(qw.getWidget(), qw.getQuantity());
+					for(QuantifiedWidget loadedItem : progressOrder.getLoadedItem()){
+						if(qw.getWidget().equals(loadedItem.getWidget()))
+							warehouseInventoryInfo.reduceInventoryWidget(qw.getWidget(), qw.getQuantity()-loadedItem.getQuantity());
+					}
 				}
 			}
 			return warehouseInventoryInfo.hasInventory(order);

@@ -57,14 +57,17 @@ public class WarehouseProxy {
     }
     public void fillInventoryInfo(WarehouseInventoryInfo warehouseInventoryInfo){
     	WarehouseInventoryInfoRepository.getInstance().fillInventoryWidget(warehouseInventoryInfo);
-    	sendWarehouseInventoryInfo();
+    	sendWarehouseFillInventoryInfo(warehouseInventoryInfo);
     }
-    public void sendWarehouseInventoryInfo(){
+    public void sendWarehouseFillInventoryInfo(WarehouseInventoryInfo warehouseInventoryInfo){
+    	//WarehouseInventoryInfo warehouseInventoryInfo = WarehouseInventoryInfoRepository.getInstance().getWarehouseInventoryInfo();
+    	mSender.sendObject(new EventMessage(mSrc, mDest, EventMessageType.FILL_INVENTORY_WIDGET, warehouseInventoryInfo));
+    }
+    public void sendWarehouseInventoryInfo() {
+		// TODO Auto-generated method stub
     	WarehouseInventoryInfo warehouseInventoryInfo = WarehouseInventoryInfoRepository.getInstance().getWarehouseInventoryInfo();
     	mSender.sendObject(new EventMessage(mSrc, mDest, EventMessageType.WAREHOUSE_INVENTORY_INFO, warehouseInventoryInfo));
-    	
-    }
-    
+	}    
 	public void handleOrder(Order order) {
 		// TODO Auto-generated method stub
 		OrderStorage.getInstance().setInProgressOrder(this, order);

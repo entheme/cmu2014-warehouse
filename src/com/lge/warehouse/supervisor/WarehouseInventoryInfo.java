@@ -115,5 +115,20 @@ public class WarehouseInventoryInfo implements Serializable{
 		}
 		return false;
 	}
-
+	public void fillInventoryInfo(WarehouseInventoryInfo warehouseInventoryInfo){
+		for(InventoryName inventoryName : InventoryName.values()){
+			if(warehouseInventoryInfo.hasInventoryStation(inventoryName)){
+				List<QuantifiedWidget> qwList = warehouseInventoryInfo.getInventoryInfo(inventoryName);
+				for(QuantifiedWidget qw : qwList){
+					if(this.hasInventory(inventoryName, qw.getWidget())){
+						this.fillInventoryWidget(inventoryName, qw.getWidget(), qw.getQuantity());
+						logger.info("already existed widget, fillInventoryWidget ");
+					}else{
+						this.addNewWidgetToInventory(inventoryName, qw.getWidget(), qw.getQuantity());
+						logger.info("new Widget, addNewWidgetToInventory");
+					}
+				}
+			}
+		}
+	}
 }

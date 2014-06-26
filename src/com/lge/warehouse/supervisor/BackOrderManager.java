@@ -59,10 +59,16 @@ public final class BackOrderManager extends WarehouseRunnable{
 	private void handleRequestBackOrder(){
 		try {
 			WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo)ObjectCloner.deepCopy(WarehouseInventoryInfoRepository.getInstance().getWarehouseInventoryInfo());
+			for(Order progressOrder : OrderStorage.getInstance().getInProgressOrderList()){
+				for(QuantifiedWidget qw : progressOrder.getItemList()){
+					for(QuantifiedWidget loadedItem : progressOrder.getLoadedItem()){
+						if(qw.getWidget().equals(loadedItem.getWidget()))
+							warehouseInventoryInfo.reduceInventoryWidget(qw.getWidget(), qw.getQuantity()-loadedItem.getQuantity());
+					}
+				}
+			}
 			List<Order> orderList = new ArrayList<Order>();
 			for(Order order : BackOrderQueue.getInstance().getBackOrderList()){
-				logger.info("Order : "+order);
-				logger.info(warehouseInventoryInfo);
 				if(warehouseInventoryInfo.hasInventory(order)){
 					for(QuantifiedWidget qw : order.getItemList()){
 						warehouseInventoryInfo.reduceInventoryWidget(qw.getWidget(), qw.getQuantity());
@@ -73,9 +79,13 @@ public final class BackOrderManager extends WarehouseRunnable{
 			}
 			logger.info("backorder ->pendingorder : "+orderList.size());
 			for(Order order : orderList){
+				logger.info(order);
+			}
+			for(Order order : orderList){
 				BackOrderQueue.getInstance().removeOrder(order);
 				sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.NEW_ORDER, order);
 			}
+			
 			reportOrderStatus();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

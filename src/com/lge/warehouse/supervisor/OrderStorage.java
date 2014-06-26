@@ -87,7 +87,8 @@ public class OrderStorage {
 	public void updateInProgressOrder(WarehouseProxy warehouseProxy, List<QuantifiedWidget> inventoryListOfBot) {
 		// TODO Auto-generated method stub
 		Order order = mInProgressOrderMap.get(warehouseProxy);
-		order.setLoadedItem(inventoryListOfBot);
+		if(order != null)
+			order.setLoadedItem(inventoryListOfBot);
 	}
 
 	public List<QuantifiedWidget> getLoadedItemList() {

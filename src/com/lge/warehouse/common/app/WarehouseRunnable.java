@@ -78,8 +78,6 @@ public abstract class WarehouseRunnable extends WarehouseComponent implements Ru
 			return false;
 	}
 	public void postEvent(EventMessage event) {
-		if(mQueue == null)
-			logger.info("check postEvent"+event);
 		mQueue.add(event);
 	}
 	public void requestThreadStop(){
