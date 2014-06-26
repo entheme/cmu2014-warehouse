@@ -8,6 +8,7 @@ import com.lge.warehouse.supervisor.CustomerServiceManager;
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.OrderStatusInfo;
+import com.lge.warehouse.util.SystemEvent;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
 import java.util.logging.Level;
@@ -80,6 +81,13 @@ public class SupervisorUiController extends WarehouseRunnable {
                         mSupervisorUi.updateRobotStatus(warehouseStatus);
                     }
                     break;
+                case SYSTEM_STATUS_REPORT:
+                	if(event.getBody() instanceof SystemEvent){
+                        //System.out.println("got warehouse status");
+                		SystemEvent systemReport = (SystemEvent) event.getBody();
+                        //mSupervisorUi.updateRobotStatus(warehouseStatus);
+                    }
+                	break;
 		}
 	}
 	public void requestAddNewWidgetItem(String widgetName, int price){

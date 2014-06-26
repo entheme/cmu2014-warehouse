@@ -3,6 +3,9 @@ package com.lge.warehouse.common.app;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.lge.warehouse.util.CustomerStatus;
+import com.lge.warehouse.util.WarehouseInfo;
+
 public final class HeartBeatHandler{
 	/**
 	 * 
@@ -29,7 +32,15 @@ public final class HeartBeatHandler{
 			//WarehouseMain.logger.info("Heartbeat check");
 			// TODO Auto-generated method stub
 			if(!mHandler.mHeartBeatReceived){
-				WarehouseMain.logger.info(mHandler.mTarget.name()+" is disconnected");
+				switch(mTarget){
+				case CUSTOMER_INF:
+					mSystem.setCustomerStatus(CustomerStatus.OFF);
+					break;
+				case MANAGER_SYSTEM:
+					mSystem.setWarehouseStatus(WarehouseInfo.OFF);
+				}
+				mSystem.updateInfo();
+				mSystem.reportStatus(mHandler.mTarget.name()+" is disconnected");
 				mSystem.removeHeartHandler(mTarget);
 				mHandler.timer.cancel();
 			}else{

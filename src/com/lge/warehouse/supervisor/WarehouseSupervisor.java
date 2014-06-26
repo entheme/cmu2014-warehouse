@@ -153,6 +153,7 @@ public final class WarehouseSupervisor extends WarehouseRunnable {
 		// TODO Auto-generated method stub
 		WarehouseInventoryInfo warehouseInventoryInfo = warehouseStatus.getWarehouseInventoryInfo();
 		logger.info("printWarehouseStatus");
+		logger.info("Robot status = "+warehouseStatus.getRobotStatus()+", Warehouse status = "+warehouseStatus.getWarehouseStatus());
 		logger.info(warehouseInventoryInfo);
 	}
 
