@@ -44,7 +44,7 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 					}
 					else
 					{
-						warehousestatemachine.getRobotAtXst(ThisStateID).setPassedNavigationPath(passedNavigationPath);
+						warehousestatemachine.getRobotAtXst(ThisStateID-1).setPassedNavigationPath(passedNavigationPath);
 						warehousestatemachine.getRobotAtXst(ThisStateID-1).PathClearAndSetnextPath(navigationPath);
 					}
 					warehousestatemachine.setState(warehousestatemachine.getRobotAtXst(ThisStateID-1));

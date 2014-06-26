@@ -69,32 +69,7 @@ public class NavigationPathSelector {
     public List<WMorderStatemachineState> MakeNewNavigationPath(Order neworder)
     {
     	flushPath();
-    	
-    	//For information
-    	/*
-    	logger.info("FILL_ORDER order id = "+neworder.getOrderId());
-		for(QuantifiedWidget qw : neworder.getItemList())
-		{
-			logger.info(qw.getWidget()+" : "+qw.getQuantity());
-	 	}
-		for(InventoryName inventoryName : InventoryName.values())//for all inventory type..
-		{
-			logger.info("WAREHOUSE_INVENTORY_INFO: inventoryName =" + inventoryName);
-			if(minventoryInfo.hasInventoryStation(inventoryName)) // If my warehouse has that inventory type..
-			{
-				for(QuantifiedWidget qwInven : minventoryInfo.getInventoryInfo(inventoryName))
-				{
-					logger.info(qwInven.getWidget()+" : "+qwInven.getQuantity());
-				}
-			}
-			else
-			{ ;
-			}
-		}
-		*/
-		//end information
-		
-		
+
 		// copy list for inventory selection.
 		// only for real order.. not for 0 widget.
 		orderItemListfornavation.clear();
@@ -163,8 +138,8 @@ public class NavigationPathSelector {
 				if(bAddpath == true)
 				{
 					logger.info("This inventory is added route");
-					robotAtX[InvenIdx].setQwOrderList(RobotHoldWidgetList);
 					addPath(robotMoveToX[InvenIdx]);
+					robotAtX[InvenIdx].setQwOrderList(RobotHoldWidgetList);
 					addPath(robotAtX[InvenIdx]);
 				}
 				else

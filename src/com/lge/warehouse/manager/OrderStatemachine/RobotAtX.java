@@ -34,11 +34,11 @@ public class RobotAtX extends WMorderStatemachineState implements Serializable{
 	}
 
 	public void setQwOrderList(List<QuantifiedWidget> qwOrderList) {
-		//RobotHand_qwOrderList.clear();
-		//for(QuantifiedWidget qw : qwOrderList)
-		//{
-		//	RobotHand_qwOrderList.add(qw);
-	 	//}
+		RobotHand_qwOrderList.clear();
+		for(QuantifiedWidget qw : qwOrderList)
+		{
+			RobotHand_qwOrderList.add(qw);
+	 	}
 	}
 	
 	public void addQwOrderList(QuantifiedWidget qwOrderList)

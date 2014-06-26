@@ -65,7 +65,7 @@ public class WahouseStateMachine implements Serializable{
 	public CmdToOther Evt_WareHouseButtonIsOn(int buttonNum) {return CurrentState.Evt_WareHouseButtonIsOn(buttonNum);}
 	public CmdToOther Evt_RobotErrorStateChange(int ErrorNum) {return CurrentState.Evt_RobotErrorStateChange(ErrorNum);}
 	public CmdToOther Evt_WareHouseErrorStateChange(int ErrorNum) {return CurrentState.Evt_WareHouseErrorStateChange(ErrorNum);}
-	
+	public CmdToOther Evt_ReadyTogo(){return CurrentState.Evt_ReadyToGo();}
 		
     public WMorderStatemachineState getInitState() {return initState;}
     public WMorderStatemachineState getWaitNewOrderState() {return waitNewOrderState;}

@@ -3,7 +3,9 @@ package com.lge.warehouse.manager.OrderStatemachine;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.lge.warehouse.manager.OrderStatemachine.CmdToOther;
+import com.lge.warehouse.util.QuantifiedWidget;
 
 public abstract class WMorderStatemachineState implements Serializable{
 	
@@ -27,9 +29,13 @@ public abstract class WMorderStatemachineState implements Serializable{
 		this.warehousestatemachine = warehousestatemachine;
 	}
 	
-	public void setPassedNavigationPath(
-			List<WMorderStatemachineState> passedNavigationPath) {
-		this.passedNavigationPath = passedNavigationPath;
+	public void setPassedNavigationPath(List<WMorderStatemachineState> NewpassedNavigationPath) 
+	{
+		passedNavigationPath.clear();
+		for(WMorderStatemachineState qw : NewpassedNavigationPath)
+		{
+			passedNavigationPath.add(qw);
+	 	}
 	}
 
 	public List<WMorderStatemachineState> getPassedNavigationPath() {
@@ -42,8 +48,12 @@ public abstract class WMorderStatemachineState implements Serializable{
 
 	public void setNavigationPath(List<WMorderStatemachineState> newPath)
 	{
-		navigationPath = newPath;
-		
+		navigationPath.clear();
+		for(WMorderStatemachineState qw : newPath)
+		{
+			navigationPath.add(qw);
+	 	}
+				
 		String tempPath = "[WMorderStatemachineState] Get path is";
     	for(WMorderStatemachineState state : navigationPath)
 		{
@@ -64,7 +74,11 @@ public abstract class WMorderStatemachineState implements Serializable{
 		{
 			passedNavigationPath.add(newPath.get(0)); // set visited path
 			newPath.remove(0);
-			navigationPath = newPath;
+			navigationPath.clear();
+			for(WMorderStatemachineState qw : newPath)
+			{
+				navigationPath.add(qw);
+		 	}
 		}
 		
 		String PassedtempPath = "[WMorderStatemachineState] Visit path is";

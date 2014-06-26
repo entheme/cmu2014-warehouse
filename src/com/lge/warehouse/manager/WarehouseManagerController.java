@@ -54,33 +54,27 @@ public class WarehouseManagerController extends WarehouseRunnable {
     //for SupervisorUI and Inventory update.
     public void SendWarehouseStatus() // have some problem to navigation path selector.
     {
-    	/*
+    	
     	String StringFormat = "";
     	List<QuantifiedWidget> inventoryListOnBot = new ArrayList<QuantifiedWidget>();
     	List<WMorderStatemachineState> PathList = new ArrayList<WMorderStatemachineState>();
-    	
+    	List<String> VisitedStationList = new ArrayList<String>();
     	PathList = warehouseStatemachine.getCurrentState().getPassedNavigationPath();
     	
     	//visited Station information
-    	if(PathList.isEmpty())
-    	{
-    		StringFormat += "[NULL]";
-    	}
-    	else
-    	{
-    		for(WMorderStatemachineState pa : PathList)
-			{
-	    		StringFormat += pa.toString();
-	    		if(pa instanceof RobotAtX) // for robot holding widget lsit.
-	    		{
-	    			for(QuantifiedWidget qw : ((RobotAtX) pa).getQwOrderList())
-	    			{
-	    				inventoryListOnBot.add(qw);
-	    			}
-	    		}
-		 	}
-    	}
-    	warehouseStatus.addVisitedStationListOfBot(StringFormat);
+    	for(WMorderStatemachineState pa : PathList)
+		{
+    		VisitedStationList.add(pa.toString());
+    		if(pa instanceof RobotAtX) // for robot holding widget lsit.
+    		{
+    			for(QuantifiedWidget qw : ((RobotAtX) pa).getQwOrderList())
+    			{
+    				inventoryListOnBot.add(qw);
+    			}
+    		}
+	 	}
+    	    	
+    	warehouseStatus.setVisitedStationListOfBot(VisitedStationList);
     	warehouseStatus.setInventoryListOfBot(inventoryListOnBot);
 		warehouseStatus.setLocationOfBot(warehouseStatemachine.getCurrentState().toString());
 		
@@ -100,7 +94,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 		warehouseStatus.setWarehouseInventoryInfo(minventoryInfo);
 		
 		sendWarehouseStatus(warehouseStatus);
-		*/
+		
     }
     
 
@@ -151,7 +145,25 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				Cmd = warehouseStatemachine.Evt_NewOrder(newOrderPath);
 				HandleStateMachineCmd(Cmd);
 				
-				
+				/*
+				// for 1 order clear without robot.
+				Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(1);
+				HandleStateMachineCmd(Cmd);
+				Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(1);
+				HandleStateMachineCmd(Cmd);
+				Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(2);
+				HandleStateMachineCmd(Cmd);
+				Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(2);
+				HandleStateMachineCmd(Cmd);
+				Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(3);
+				HandleStateMachineCmd(Cmd);
+				Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(3);
+				HandleStateMachineCmd(Cmd);
+				Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(4);
+				HandleStateMachineCmd(Cmd);
+				Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(4);
+				HandleStateMachineCmd(Cmd);
+				*/
 				
 				/*
 				try {
@@ -172,7 +184,7 @@ public class WarehouseManagerController extends WarehouseRunnable {
 					e.printStackTrace();
 				}
 				*/
-                            //Send processed order's information to WM_MSG_HANDLER
+                //Send processed order's information to WM_MSG_HANDLER
 				//sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FINISH_FILL_ORDER, order);
 				//For Test [END]
 			}else {
@@ -253,6 +265,10 @@ public class WarehouseManagerController extends WarehouseRunnable {
         case ROBOT_IS_ARRIVE:
                 //Now, robot is arrived at some inventory station. Now, robot can receive the message such as moving.
                 logger.info("ROBOT_IS_ARRIVE");
+                
+                Cmd = warehouseStatemachine.Evt_ReadyTogo();
+                HandleStateMachineCmd(Cmd);
+                
                 break;
         case WAREHOUSE_IS_CONNECTED:
 			 logger.info("WAREHOUSE_IS_CONNECTED");
@@ -286,6 +302,9 @@ public class WarehouseManagerController extends WarehouseRunnable {
     			
     		case ORDER_COMPLETE:
     			logger.info("Order is complete");
+    			
+    			// inventory....
+    			
     			sendMsg(WComponentType.WM_MSG_HANDLER, EventMessageType.FINISH_FILL_ORDER, Handlingorder);
     			
     			break;
