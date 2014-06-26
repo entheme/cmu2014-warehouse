@@ -84,6 +84,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         jTextAreaOrderStatus.setColumns(20);
         jTextAreaOrderStatus.setRows(5);
         jScrollPaneOrder.setViewportView(jTextAreaOrderStatus);
@@ -134,7 +136,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addComponent(jCheckBoxBackorder)
                 .addGap(38, 38, 38)
                 .addComponent(jCheckBoxInProgressOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 140, Short.MAX_VALUE))
+                .addGap(0, 136, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,7 +147,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                     .addComponent(jCheckBoxPendingOrder)
                     .addComponent(jCheckBoxBackorder)
                     .addComponent(jCheckBoxInProgressOrder))
-                .addContainerGap(7, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelOrderLayout = new javax.swing.GroupLayout(jPanelOrder);
@@ -170,8 +172,6 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         );
 
         jTabbedPane1.addTab("Order", jPanelOrder);
-
-        jPanelInventory.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jTextAreaInventoryStatus.setColumns(20);
         jTextAreaInventoryStatus.setRows(5);
@@ -308,7 +308,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jPanelInventoryLayout.setVerticalGroup(
             jPanelInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInventoryLayout.createSequentialGroup()
-                .addComponent(jScrollPaneInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 329, Short.MAX_VALUE)
+                .addComponent(jScrollPaneInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelInventoryManagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -357,7 +357,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                                     .addComponent(jLabelRobotStatus)
                                     .addComponent(jLabelNextStop)
                                     .addComponent(jLabelLocation))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 317, Short.MAX_VALUE)
                                 .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jTextFieldNextStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
