@@ -9,6 +9,7 @@ package com.lge.warehouse.util;
 import java.io.Serializable;
 
 import com.lge.warehouse.supervisor.WidgetInfo;
+import java.util.List;
 
 /**
  *
@@ -26,6 +27,13 @@ public class QuantifiedWidget implements Serializable{
     public WidgetInfo getWidget() { return mWidget; }
     public int getQuantity() { return mQuantity; }
     public void setQuantity(int quantity) { mQuantity = quantity; }
+    public static String getListString(List<QuantifiedWidget> list) {
+        StringBuffer sb = new StringBuffer();
+        for(QuantifiedWidget quantifiedWidget : list) {
+            sb.append(quantifiedWidget.toString()).append("\n");
+        }
+        return sb.toString();
+    }
     
     public String toString(){
     	return mWidget+" quantity : "+mQuantity+"EA";

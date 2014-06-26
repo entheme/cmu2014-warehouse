@@ -11,25 +11,63 @@ package com.lge.warehouse.customer.ui;
  * @author Jihun
  */
 public class OrderTestSctipt {
+    static final int SOCCER = 0;
+    static final int TENNIS = 1;
+    static final int BASEBALL = 2;
+    static final int FOOTBALL = 3;
+    static final int BASKETBALL = 4;
+    static final int NEWWIDGET = 5;
 
     static final OrderTestUnit testScript[][] = {
-        {   //Order 1
-            new OrderTestUnit(0,7), 
-            new OrderTestUnit(1,5),
-            new OrderTestUnit(2,3),
-            new OrderTestUnit(3,8),
-            new OrderTestUnit(4,10)
+        {   //0,0,0,0,0,-
+            //Supervisor:Fill all widgets
+            //10,10,10,10,10,-
+            //Order 1 - Order all
+            new OrderTestUnit(SOCCER,2), 
+            new OrderTestUnit(TENNIS,3),
+            new OrderTestUnit(BASEBALL,5),
+            new OrderTestUnit(FOOTBALL,1),
+            new OrderTestUnit(BASKETBALL,4)
         },
-        {   //Order 2
-            new OrderTestUnit(5,15)
+        {   //8,7,5,9,6,-
+            //Order 2 - Partial order
+            new OrderTestUnit(SOCCER,4),
+            new OrderTestUnit(BASKETBALL,3)
         },
-//        {   //Order 3
-//            new OrderTestUnit(0,10),
+        {   //4,7,5,9,3,-
+            //Order 3 - backorder
+            new OrderTestUnit(TENNIS,10)
+        },
+        {   //Supervisor:Fill widget(Tennis)
+            //4,17,5,9,3,-
+            //4,7,5,9,3,-
+            //Supervisor:Add new widget
+            //4,7,5,9,3,0
+            //Supervisor:Fill new widget
+            //4,7,5,9,3,10
+            //Order 4 - new widget
+            new OrderTestUnit(NEWWIDGET,5)
+        },
+        
+//        {   //4,7,5,9,3,5
+//            //Fill (6,3,5,1,7,5)
+//            //10,10,10,10,10
+//            //Order 5 - order all
+//            new OrderTestUnit(SOCCER,2), 
+//            new OrderTestUnit(TENNIS,3),
+//            new OrderTestUnit(BASEBALL,5),
+//            new OrderTestUnit(FOOTBALL,1),
+//            new OrderTestUnit(BASKETBALL,4)
 //        },
-//        {   //Order 4
-//            new OrderTestUnit(0,5),
-//            new OrderTestUnit(3,7)
+//        {   //8,7,5,9,6,-
+//            //Order 6 - Partial order
+//            new OrderTestUnit(SOCCER,4),
+//            new OrderTestUnit(BASKETBALL,3)
 //        },
+       
+        
+      
+        
     };
     
     private static int curScriptNo = 0;

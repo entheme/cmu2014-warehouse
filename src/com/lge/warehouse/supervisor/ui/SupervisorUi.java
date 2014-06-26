@@ -12,11 +12,13 @@ import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.OrderStatusInfo;
+import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -31,6 +33,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         initComponents();
         initUiController();
         requestCatalog();
+        setSystemStatusString();
     }
 
     /**
@@ -69,23 +72,28 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jLabelWidgetNameToBeAdded = new javax.swing.JLabel();
         jLabelWidgetPriceToBeAdded = new javax.swing.JLabel();
         jPanelRobot = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jLabelLocation = new javax.swing.JLabel();
         jTextFieldRobotLocation = new javax.swing.JTextField();
+        jPanel3 = new javax.swing.JPanel();
         jLabelInventoryList = new javax.swing.JLabel();
+        jLabelVisitedStation = new javax.swing.JLabel();
         jScrollPaneInventoryList = new javax.swing.JScrollPane();
         jTextAreaInventoryList = new javax.swing.JTextArea();
-        jLabelVisitedStation = new javax.swing.JLabel();
         jScrollPaneVisitedStation = new javax.swing.JScrollPane();
         jTextAreaVisitedStation = new javax.swing.JTextArea();
+        jPanel4 = new javax.swing.JPanel();
         jLabelNextStop = new javax.swing.JLabel();
-        jTextFieldNextStop = new javax.swing.JTextField();
         jLabelRobotStatus = new javax.swing.JLabel();
+        jTextFieldNextStop = new javax.swing.JTextField();
         jTextFieldRobotStatus = new javax.swing.JTextField();
+        jLabelSystemStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTabbedPane1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        jTextAreaOrderStatus.setEditable(false);
         jTextAreaOrderStatus.setColumns(20);
         jTextAreaOrderStatus.setRows(5);
         jScrollPaneOrder.setViewportView(jTextAreaOrderStatus);
@@ -173,6 +181,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
         jTabbedPane1.addTab("Order", jPanelOrder);
 
+        jTextAreaInventoryStatus.setEditable(false);
         jTextAreaInventoryStatus.setColumns(20);
         jTextAreaInventoryStatus.setRows(5);
         jScrollPaneInventory.setViewportView(jTextAreaInventoryStatus);
@@ -308,7 +317,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jPanelInventoryLayout.setVerticalGroup(
             jPanelInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelInventoryLayout.createSequentialGroup()
-                .addComponent(jScrollPaneInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                .addComponent(jScrollPaneInventory, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelInventoryManagement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -318,81 +327,142 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
         jTabbedPane1.addTab("Inventory", jPanelInventory);
 
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         jLabelLocation.setText("Location");
+
+        jTextFieldRobotLocation.setEditable(false);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTextFieldRobotLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextFieldRobotLocation, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                    .addComponent(jLabelLocation))
+                .addContainerGap())
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabelInventoryList.setText("Inventory List");
 
+        jLabelVisitedStation.setText("Visited Station");
+
+        jTextAreaInventoryList.setEditable(false);
         jTextAreaInventoryList.setColumns(20);
         jTextAreaInventoryList.setRows(5);
         jScrollPaneInventoryList.setViewportView(jTextAreaInventoryList);
 
-        jLabelVisitedStation.setText("Visited Station");
-
+        jTextAreaVisitedStation.setEditable(false);
         jTextAreaVisitedStation.setColumns(20);
         jTextAreaVisitedStation.setRows(5);
         jScrollPaneVisitedStation.setViewportView(jTextAreaVisitedStation);
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelInventoryList)
+                    .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelVisitedStation)
+                    .addComponent(jScrollPaneVisitedStation, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelVisitedStation))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneVisitedStation))
+                .addContainerGap())
+        );
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabelNextStop.setText("Next Stop");
 
         jLabelRobotStatus.setText("Robot Status");
 
+        jTextFieldNextStop.setEditable(false);
+
+        jTextFieldRobotStatus.setEditable(false);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelNextStop)
+                    .addComponent(jLabelRobotStatus))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextFieldNextStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelNextStop)
+                    .addComponent(jTextFieldNextStop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(4, 4, 4)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelRobotStatus)
+                    .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout jPanelRobotLayout = new javax.swing.GroupLayout(jPanelRobot);
         jPanelRobot.setLayout(jPanelRobotLayout);
         jPanelRobotLayout.setHorizontalGroup(
             jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelRobotLayout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRobotLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelRobotLayout.createSequentialGroup()
-                        .addComponent(jLabelVisitedStation)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanelRobotLayout.createSequentialGroup()
-                        .addComponent(jLabelInventoryList)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanelRobotLayout.createSequentialGroup()
-                        .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPaneVisitedStation, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelRobotLayout.createSequentialGroup()
-                                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelRobotStatus)
-                                    .addComponent(jLabelNextStop)
-                                    .addComponent(jLabelLocation))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 317, Short.MAX_VALUE)
-                                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jTextFieldNextStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                                        .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.Alignment.TRAILING))
-                                    .addComponent(jTextFieldRobotLocation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(24, 24, 24))))
+                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
         jPanelRobotLayout.setVerticalGroup(
             jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelRobotLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelLocation)
-                    .addComponent(jTextFieldRobotLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelInventoryList)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelVisitedStation)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPaneVisitedStation, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(12, 12, 12)
-                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelNextStop)
-                    .addComponent(jTextFieldNextStop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelRobotLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelRobotStatus)
-                    .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Robot", jPanelRobot);
+
+        jLabelSystemStatus.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -402,10 +472,18 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelSystemStatus)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelSystemStatus)
+                .addContainerGap())
         );
 
         pack();
@@ -581,6 +659,15 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
          
         jTextAreaOrderStatus.setText(sb.toString());
     }
+    
+    private void updateSystemStatus(String systemStatus) {
+        mSystemStatus = systemStatus;
+    }
+    
+    private void setSystemStatusString() {
+        jLabelSystemStatus.setText(mSystemStatus);
+        jLabelSystemStatus.setHorizontalAlignment(SwingConstants.RIGHT);
+    }
     /**
      * @param args the command line arguments
      */
@@ -631,11 +718,15 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private javax.swing.JLabel jLabelLocation;
     private javax.swing.JLabel jLabelNextStop;
     private javax.swing.JLabel jLabelRobotStatus;
+    private javax.swing.JLabel jLabelSystemStatus;
     private javax.swing.JLabel jLabelVisitedStation;
     private javax.swing.JLabel jLabelWidgetManagement;
     private javax.swing.JLabel jLabelWidgetNameToBeAdded;
     private javax.swing.JLabel jLabelWidgetPriceToBeAdded;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanelInventory;
     private javax.swing.JPanel jPanelInventoryManagement;
     private javax.swing.JPanel jPanelOrder;
@@ -661,6 +752,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private WidgetCatalog mWidgetCatalog;
     private OrderStatusInfo mOrderStatus;
     private WarehouseInventoryInfo mInventoryInfo;
+    private String mSystemStatus = "System Status : -";
 
     @Override
     public void updateCatalog(WidgetCatalog widgetCatalog) {
@@ -681,7 +773,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     @Override
     public void updateRobotStatus(WarehouseStatus warehouseStatus) {
         jTextFieldRobotLocation.setText(warehouseStatus.getLocationOfBot());
-        jTextAreaInventoryList.setText(warehouseStatus.getInventoryListOfBot().toString());
+        jTextAreaInventoryList.setText(QuantifiedWidget.getListString(warehouseStatus.getInventoryListOfBot()));
         jTextAreaVisitedStation.setText(warehouseStatus.getVisitedStationListOfBot().toString());
         jTextFieldNextStop.setText(warehouseStatus.getNextStop());
         jTextFieldRobotStatus.setText("OK");
