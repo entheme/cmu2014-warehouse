@@ -45,6 +45,14 @@ public final class WmMsgHandler extends WarehouseRunnable  {
 		case SYSTEM_READY:
 			sendMsg(WComponentType.WAREHOUSE_SUPERVISOR, EventMessageType.WAREHOUSE_ADD_REQUEST, null);
 			break;
+		case FILL_INVENTORY_WIDGET:
+			if(event.getBody() instanceof WarehouseInventoryInfo){
+				WarehouseInventoryInfo warehouseInventoryInfo = (WarehouseInventoryInfo) event.getBody();
+				sendMsg(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, EventMessageType.FILL_INVENTORY_WIDGET, warehouseInventoryInfo);
+			}else{
+				handleBodyError(event);
+			}
+			break;
 		case WAREHOUSE_ADD_ACCEPT:
 			removeBus(WComponentType.WAREHOUSE_SUPERVISOR);
 			int id= (Integer)event.getBody();
