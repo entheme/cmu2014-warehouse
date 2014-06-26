@@ -14,21 +14,22 @@ public class OrderTestSctipt {
 
     static final OrderTestUnit testScript[][] = {
         {   //Order 1
-            new OrderTestUnit(0,10), 
-            new OrderTestUnit(1,20),
-            new OrderTestUnit(2,25)
+            new OrderTestUnit(0,7), 
+            new OrderTestUnit(1,5),
+            new OrderTestUnit(2,3),
+            new OrderTestUnit(3,8),
+            new OrderTestUnit(4,10)
         },
         {   //Order 2
-            new OrderTestUnit(3,40),
-            new OrderTestUnit(4,15)
+            new OrderTestUnit(5,15)
         },
-        {   //Order 3
-            new OrderTestUnit(0,10),
-        },
-        {   //Order 4
-            new OrderTestUnit(0,5),
-            new OrderTestUnit(3,7)
-        },
+//        {   //Order 3
+//            new OrderTestUnit(0,10),
+//        },
+//        {   //Order 4
+//            new OrderTestUnit(0,5),
+//            new OrderTestUnit(3,7)
+//        },
     };
     
     private static int curScriptNo = 0;

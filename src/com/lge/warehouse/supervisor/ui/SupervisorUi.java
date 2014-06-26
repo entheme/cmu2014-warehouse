@@ -424,6 +424,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         
         //System.out.println("quantity = " + quantity);
         //System.out.println(InventoryName.fromInteger(inventoryID));
+        //if(warehouseInventoryInfo.)
         
         warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.fromInteger(inventoryID), widgetInfo, quantity);
         mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
@@ -440,6 +441,9 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_2, mWidgetCatalog.getWidgetInfoAt(2), 10);
         warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, mWidgetCatalog.getWidgetInfoAt(3), 10);
         warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_3, mWidgetCatalog.getWidgetInfoAt(4), 10);
+        if(mWidgetCatalog.getWidgetInfoCnt() > 5) {
+            warehouseInventoryInfo.addNewWidgetToInventory(InventoryName.INVENTORY_1, mWidgetCatalog.getWidgetInfoAt(5), 10);
+        }
         
  
         mSupervisorUiController.sendWarehouseInventoryInfo(warehouseInventoryInfo);
@@ -515,11 +519,11 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     }
     
     private void updateWidgetManagementUi() {
-        //boolean bEnable = mWidgetCatalog.isWdgetCatalogExpandable();
+        boolean bEnable = mWidgetCatalog.isWdgetCatalogExpandable();
         
-        //jTextFieldNewWidget.setEnabled(bEnable);
-        //jTextFieldNewWidgetPrice.setEnabled(bEnable);
-        //jButtonAddWidget.setEnabled(bEnable);
+        jTextFieldNewWidget.setEnabled(bEnable);
+        jTextFieldNewWidgetPrice.setEnabled(bEnable);
+        jButtonAddWidget.setEnabled(bEnable);
     }
     
     private void updateInventoryComboBox() {
