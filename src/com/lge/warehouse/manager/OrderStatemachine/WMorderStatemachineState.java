@@ -113,6 +113,12 @@ public abstract class WMorderStatemachineState implements Serializable{
 		return CmdToOther.CMD_NONE;
 	};
 	
+	public CmdToOther Evt_ReadyToGo()
+	{
+		System.out.println("[WMorderStatemachineState]Evt_ReadyToGo : not implement event");
+		return CmdToOther.CMD_NONE;
+	}
+	
 	abstract CmdToOther Evt_RobotErrorStateChange(int iRobotErrorState);
 	//{System.out.println("Evt_RobotErrorStateChange : #" + iRobotErrorState + "is change, not implement event");};
 	

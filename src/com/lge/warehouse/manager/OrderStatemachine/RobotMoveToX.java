@@ -5,15 +5,19 @@ import java.io.Serializable;
 public class RobotMoveToX extends WMorderStatemachineState implements Serializable{
 
 	int ThisStateID; //what station heading for?
+	boolean ReadyToGo;
 	
 	public RobotMoveToX(int thisStateID) {
 		super();
 		ThisStateID = thisStateID;
+		ReadyToGo = false;
 	}
-	public RobotMoveToX(WahouseStateMachine warehousestatemachine,
-			int thisStateID) {
+	
+	public RobotMoveToX(WahouseStateMachine warehousestatemachine, int thisStateID)
+	{
 		super(warehousestatemachine);
 		ThisStateID = thisStateID;
+		ReadyToGo = false;
 	}
 	
 	public int getID()
@@ -32,6 +36,7 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 				RobotAtX tempRobotAtX = (RobotAtX)navigationPath.get(0);
 				if(tempRobotAtX.getID() == ThisStateID)
 				{
+					ReadyToGo = false;
 					System.out.println(toString() + "Robot is near to station");
 					if(ThisStateID == 4)
 					{
@@ -53,11 +58,10 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 			}
 			else // this inventory station is not loading station 
 			{
-				System.out.println(toString() + "Bypass this inventory station");
-				warehousestatemachine.getRobotMoveToXst(ThisStateID).setPassedNavigationPath(passedNavigationPath);
-				warehousestatemachine.getRobotMoveToXst(ThisStateID).PathClearAndSetnextPath(navigationPath);
-				warehousestatemachine.setState(warehousestatemachine.getRobotMoveToXst(ThisStateID));
-				returnval = CmdToOther.ROBOT_MOVE_TONEXT;
+				ReadyToGo = true;
+				returnval = CmdToOther.CMD_NONE;
+				
+				System.out.println(toString() + "Ready To go!!");
 			}
 		}
 		else
@@ -69,6 +73,25 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 		
 		return returnval;
 		
+	}
+	
+	@Override
+	public CmdToOther Evt_ReadyToGo() 
+	{
+		CmdToOther returnval = CmdToOther.CMD_NONE;
+		if(ReadyToGo == true)
+		{
+			System.out.println(toString() + "Bypass this inventory station");
+			warehousestatemachine.getRobotMoveToXst(ThisStateID).setPassedNavigationPath(passedNavigationPath);
+			warehousestatemachine.getRobotMoveToXst(ThisStateID).PathClearAndSetnextPath(navigationPath);
+			warehousestatemachine.setState(warehousestatemachine.getRobotMoveToXst(ThisStateID));
+			returnval = CmdToOther.ROBOT_MOVE_TONEXT;
+		}
+		else
+		{
+			returnval = CmdToOther.CMD_NONE;
+		}
+		return returnval;
 	}
 
 	@Override
