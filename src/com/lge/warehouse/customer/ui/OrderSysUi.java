@@ -22,6 +22,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
         initComponents();
         requestCatalog();
         showCartInfo();
+        updateTestButtonString(1);
     }
 
     /**
@@ -192,7 +193,11 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
         OrderTestSctipt orderTestScript = new OrderTestSctipt();
         int scriptIndex = orderTestScript.getNextScriptNo();
         
-        //System.out.println("current sctipt no. is " + scriptIndex);
+        System.out.println("current sctipt no. is " + scriptIndex);
+        updateTestButtonString(scriptIndex + 2);
+     
+        if(scriptIndex == -1)
+            return;
         
         for(int i=0; i<orderTestScript.getOrderScriptSize(scriptIndex); i++) {
             OrderTestUnit orderTestUnit = orderTestScript.getOrderTestUnit(scriptIndex, i);
@@ -201,6 +206,7 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
  
         showCartInfo();
         jButtonOrderActionPerformed(null);
+        
      
     }//GEN-LAST:event_jButtonTestOrderActionPerformed
 
@@ -261,6 +267,10 @@ public class OrderSysUi extends javax.swing.JFrame implements OrderSysUiUpdate{
     
     private void showCartInfo() {
         jTextAreaCartInfo.setText(OrderSysWidgetCart.getCartInfo());
+    }
+    
+    private void updateTestButtonString(int index) {
+        jButtonTestOrder.setText("Test-" + index);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
