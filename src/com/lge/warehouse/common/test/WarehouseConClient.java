@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class WarehouseConClient {
     
-        private Socket socket;
+        public Socket socket;
         private BufferedWriter bos;
 	private BufferedReader bis;
 	public String mStr = null;
@@ -34,7 +34,7 @@ public class WarehouseConClient {
 		bis = null;
 		bos = null;
 	}
-
+        
 	public void connect(String host, int port) {
             try {
                 socket = new Socket(host, port);
@@ -101,12 +101,9 @@ public class WarehouseConClient {
       public static final void main(String[] args){
             
             WarehouseConClient w = new WarehouseConClient();
-         
-            //Note: Whne you use this client sample program, you must comment out following code!!!!
-            //"clientSocket.setSoTimeout(7000);" in ArduinoConnector.java in com.lge.warehouse.manager. 
             
-            //int portNum = 507; //warehouse
-            int portNum = 550; //robot
+            int portNum = 507; //warehouse
+            //int portNum = 550; //robot
           
             if(args.length > 0) {
                 w.connect(args[0], Integer.parseInt(args[1]));
@@ -114,7 +111,10 @@ public class WarehouseConClient {
                  //w.connect("128.237.235.111", portNum);
                  w.connect("127.0.0.1", portNum);
             }
-            
+           
+            DevPing ping = new DevPing(w.socket, portNum);
+            DevPing.start(ping);
+       
             while(true) {
                 if(portNum == 550) { //robot
                     w.receiveMessage();
