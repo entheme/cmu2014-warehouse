@@ -10,6 +10,7 @@ public class AdoinoErrorState extends WMorderStatemachineState implements Serial
 	
 	int RobotError;
 	int WarehouseError;
+	boolean ReadyTogo;
 	
 	WMorderStatemachineState BeforeErrorState;
 	
@@ -17,6 +18,7 @@ public class AdoinoErrorState extends WMorderStatemachineState implements Serial
 		super();
 		RobotError = 0;
 		WarehouseError = 0;
+		ReadyTogo = false;
 	}
 	
 	public AdoinoErrorState(WahouseStateMachine warehousestatemachine) 
@@ -24,11 +26,21 @@ public class AdoinoErrorState extends WMorderStatemachineState implements Serial
 		super(warehousestatemachine);
 		RobotError = 0;
 		WarehouseError = 0;
+		ReadyTogo = false;
 	}
 	
 	public void SetBeforeErrorState(WMorderStatemachineState BeforeError)
 	{
 		BeforeErrorState = BeforeError; 
+	}
+	
+	
+
+	@Override
+	public CmdToOther Evt_ReadyToGo() {
+		System.out.println("Error ReadyToGo");
+		ReadyTogo = true;
+		return CmdToOther.CMD_NONE;
 	}
 
 	@Override
@@ -61,11 +73,24 @@ public class AdoinoErrorState extends WMorderStatemachineState implements Serial
 		{
 			if(BeforeErrorState instanceof RobotMoveToX)
 			{
-				returnval = CmdToOther.ROBOT_MOVE_TONEXT;
+				RobotMoveToX TempRoboToX = (RobotMoveToX)BeforeErrorState;
+				
+				if(TempRoboToX.isReadyToGo() == true) // bypass state.
+				{
+					returnval = CmdToOther.CHECK_READYGO;
+					System.out.println("Error recovery for Bypass state.");
+				}
+				else
+				{
+					returnval = CmdToOther.ROBOT_MOVE_TONEXT;
+				}
+				
 			}
 			else
 			{;
 			}
+			
+			
 			
 			BeforeErrorState.setPassedNavigationPath(passedNavigationPath);
 			BeforeErrorState.setNavigationPath(navigationPath);

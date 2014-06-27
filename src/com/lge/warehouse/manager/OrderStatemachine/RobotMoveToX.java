@@ -6,11 +6,13 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 
 	int ThisStateID; //what station heading for?
 	boolean ReadyToGo;
+	boolean ErrorRecovery;
 	
 	public RobotMoveToX(int thisStateID) {
 		super();
 		ThisStateID = thisStateID;
 		ReadyToGo = false;
+		ErrorRecovery = false;
 	}
 	
 	public RobotMoveToX(WahouseStateMachine warehousestatemachine, int thisStateID)
@@ -18,6 +20,7 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 		super(warehousestatemachine);
 		ThisStateID = thisStateID;
 		ReadyToGo = false;
+		ErrorRecovery = false;
 	}
 	
 	public int getID()
@@ -60,8 +63,19 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 			}
 			else // this inventory station is not loading station 
 			{
-				ReadyToGo = true;
-				returnval = CmdToOther.CMD_NONE;
+				if(ErrorRecovery == true)
+				{
+					warehousestatemachine.getRobotMoveToXst(ThisStateID).setPassedNavigationPath(passedNavigationPath);
+					warehousestatemachine.getRobotMoveToXst(ThisStateID).PathClearAndSetnextPath(navigationPath);
+					warehousestatemachine.setState(warehousestatemachine.getRobotMoveToXst(ThisStateID));
+					returnval = CmdToOther.ROBOT_MOVE_TONEXT;
+				}
+				else
+				{
+					ReadyToGo = true;
+					returnval = CmdToOther.CMD_NONE;
+				}
+				
 				
 				System.out.println(toString() + "Ready To go!!");
 			}
@@ -77,6 +91,16 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 		
 	}
 	
+	
+	
+	public boolean isReadyToGo() {
+		return ReadyToGo;
+	}
+
+	public void setReadyToGo(boolean readyToGo) {
+		ReadyToGo = readyToGo;
+	}
+
 	@Override
 	public CmdToOther Evt_ReadyToGo() 
 	{
@@ -138,6 +162,8 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 		}
 		else
 		{
+			ErrorRecovery = true;
+			
 			AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
 			
 			WMorderStatemachineState tempNavi = passedNavigationPath.get(passedNavigationPath.size()-1);

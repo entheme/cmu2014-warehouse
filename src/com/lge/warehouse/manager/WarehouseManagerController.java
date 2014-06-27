@@ -77,11 +77,17 @@ public class WarehouseManagerController extends WarehouseRunnable {
     	
     	PathList = warehouseStatemachine.getCurrentState().getPassedNavigationPath();
     	//visited Station information
-    	for(WMorderStatemachineState pa : PathList)
-		{
-    		VisitedStationList.add(pa.toString());
+    	//for(WMorderStatemachineState pa : PathList)
+    	for(int i = 0; i < PathList.size()-1 ; i++)
+    	{
+    		WMorderStatemachineState pa = PathList.get(i);	
+    	
+    		
+		//{
+    		
     		if(pa instanceof RobotAtX) // for robot holding widget lsit.
     		{
+    			VisitedStationList.add(pa.toString());
     			for(QuantifiedWidget qw : ((RobotAtX) pa).getQwOrderList())
     			{
     				inventoryListOnBot.add(qw);
@@ -161,26 +167,6 @@ public class WarehouseManagerController extends WarehouseRunnable {
 				List<WMorderStatemachineState> newOrderPath = PathSelector.MakeNewNavigationPath(order);
 				Cmd = warehouseStatemachine.Evt_NewOrder(newOrderPath);
 				HandleStateMachineCmd(Cmd);
-				
-				/*
-				// for 1 order clear without robot.
-				Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(1);
-				HandleStateMachineCmd(Cmd);
-				Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(1);
-				HandleStateMachineCmd(Cmd);
-				Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(2);
-				HandleStateMachineCmd(Cmd);
-				Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(2);
-				HandleStateMachineCmd(Cmd);
-				Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(3);
-				HandleStateMachineCmd(Cmd);
-				Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(3);
-				HandleStateMachineCmd(Cmd);
-				Cmd = warehouseStatemachine.Evt_WareHouseSensorIsOn(4);
-				HandleStateMachineCmd(Cmd);
-				Cmd = warehouseStatemachine.Evt_WareHouseButtonIsOn(4);
-				HandleStateMachineCmd(Cmd);
-				*/
 				
 			}else {
                                 handleBodyError(event);
@@ -369,6 +355,21 @@ public class WarehouseManagerController extends WarehouseRunnable {
     	{
     		case CMD_NONE:
     			logger.info("Nothing To do");
+    			break;
+    			
+    		case CHECK_READYGO:
+    			logger.info("CHECK_READYGO");
+    			System.out.println("CHECK_READYGO");
+    			
+    			try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    			
+    			sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS,null);
+    			sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS,null);
     			break;
     		
     		case ROBOT_MOVE_TONEXT:
