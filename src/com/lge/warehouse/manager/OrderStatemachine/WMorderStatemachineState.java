@@ -48,18 +48,26 @@ public abstract class WMorderStatemachineState implements Serializable{
 
 	public void setNavigationPath(List<WMorderStatemachineState> newPath)
 	{
-		navigationPath.clear();
-		for(WMorderStatemachineState qw : newPath)
+		if(newPath.size() == 0)
 		{
-			navigationPath.add(qw);
-	 	}
-				
-		String tempPath = "[WMorderStatemachineState] Get path is";
-    	for(WMorderStatemachineState state : navigationPath)
-		{
-    		tempPath = tempPath + "+" + state.toString();
+			System.out.println("[WMorderStatemachineState] final path");
+			return;
 		}
-    	System.out.println(tempPath);
+		else
+		{
+			navigationPath.clear();
+			for(WMorderStatemachineState qw : newPath)
+			{
+				navigationPath.add(qw);
+			}
+				
+			String tempPath = "[WMorderStatemachineState] Get path is";
+			for(WMorderStatemachineState state : navigationPath)
+			{
+				tempPath = tempPath + "+" + state.toString();
+			}
+			System.out.println(tempPath);
+		}
     	
 	}
 	

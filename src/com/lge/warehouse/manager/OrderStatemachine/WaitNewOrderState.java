@@ -55,8 +55,10 @@ public class WaitNewOrderState extends WMorderStatemachineState implements Seria
 		else
 		{
 			AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
+			tempState.setPassedNavigationPath(passedNavigationPath);
+			tempState.setNavigationPath(navigationPath);
 			tempState.SetBeforeErrorState(this);
-			tempState.Evt_RobotErrorStateChange(iRobotErrorState);
+			tempState.Evt_RobotErrorStateChange(iRobotErrorState);//pass error info
 			warehousestatemachine.setState(tempState);
 			returnval = CmdToOther.ROBOT_STOP;
 		}
@@ -76,8 +78,11 @@ public class WaitNewOrderState extends WMorderStatemachineState implements Seria
 		else
 		{
 			AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
+			
+			tempState.setPassedNavigationPath(passedNavigationPath);
+			tempState.setNavigationPath(navigationPath);
 			tempState.SetBeforeErrorState(this);
-			tempState.Evt_WareHouseErrorStateChange(iWareHouseState);
+			tempState.Evt_WareHouseErrorStateChange(iWareHouseState);//pass error info
 			warehousestatemachine.setState(tempState);
 			returnval = CmdToOther.ROBOT_STOP;
 		}

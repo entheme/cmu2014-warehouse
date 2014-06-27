@@ -29,6 +29,7 @@ public class ArduinoConnector {
         private BufferedReader in = null;
         private BufferedWriter out = null;
         private boolean isRun = false;
+        private int socketTimeout = 7000;
         
 	public ArduinoConnector() {
 		
@@ -38,13 +39,18 @@ public class ArduinoConnector {
             this.portNum = portNum;
         }
         
+        public void setSocketTimeout(int socketTimeout) {
+        	this.socketTimeout = socketTimeout;
+        	logger.info("socketTimeout : " + socketTimeout);
+        }
+        
 	public boolean startServer() {
 		try {
                     serverSocket = new ServerSocket(portNum);
                     logger.info("Waiting for Arduino on port " + portNum + "." );
                     
                     clientSocket = serverSocket.accept();
-                    clientSocket.setSoTimeout(7000);
+                    clientSocket.setSoTimeout(socketTimeout);
                     
                     logger.info("Client is connected: " + clientSocket.toString());
                     

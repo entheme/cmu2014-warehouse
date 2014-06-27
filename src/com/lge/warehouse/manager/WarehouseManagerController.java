@@ -48,8 +48,10 @@ public class WarehouseManagerController extends WarehouseRunnable {
     
     private WarehouseManagerController() {
         super(WComponentType.WAREHOUSE_MANAGER_CONTROLLER, false);
+        mArduinoConForWarehouse.setSocketTimeout(3000);
         WarehouseInputMgr.start(mArduinoConForWarehouse);
         WarehouseOutputMgr.start(mArduinoConForWarehouse);
+        mArduinoConForRobot.setSocketTimeout(7000);
         RobotInputMgr.start(mArduinoConForRobot);
         RobotOutputMgr.start(mArduinoConForRobot);
         mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_OFF;
@@ -72,8 +74,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
     	List<QuantifiedWidget> inventoryListOnBot = new ArrayList<QuantifiedWidget>();
     	List<WMorderStatemachineState> PathList = new ArrayList<WMorderStatemachineState>();
     	List<String> VisitedStationList = new ArrayList<String>();
-    	PathList = warehouseStatemachine.getCurrentState().getPassedNavigationPath();
     	
+    	PathList = warehouseStatemachine.getCurrentState().getPassedNavigationPath();
     	//visited Station information
     	for(WMorderStatemachineState pa : PathList)
 		{
@@ -283,13 +285,20 @@ public class WarehouseManagerController extends WarehouseRunnable {
         case ROBOT_IS_CONNECTED:
         	logger.info("ROBOT_IS_CONNECTED");
         	mRobotStatus = RobotConnectionStatus.CONNECTION_ON;
-        	SendWarehouseStatus();
+        	
+        	Cmd = warehouseStatemachine.Evt_RobotErrorStateChange(0);
+			HandleStateMachineCmd(Cmd);
+        	//SendWarehouseStatus();
         	break;
         	
         case ROBOT_IS_DISCONNECTED:
         	logger.info("ROBOT_IS_DISCONNECTED");
         	mRobotStatus = RobotConnectionStatus.CONNECTION_OFF;
-        	SendWarehouseStatus();
+        	
+        	Cmd = warehouseStatemachine.Evt_RobotErrorStateChange(1);
+			HandleStateMachineCmd(Cmd);
+			 
+        	//SendWarehouseStatus();
         	break;
         	
         case ROBOT_IS_ARRIVE:
@@ -303,26 +312,24 @@ public class WarehouseManagerController extends WarehouseRunnable {
                 
         case WAREHOUSE_IS_CONNECTED:
 			 logger.info("WAREHOUSE_IS_CONNECTED");
+			 mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_ON;
 			 
-			 /*
-			 try {
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			 */
+			 Cmd = warehouseStatemachine.Evt_WareHouseErrorStateChange(0);
+			 HandleStateMachineCmd(Cmd);
 			 
 			 sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS,null);
 			 sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS,null);
-			 mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_ON;
-			 SendWarehouseStatus();
+			 
+			 //SendWarehouseStatus();
 			 break;
 			 
         case WAREHOUSE_IS_DISCONNECTED:
 			logger.info("WAREHOUSE_IS_DISCONNECTED");
 			mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_OFF;
-			SendWarehouseStatus();
+			
+			Cmd = warehouseStatemachine.Evt_WareHouseErrorStateChange(1);
+			HandleStateMachineCmd(Cmd);
+			//SendWarehouseStatus();
 	        
 			break;
         case FILL_INVENTORY_WIDGET:
