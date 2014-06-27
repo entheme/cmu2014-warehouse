@@ -464,7 +464,7 @@
                       <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jPanel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="24" max="32767" attributes="0"/>
+                      <EmptySpace pref="17" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -551,11 +551,11 @@
                               <Component id="jLabelVisitedStation" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jScrollPaneInventoryList" pref="294" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="jScrollPaneInventoryList" pref="264" max="32767" attributes="0"/>
                               <Component id="jScrollPaneVisitedStation" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -622,11 +622,13 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabelNextStop" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelRobotStatus" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelWarehouseStatus" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jTextFieldNextStop" alignment="1" min="-2" pref="223" max="-2" attributes="0"/>
                               <Component id="jTextFieldRobotStatus" alignment="1" min="-2" pref="223" max="-2" attributes="0"/>
+                              <Component id="jTextFieldWarehouseStatus" alignment="1" min="-2" pref="223" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -645,7 +647,12 @@
                               <Component id="jLabelRobotStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jTextFieldRobotStatus" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jLabelWarehouseStatus" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextFieldWarehouseStatus" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace pref="9" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -670,6 +677,13 @@
                   <Properties>
                     <Property name="editable" type="boolean" value="false"/>
                   </Properties>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jLabelWarehouseStatus">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Warehouse Status"/>
+                  </Properties>
+                </Component>
+                <Component class="javax.swing.JTextField" name="jTextFieldWarehouseStatus">
                 </Component>
               </SubComponents>
             </Container>

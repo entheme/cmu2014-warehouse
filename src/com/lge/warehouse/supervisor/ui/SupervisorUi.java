@@ -8,11 +8,14 @@ package com.lge.warehouse.supervisor.ui;
 
 import com.lge.warehouse.supervisor.WarehouseInventoryInfo;
 import com.lge.warehouse.supervisor.WidgetInfo;
+import com.lge.warehouse.util.CustomerStatus;
 import com.lge.warehouse.util.InventoryName;
 import com.lge.warehouse.util.NewWidgetInfo;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.QuantifiedWidget;
+import com.lge.warehouse.util.SystemEvent;
+import com.lge.warehouse.util.WarehouseInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         initComponents();
         initUiController();
         requestCatalog();
-        setSystemStatusString();
+        updateSystemStatusString();
     }
 
     /**
@@ -87,6 +90,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jLabelRobotStatus = new javax.swing.JLabel();
         jTextFieldNextStop = new javax.swing.JTextField();
         jTextFieldRobotStatus = new javax.swing.JTextField();
+        jLabelWarehouseStatus = new javax.swing.JLabel();
+        jTextFieldWarehouseStatus = new javax.swing.JTextField();
         jLabelSystemStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -391,10 +396,10 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                     .addComponent(jLabelInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelVisitedStation))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
                     .addComponent(jScrollPaneVisitedStation))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -407,6 +412,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
         jTextFieldRobotStatus.setEditable(false);
 
+        jLabelWarehouseStatus.setText("Warehouse Status");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -415,11 +422,13 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelNextStop)
-                    .addComponent(jLabelRobotStatus))
+                    .addComponent(jLabelRobotStatus)
+                    .addComponent(jLabelWarehouseStatus))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextFieldNextStop, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldWarehouseStatus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -433,7 +442,11 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelRobotStatus)
                     .addComponent(jTextFieldRobotStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelWarehouseStatus)
+                    .addComponent(jTextFieldWarehouseStatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelRobotLayout = new javax.swing.GroupLayout(jPanelRobot);
@@ -457,7 +470,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Robot", jPanelRobot);
@@ -660,12 +673,23 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jTextAreaOrderStatus.setText(sb.toString());
     }
     
-    private void updateSystemStatus(String systemStatus) {
-        mSystemStatus = systemStatus;
-    }
-    
-    private void setSystemStatusString() {
-        jLabelSystemStatus.setText(mSystemStatus);
+    private void updateSystemStatusString() {
+        StringBuffer sb = new StringBuffer();
+        String customerStatus = new String();
+        String warehouseInfo = new String();
+        
+        if(mSystemStatus == null) {
+            customerStatus = CustomerStatus.OFF.name();
+            warehouseInfo = WarehouseInfo.OFF.name();
+        } else {
+            customerStatus = mSystemStatus.getCustomerStatus().name();
+            warehouseInfo = mSystemStatus.getWarehouseInfo().name();
+        }
+        
+        sb.append("Connection:").append(customerStatus);
+        sb.append(" / Warehouse Manager:").append(warehouseInfo);
+        System.out.println(sb.toString());
+        jLabelSystemStatus.setText(sb.toString());
         jLabelSystemStatus.setHorizontalAlignment(SwingConstants.RIGHT);
     }
     /**
@@ -720,6 +744,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private javax.swing.JLabel jLabelRobotStatus;
     private javax.swing.JLabel jLabelSystemStatus;
     private javax.swing.JLabel jLabelVisitedStation;
+    private javax.swing.JLabel jLabelWarehouseStatus;
     private javax.swing.JLabel jLabelWidgetManagement;
     private javax.swing.JLabel jLabelWidgetNameToBeAdded;
     private javax.swing.JLabel jLabelWidgetPriceToBeAdded;
@@ -747,12 +772,13 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private javax.swing.JTextField jTextFieldNextStop;
     private javax.swing.JTextField jTextFieldRobotLocation;
     private javax.swing.JTextField jTextFieldRobotStatus;
+    private javax.swing.JTextField jTextFieldWarehouseStatus;
     // End of variables declaration//GEN-END:variables
     private SupervisorUiController mSupervisorUiController;
     private WidgetCatalog mWidgetCatalog;
     private OrderStatusInfo mOrderStatus;
     private WarehouseInventoryInfo mInventoryInfo;
-    private String mSystemStatus = "System Status : -";
+    private SystemEvent mSystemStatus;
 
     @Override
     public void updateCatalog(WidgetCatalog widgetCatalog) {
@@ -776,7 +802,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jTextAreaInventoryList.setText(QuantifiedWidget.getListString(warehouseStatus.getInventoryListOfBot()));
         jTextAreaVisitedStation.setText(warehouseStatus.getVisitedStationListOfBot().toString());
         jTextFieldNextStop.setText(warehouseStatus.getNextStop());
-        jTextFieldRobotStatus.setText("OK");
+        jTextFieldRobotStatus.setText(warehouseStatus.getRobotStatus().name());
+        jTextFieldWarehouseStatus.setText(warehouseStatus.getWarehouseStatus().name());
     }
 
     @Override
@@ -784,6 +811,12 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         //jTextAreaInventory.setText(inventoryStatus);
         mInventoryInfo = inventoryInfo;
         jTextAreaInventoryStatus.setText(mInventoryInfo.toString());
+    }
+
+    @Override
+    public void updateSystemStatus(SystemEvent systemStatus) {
+        mSystemStatus = systemStatus;
+        updateSystemStatusString();
     }
     
     
