@@ -6,14 +6,13 @@
 
 package com.lge.warehouse.customer.ui;
 
-import java.util.ArrayList;
-
-import org.apache.log4j.Logger;
-
 import com.lge.warehouse.supervisor.WidgetInfo;
 import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.WidgetCatalog;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -24,6 +23,7 @@ public class OrderSysWidgetCart {
     private static final ArrayList<QuantifiedWidget> widgetCart = new ArrayList<QuantifiedWidget>();
     private static WidgetCatalog widgetCatalog = new WidgetCatalog(new ArrayList<WidgetInfo>());
     private static OrderSysUiUpdate sUiUpdate = null;
+    private static Order mLastOrder = null;
   
     static {
         //createWidgetCart();
@@ -94,24 +94,34 @@ public class OrderSysWidgetCart {
         
         return order;
     }
+    public static void setLastOrder(Order order) {
+        mLastOrder = order;
+    }
     
     public static String getCartInfo() {
         int totalPrice = 0;
-        String info = new String();
-        String newLine = "\n";
+        StringBuffer sb = new StringBuffer();
         
         if(getTotalQuantity() == 0 || getWidgetCatlogSize() == 0) {
-            info += "Cart is empty";
-            return info;
+            sb.append("Cart is empty\n");
+            if(mLastOrder != null) {
+                sb.append("-------------------------\n");
+                sb.append("        Last Order     \n");
+                sb.append(QuantifiedWidget.getListString(mLastOrder.getItemList()));
+ 
+            }
+                
+            return sb.toString();
         }
         
         for(int i=0; i<getWidgetCatlogSize(); i++) {
-            info += widgetCart.get(i).getWidget().getName() + " :" + widgetCart.get(i).getQuantity() + "EA" + newLine;
+            sb.append(widgetCart.get(i).getWidget().getName()).append(" :").append(widgetCart.get(i).getQuantity()).append("EA\n");
             totalPrice += widgetCart.get(i).getQuantity() * widgetCart.get(i).getWidget().getPrice();
         }
-        info += newLine + "Total Price = " + totalPrice + "$" + newLine;
+        //info += newLine + "Total Price = " + totalPrice + "$" + newLine;
+        sb.append("Total Price = ").append(totalPrice).append("$\n");
         
-        return info;
+        return sb.toString();
     }
     
     public static int getTotalQuantity() {

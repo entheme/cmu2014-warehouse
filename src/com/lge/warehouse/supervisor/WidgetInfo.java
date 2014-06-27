@@ -28,7 +28,7 @@ public class WidgetInfo implements Serializable{
     @Override
     public String toString(){
         StringBuffer sb = new StringBuffer();
-        sb.append(mName).append("<").append("Product ID : ").append(mProductId).append(", Price : ").append(mPrice).append(">");
+        sb.append(mName).append("<").append("ID : ").append(mProductId).append(", Price : ").append(mPrice).append("$>");
         return sb.toString();
     }
     
