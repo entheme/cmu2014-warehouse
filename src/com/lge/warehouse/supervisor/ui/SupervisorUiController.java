@@ -86,7 +86,7 @@ public class SupervisorUiController extends WarehouseRunnable {
                 	if(event.getBody() instanceof SystemEvent){
                         //System.out.println("got warehouse status");
                 		SystemEvent systemReport = (SystemEvent) event.getBody();
-                        //mSupervisorUi.updateRobotStatus(warehouseStatus);
+                        mSupervisorUi.updateSystemStatus(systemReport);
                     }
                 	break;
 		}

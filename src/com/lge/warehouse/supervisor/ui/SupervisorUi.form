@@ -28,20 +28,13 @@
               <Component id="jTabbedPane1" min="-2" pref="694" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jLabelSystemStatus" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Component id="jTabbedPane1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabelSystemStatus" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -530,10 +523,10 @@
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabelInventoryList" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPaneInventoryList" alignment="0" min="-2" pref="254" max="-2" attributes="0"/>
+                              <Component id="jLabelInventoryList" min="-2" max="-2" attributes="0"/>
+                              <Component id="jScrollPaneInventoryList" min="-2" pref="287" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="79" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabelVisitedStation" min="-2" max="-2" attributes="0"/>
                               <Component id="jScrollPaneVisitedStation" min="-2" pref="275" max="-2" attributes="0"/>
@@ -691,10 +684,5 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="jLabelSystemStatus">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=" "/>
-      </Properties>
-    </Component>
   </SubComponents>
 </Form>

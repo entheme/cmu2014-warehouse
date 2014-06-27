@@ -92,7 +92,6 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jTextFieldRobotStatus = new javax.swing.JTextField();
         jLabelWarehouseStatus = new javax.swing.JLabel();
         jTextFieldWarehouseStatus = new javax.swing.JTextField();
-        jLabelSystemStatus = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -381,8 +380,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelInventoryList)
-                    .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelVisitedStation)
                     .addComponent(jScrollPaneVisitedStation, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -475,8 +474,6 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
         jTabbedPane1.addTab("Robot", jPanelRobot);
 
-        jLabelSystemStatus.setText(" ");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -485,18 +482,12 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 694, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabelSystemStatus)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jTabbedPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelSystemStatus)
-                .addContainerGap())
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -689,8 +680,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         sb.append("Connection:").append(customerStatus);
         sb.append(" / Warehouse Manager:").append(warehouseInfo);
         System.out.println(sb.toString());
-        jLabelSystemStatus.setText(sb.toString());
-        jLabelSystemStatus.setHorizontalAlignment(SwingConstants.RIGHT);
+        //jLabelSystemStatus.setText(sb.toString());
+        //jLabelSystemStatus.setHorizontalAlignment(SwingConstants.RIGHT);
     }
     /**
      * @param args the command line arguments
@@ -742,7 +733,6 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private javax.swing.JLabel jLabelLocation;
     private javax.swing.JLabel jLabelNextStop;
     private javax.swing.JLabel jLabelRobotStatus;
-    private javax.swing.JLabel jLabelSystemStatus;
     private javax.swing.JLabel jLabelVisitedStation;
     private javax.swing.JLabel jLabelWarehouseStatus;
     private javax.swing.JLabel jLabelWidgetManagement;
@@ -816,6 +806,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     @Override
     public void updateSystemStatus(SystemEvent systemStatus) {
         mSystemStatus = systemStatus;
+        System.out.println("Connection: " + systemStatus.getCustomerStatus());
+        System.out.println("Warehouse Manager: " + systemStatus.getWarehouseInfo());
         updateSystemStatusString();
     }
     
