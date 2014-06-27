@@ -21,11 +21,11 @@ public class WidgetCatalogRepository {
     private int mWidgetIdCnt = 0;
     private WidgetCatalogRepository(){
     	//for test [start]
-    	addNewWidget("Soccer",300);
+    	addNewWidget("Soccer",150);
     	addNewWidget("Tennis",10);
-    	addNewWidget("Baseball",150);
-    	addNewWidget("Football",500);
-    	addNewWidget("Basketball",400);
+    	addNewWidget("Baseball",20);
+    	addNewWidget("Football",100);
+    	addNewWidget("Basketball",120);
     	//for test [end];
     }
     public WidgetInfo getWidgetInfo(int index){
