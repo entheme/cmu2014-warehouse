@@ -36,6 +36,13 @@ public abstract class WMorderStatemachineState implements Serializable{
 		{
 			passedNavigationPath.add(qw);
 	 	}
+		
+		String tempPath = "[WMorderStatemachineState] Get PassedNavation path is";
+		for(WMorderStatemachineState state : passedNavigationPath)
+		{
+			tempPath = tempPath + "+" + state.toString();
+		}
+		System.out.println(tempPath);
 	}
 
 	public List<WMorderStatemachineState> getPassedNavigationPath() {
@@ -61,7 +68,7 @@ public abstract class WMorderStatemachineState implements Serializable{
 				navigationPath.add(qw);
 			}
 				
-			String tempPath = "[WMorderStatemachineState] Get path is";
+			String tempPath = "[WMorderStatemachineState]setNavigationPath :: Get Navigationpath is";
 			for(WMorderStatemachineState state : navigationPath)
 			{
 				tempPath = tempPath + "+" + state.toString();

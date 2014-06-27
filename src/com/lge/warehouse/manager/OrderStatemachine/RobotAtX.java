@@ -99,7 +99,7 @@ public class RobotAtX extends WMorderStatemachineState implements Serializable{
 			tempState.SetBeforeErrorState(this);
 			tempState.Evt_RobotErrorStateChange(iRobotErrorState);//pass error info
 			warehousestatemachine.setState(tempState);
-			returnval = CmdToOther.ROBOT_STOP;
+			returnval = CmdToOther.CMD_NONE;
 		}
 		return returnval;
 	}

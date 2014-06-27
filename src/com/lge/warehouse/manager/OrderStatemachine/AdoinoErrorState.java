@@ -66,6 +66,9 @@ public class AdoinoErrorState extends WMorderStatemachineState implements Serial
 			else
 			{;
 			}
+			
+			BeforeErrorState.setPassedNavigationPath(passedNavigationPath);
+			BeforeErrorState.setNavigationPath(navigationPath);
 			warehousestatemachine.setState(BeforeErrorState);
 		}
 		else

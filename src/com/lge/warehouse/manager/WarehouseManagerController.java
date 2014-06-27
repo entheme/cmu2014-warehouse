@@ -286,6 +286,13 @@ public class WarehouseManagerController extends WarehouseRunnable {
         	logger.info("ROBOT_IS_CONNECTED");
         	mRobotStatus = RobotConnectionStatus.CONNECTION_ON;
         	
+        	try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
         	Cmd = warehouseStatemachine.Evt_RobotErrorStateChange(0);
 			HandleStateMachineCmd(Cmd);
         	//SendWarehouseStatus();
@@ -314,11 +321,21 @@ public class WarehouseManagerController extends WarehouseRunnable {
 			 logger.info("WAREHOUSE_IS_CONNECTED");
 			 mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_ON;
 			 
+			 try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 
 			 Cmd = warehouseStatemachine.Evt_WareHouseErrorStateChange(0);
 			 HandleStateMachineCmd(Cmd);
 			 
 			 sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUEST_LOAD_STATUS,null);
 			 sendMsg(WComponentType.WAREHOUSE_OUTPUT_MGR, EventMessageType.REQUST_POS_STATUS,null);
+			 
+			 
+			 
 			 
 			 //SendWarehouseStatus();
 			 break;
@@ -361,6 +378,8 @@ public class WarehouseManagerController extends WarehouseRunnable {
     			
     		case ROBOT_STOP:
     			logger.info("Stop robot by Error");
+    			sendMsg(WComponentType.ROBOT_OUTPUT_MGR, EventMessageType.REQUEST_ROBOT_STOP,null);
+    			
     			//Need to Stop command
     			break;
     			

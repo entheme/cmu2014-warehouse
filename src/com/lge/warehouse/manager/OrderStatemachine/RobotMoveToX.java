@@ -108,12 +108,21 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 		else
 		{
 			AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
+			
+			WMorderStatemachineState tempNavi = passedNavigationPath.get(passedNavigationPath.size()-1);
 			tempState.setPassedNavigationPath(passedNavigationPath);
+			
+			//if(navigationPath.get(0) != tempNavi)
+			//{
+			//	navigationPath.add(0, tempNavi);
+			//}
 			tempState.setNavigationPath(navigationPath);
+			
+			
 			tempState.SetBeforeErrorState(this);
 			tempState.Evt_RobotErrorStateChange(iRobotErrorState);//pass error info
 			warehousestatemachine.setState(tempState);
-			returnval = CmdToOther.ROBOT_STOP;
+			returnval = CmdToOther.CMD_NONE;
 		}
 		return returnval;
 	}
@@ -130,8 +139,16 @@ public class RobotMoveToX extends WMorderStatemachineState implements Serializab
 		else
 		{
 			AdoinoErrorState tempState = (AdoinoErrorState)warehousestatemachine.getAduinoError();
+			
+			WMorderStatemachineState tempNavi = passedNavigationPath.get(passedNavigationPath.size()-1);
 			tempState.setPassedNavigationPath(passedNavigationPath);
+			
+			//if(navigationPath.get(0) != tempNavi)
+			//{
+			//	navigationPath.add(0, tempNavi);
+			//}
 			tempState.setNavigationPath(navigationPath);
+			
 			tempState.SetBeforeErrorState(this);
 			tempState.Evt_WareHouseErrorStateChange(iWareHouseState);//pass error info
 			warehousestatemachine.setState(tempState);
