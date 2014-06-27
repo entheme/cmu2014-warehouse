@@ -49,6 +49,10 @@ public class RobotOutputMgr extends WarehouseRunnable{
             logger.info("REQUEST_ROBOT_RECOVERY");
             mArduinoConForRobot.writeData("R");
             break;
+        case REQUEST_ROBOT_STOP:
+            logger.info("REQUEST_ROBOT_STOP");
+            mArduinoConForRobot.writeData("S");
+            break;
         default:
             logger.info("unhandled event :"+event);
             break;

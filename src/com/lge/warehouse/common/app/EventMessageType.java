@@ -64,6 +64,7 @@ public enum EventMessageType {
     ROBOT_IS_DISCONNECTED, //RobotInputMgr -> WarehouseMangerController -> WmMsgHandler ->WarehouseSupervisor ->SupervisorUI
     ROBOT_IS_ARRIVE, //RobotInputMgr -> WarehouseMangerController 
     REQUEST_ROBOT_RECOVERY, //WarehouseMangerController -> RobotOutputMgr
+    REQUEST_ROBOT_STOP, //WarehouseMangerController -> RobotOutputMgr
     INIT_WAREHOUSE, //WarehouseMangerController -> WarehouseOutputMgr
     REQUEST_LOAD_STATUS, //WarehouseMangerController -> WarehouseOutputMgr
     REQUST_POS_STATUS,  //WarehouseMangerController -> WarehouseOutputMgr
