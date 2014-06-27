@@ -29,6 +29,7 @@ public class SupervisorUiController extends WarehouseRunnable {
 	protected void initBus() {
 		// TODO Auto-generated method stub
 		addBus(WComponentType.WAREHOUSE_SUPERVISOR);
+		addBus(WComponentType.SYSTEM);
 	}
 
 	@Override
