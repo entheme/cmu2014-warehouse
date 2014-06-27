@@ -38,7 +38,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         initUiController();
         requestCatalog();
         //updateSystemStatusString();
-        drawRobotStatusString();
+        //drawRobotStatusString();
     }
 
     /**
@@ -362,7 +362,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
 
         jLabelInventoryList.setText("Inventory List");
 
-        jLabelVisitedStation.setText("Visited Station");
+        jLabelVisitedStation.setText("Visited Stations");
 
         jTextAreaInventoryList.setEditable(false);
         jTextAreaInventoryList.setColumns(20);

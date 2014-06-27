@@ -561,7 +561,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabelVisitedStation">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Visited Station"/>
+                    <Property name="text" type="java.lang.String" value="Visited Stations"/>
                   </Properties>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPaneInventoryList">
