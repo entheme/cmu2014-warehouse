@@ -49,16 +49,15 @@ public class OrderTestSctipt {
             new OrderTestUnit(NEWWIDGET,5)
         },
         
-//        {   //4,7,5,9,3,5
-//            //Fill (6,3,5,1,7,5)
-//            //10,10,10,10,10
-//            //Order 5 - order all
-//            new OrderTestUnit(SOCCER,2), 
-//            new OrderTestUnit(TENNIS,3),
-//            new OrderTestUnit(BASEBALL,5),
-//            new OrderTestUnit(FOOTBALL,1),
-//            new OrderTestUnit(BASKETBALL,4)
-//        },
+        {   //4,7,5,9,3,5
+
+            //Order 5 - error case test
+            new OrderTestUnit(SOCCER,2), 
+            new OrderTestUnit(TENNIS,1),
+            new OrderTestUnit(BASEBALL,2),
+            new OrderTestUnit(FOOTBALL,1),
+            new OrderTestUnit(BASKETBALL,1)
+        },
 //        {   //8,7,5,9,6,-
 //            //Order 6 - Partial order
 //            new OrderTestUnit(SOCCER,4),

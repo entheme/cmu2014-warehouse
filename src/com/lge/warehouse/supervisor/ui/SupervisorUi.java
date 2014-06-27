@@ -15,6 +15,7 @@ import com.lge.warehouse.util.Order;
 import com.lge.warehouse.util.OrderStatusInfo;
 import com.lge.warehouse.util.QuantifiedWidget;
 import com.lge.warehouse.util.SystemEvent;
+import com.lge.warehouse.util.WarehouseConnectionStatus;
 import com.lge.warehouse.util.WarehouseInfo;
 import com.lge.warehouse.util.WarehouseStatus;
 import com.lge.warehouse.util.WidgetCatalog;
@@ -36,7 +37,8 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         initComponents();
         initUiController();
         requestCatalog();
-        updateSystemStatusString();
+        //updateSystemStatusString();
+        drawRobotStatusString();
     }
 
     /**
@@ -555,19 +557,19 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     }//GEN-LAST:event_jButtonAddWidgetActionPerformed
 
     private void jCheckBoxCompleteOrderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxCompleteOrderStateChanged
-        updateOrderStatusString();
+        drawOrderStatusString();
     }//GEN-LAST:event_jCheckBoxCompleteOrderStateChanged
 
     private void jCheckBoxPendingOrderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxPendingOrderStateChanged
-        updateOrderStatusString();
+        drawOrderStatusString();
     }//GEN-LAST:event_jCheckBoxPendingOrderStateChanged
 
     private void jCheckBoxBackorderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxBackorderStateChanged
-        updateOrderStatusString();
+        drawOrderStatusString();
     }//GEN-LAST:event_jCheckBoxBackorderStateChanged
 
     private void jCheckBoxInProgressOrderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBoxInProgressOrderStateChanged
-        updateOrderStatusString();
+        drawOrderStatusString();
     }//GEN-LAST:event_jCheckBoxInProgressOrderStateChanged
 
     private boolean requestOrderStatus() {
@@ -642,13 +644,13 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private String getVisitedStationString(List<String> list) {
         StringBuffer sb = new StringBuffer();
         for(String string : list) {
-            sb.append(string);
+            sb.append(string).append("\n");
         }
         
         return sb.toString();
     }
     
-    private void updateOrderStatusString() {
+    private void drawOrderStatusString() {
         boolean bChkComplete = jCheckBoxCompleteOrder.isSelected();
         boolean bChkPending = jCheckBoxPendingOrder.isSelected();
         boolean bChkBackorder = jCheckBoxBackorder.isSelected();
@@ -688,9 +690,18 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         
         sb.append("Connection:").append(customerStatus);
         sb.append(" / Warehouse Manager:").append(warehouseInfo);
-        System.out.println(sb.toString());
+        //System.out.println(sb.toString());
         //jLabelSystemStatus.setText(sb.toString());
         //jLabelSystemStatus.setHorizontalAlignment(SwingConstants.RIGHT);
+    }
+    
+    private void drawRobotStatusString() {
+        jTextFieldRobotLocation.setText(mWarehouseStatus.getLocationOfBot());
+        jTextAreaInventoryList.setText(QuantifiedWidget.getListString(mWarehouseStatus.getInventoryListOfBot()));
+        jTextAreaVisitedStation.setText(getVisitedStationString(mWarehouseStatus.getVisitedStationListOfBot()));
+        jTextFieldNextStop.setText(mWarehouseStatus.getNextStop());
+        jTextFieldRobotStatus.setText(mWarehouseStatus.getRobotStatus().name());
+        jTextFieldWarehouseStatus.setText(mWarehouseStatus.getWarehouseStatus().name());
     }
     /**
      * @param args the command line arguments
@@ -776,12 +787,13 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     private SupervisorUiController mSupervisorUiController;
     private WidgetCatalog mWidgetCatalog;
     private OrderStatusInfo mOrderStatus;
+    private WarehouseStatus mWarehouseStatus = new WarehouseStatus();
     private WarehouseInventoryInfo mInventoryInfo;
     private SystemEvent mSystemStatus;
 
     @Override
     public void updateCatalog(WidgetCatalog widgetCatalog) {
-        System.out.println("catalog success");
+        //System.out.println("catalog success");
         mWidgetCatalog = widgetCatalog;
         jComboBoxWidget.updateUI();
         updateWidgetManagementUi();
@@ -792,17 +804,13 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     @Override
     public void updateOrderStatus(OrderStatusInfo orderStatus) {
         mOrderStatus = orderStatus;
-        updateOrderStatusString();
+        drawOrderStatusString();
     }
 
     @Override
     public void updateRobotStatus(WarehouseStatus warehouseStatus) {
-        jTextFieldRobotLocation.setText(warehouseStatus.getLocationOfBot());
-        jTextAreaInventoryList.setText(QuantifiedWidget.getListString(warehouseStatus.getInventoryListOfBot()));
-        jTextAreaVisitedStation.setText(getVisitedStationString(warehouseStatus.getVisitedStationListOfBot()));
-        jTextFieldNextStop.setText(warehouseStatus.getNextStop());
-        jTextFieldRobotStatus.setText(warehouseStatus.getRobotStatus().name());
-        jTextFieldWarehouseStatus.setText(warehouseStatus.getWarehouseStatus().name());
+        mWarehouseStatus = warehouseStatus;
+        drawRobotStatusString();
     }
 
     @Override

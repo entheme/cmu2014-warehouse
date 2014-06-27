@@ -21,8 +21,8 @@ public class WarehouseStatus implements Serializable{
     private List<String> mVisitedStationList = new ArrayList<String>();
     private String mNextStop;
     WarehouseInventoryInfo mInventoryInfo;
-    private WarehouseConnectionStatus mWarehouseStatus;
-    private RobotConnectionStatus mRobotStatus;
+    private WarehouseConnectionStatus mWarehouseStatus = WarehouseConnectionStatus.CONNECTION_OFF;
+    private RobotConnectionStatus mRobotStatus = RobotConnectionStatus.CONNECTION_OFF;
     public WarehouseConnectionStatus getWarehouseStatus() {
 		return mWarehouseStatus;
 	}
