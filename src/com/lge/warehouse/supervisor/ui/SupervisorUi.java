@@ -210,7 +210,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
             }
         });
 
-        jButtonAddTest.setText("Test");
+        jButtonAddTest.setText("Add all(10ea)");
         jButtonAddTest.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAddTestActionPerformed(evt);
@@ -232,9 +232,9 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addComponent(jComboBoxWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSpinnerWidgetQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(69, 69, 69)
-                .addComponent(jButtonAddTest, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAddTest, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonInventoryAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanelInventoryManagementLayout.setVerticalGroup(
@@ -282,7 +282,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                         .addComponent(jLabelWidgetNameToBeAdded)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldNewWidget, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
                         .addComponent(jLabelWidgetPriceToBeAdded)
                         .addGap(18, 18, 18)
                         .addComponent(jTextFieldNewWidgetPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -380,12 +380,12 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelInventoryList)
-                    .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneInventoryList, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelVisitedStation)
-                    .addComponent(jScrollPaneVisitedStation, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(2, 2, 2))
+                    .addComponent(jScrollPaneVisitedStation, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelVisitedStation))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -639,6 +639,15 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
         jSpinnerWidgetQuantity.setValue(new Integer(0));
     }
     
+    private String getVisitedStationString(List<String> list) {
+        StringBuffer sb = new StringBuffer();
+        for(String string : list) {
+            sb.append(string);
+        }
+        
+        return sb.toString();
+    }
+    
     private void updateOrderStatusString() {
         boolean bChkComplete = jCheckBoxCompleteOrder.isSelected();
         boolean bChkPending = jCheckBoxPendingOrder.isSelected();
@@ -790,7 +799,7 @@ public class SupervisorUi extends javax.swing.JFrame implements SupervisorUiUpda
     public void updateRobotStatus(WarehouseStatus warehouseStatus) {
         jTextFieldRobotLocation.setText(warehouseStatus.getLocationOfBot());
         jTextAreaInventoryList.setText(QuantifiedWidget.getListString(warehouseStatus.getInventoryListOfBot()));
-        jTextAreaVisitedStation.setText(warehouseStatus.getVisitedStationListOfBot().toString());
+        jTextAreaVisitedStation.setText(getVisitedStationString(warehouseStatus.getVisitedStationListOfBot()));
         jTextFieldNextStop.setText(warehouseStatus.getNextStop());
         jTextFieldRobotStatus.setText(warehouseStatus.getRobotStatus().name());
         jTextFieldWarehouseStatus.setText(warehouseStatus.getWarehouseStatus().name());

@@ -257,9 +257,9 @@
                           <Component id="jComboBoxWidget" min="-2" pref="111" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jSpinnerWidgetQuantity" min="-2" pref="91" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
-                          <Component id="jButtonAddTest" min="-2" pref="67" max="-2" attributes="0"/>
-                          <EmptySpace pref="61" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="jButtonAddTest" min="-2" pref="110" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="jButtonInventoryAdd" min="-2" pref="125" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -323,7 +323,7 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="jButtonAddTest">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Test"/>
+                    <Property name="text" type="java.lang.String" value="Add all(10ea)"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAddTestActionPerformed"/>
@@ -359,7 +359,7 @@
                                   <Component id="jLabelWidgetNameToBeAdded" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="jTextFieldNewWidget" min="-2" pref="115" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace pref="77" max="32767" attributes="0"/>
                                   <Component id="jLabelWidgetPriceToBeAdded" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jTextFieldNewWidgetPrice" min="-2" pref="73" max="-2" attributes="0"/>
@@ -524,14 +524,14 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jLabelInventoryList" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPaneInventoryList" min="-2" pref="287" max="-2" attributes="0"/>
+                              <Component id="jScrollPaneInventoryList" min="-2" pref="301" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jScrollPaneVisitedStation" min="-2" pref="289" max="-2" attributes="0"/>
                               <Component id="jLabelVisitedStation" min="-2" max="-2" attributes="0"/>
-                              <Component id="jScrollPaneVisitedStation" min="-2" pref="275" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>

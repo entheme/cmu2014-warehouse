@@ -36,7 +36,7 @@ public class QuantifiedWidget implements Serializable{
     }
     
     public String toString(){
-    	return mWidget+" quantity : "+mQuantity+"EA";
+    	return mWidget+" : "+mQuantity+"EA";
     }
 
 	@Override
